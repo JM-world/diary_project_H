@@ -67,14 +67,15 @@
 
     <h2>게시글 수정</h2>
 
-    <form action="project_H/board/update" method="post">
-        <input type="hidden" name="bid" value="${board.bid}" />
-        <label for="title">제목:</label>
-        <input type="text" id="title" name="title" value="${board.title}" /><br/>
-        <label for="content">내용:</label>
-        <textarea id="content" name="content">${board.content}</textarea><br/>
-        <input type="submit" value="수정" />
-    </form>
+	<form action="${pageContext.request.contextPath}/board/update" method="post">
+    <input type="hidden" name="bid" value="${board.bid}" />
+    <label for="title">제목:</label>
+    <input type="text" id="title" name="title" value="${board.title}" /><br/>
+    <label for="content">내용:</label>
+    <textarea id="content" name="content">${board.content}</textarea><br/>
+    <input type="submit" value="수정" />
+</form>
+	
 
 
 </div>
