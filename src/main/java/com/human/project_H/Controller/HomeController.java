@@ -1,9 +1,13 @@
 package com.human.project_H.Controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.human.project_H.entity.TodayColor;
 
 @Controller
 public class HomeController {
@@ -43,5 +47,13 @@ public class HomeController {
 		return "diary/diaryWrite";				// webapp/WEB-INF/view/calendar.jsp 를 렌더링해서 보여줌
 	}
 	
+	
+    @GetMapping("/select")
+    public String selectColors(Model model) {
+        List<TodayColor> todayColors = todayColorService.getTodayColorList(null, null, null);
+        model.addAttribute("todayColors", todayColors);
+        return "diary/selectColor";  // 
+    }
+
 
 }

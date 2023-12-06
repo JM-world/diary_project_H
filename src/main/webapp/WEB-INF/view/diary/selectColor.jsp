@@ -9,17 +9,13 @@
 <body>
    <h2>사용 가능한 색상</h2>
 
-   <% out.println(todayColors); %>
-
-   <c:forEach var="color" items="${todayColors}" varStatus="status">
-      <tr>
-         <td>${color.maincolor_name}</td>
-         <td>${color.maincolor_code1}</td>
-         <td>${color.color_code2}</td>
-      </tr>
-   </c:forEach>
-</body>
-
+	<c:forEach var="color" items="${todayColors}" varStatus="status">
+    <tr>
+        <td>${color.maincolor_name}</td>
+        <td>${color.maincolor_code1}</td>
+        <td>${color.color_code2}</td>
+    </tr>
+</c:forEach>
 	
 	
 
