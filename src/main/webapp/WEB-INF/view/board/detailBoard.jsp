@@ -114,9 +114,12 @@
             <fmt:formatDate value="${board.modTime}" pattern="yyyy-MM-dd" />
         </div>
         <div class="form-group-buttons">
-            <button type="button" class="update_btn btn btn-warning">수정</button>
-            <button type="button" class="delete_btn btn btn-danger">삭제</button>
-            <button type="button" class="list_btn btn btn-primary">목록</button>    
+         <a href="${pageContext.request.contextPath}/board/update/${board.bid}" class="update_btn btn btn-warning">수정</a>
+			<a href="${pageContext.request.contextPath}/board/delete/${board.bid}" class="delete_btn btn btn-danger">삭제</a>
+			<a href="${pageContext.request.contextPath}/board/list/1" class="list_btn btn btn-primary">목록</a>
+			         
+            
+
         </div>
     </div>
 </body>
