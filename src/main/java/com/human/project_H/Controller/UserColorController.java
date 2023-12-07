@@ -54,7 +54,7 @@ public class UserColorController {
 	
 	@GetMapping("/diaryWrite")		// routing 정보, localhost:8090/project_H/diary/diaryWrite
 	public String diaryWrite() {
-		return "diaryWrite";			// webapp/WEB-INF/view/diaryWrite.jsp 를 렌더링해서 보여줄 것
+		return "diary/diaryWrite";			// webapp/WEB-INF/view/diaryWrite.jsp 를 렌더링해서 보여줄 것
 	}
 	
 	// 일기 쓰기 화면 POST
