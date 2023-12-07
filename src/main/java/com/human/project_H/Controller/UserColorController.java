@@ -1,6 +1,7 @@
 package com.human.project_H.Controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.human.project_H.entity.TodayColor;
 import com.human.project_H.entity.UserColor;
+import com.human.project_H.service.TodayColorService;
 import com.human.project_H.service.UserColorService;
 
 
@@ -18,6 +21,16 @@ import com.human.project_H.service.UserColorService;
 @Controller
 @RequestMapping("/diary")
 public class UserColorController {
+	
+	@Autowired
+	private TodayColorService todayColorService;
+	
+	@GetMapping("/color")
+	public String getAllColors(Model model) {
+        List<TodayColor> todayColors = todayColorService.getAllColors();
+        model.addAttribute("todayColors", todayColors);
+        return "diary/selectColor"; 
+	}
 	
 	// custId와 cid를 고정값으로 둔 상태.
 	// 연결이 완료되면 지울 것!!!

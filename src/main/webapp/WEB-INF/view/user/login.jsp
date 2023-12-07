@@ -18,14 +18,14 @@
         <div class="row">
             <div class="image-container" style="position: relative;">
                 <img src="/project_H/img/pa.jpg" alt="HHH" class="background-image">
-                <img src="/project_H/img/book1.png" alt="book1" style="position: absolute; top: 100px; left: 0px; width: 1300px; height: 800px; z-index: 1;">
+                <img src="/project_H/img/book2.png" alt="book1" style="position: absolute; top: 100px; left: 0px; width: 1300px; height: 800px; z-index: 1;">
                 <div class="login-container" style="position: absolute; top: 450px; left: 870px; z-index: 2; background: none;">
                     <div class="login-wrapper">
                         <div class="container">
                             <h2>Login <button type="button" class="btn btn-outline-black" onclick='location.href="/project_H/user/register"'>회원가입</button></h2>
                             <form method="post" action="/project_H/user/login" id="login-form">
-                                <input type="text" name="custId" placeholder="Email">
-                                <input type="password" name="pwd" placeholder="Password">
+                                <input type="text" name="custId" placeholder="아이디">
+                                <input type="password" name="pwd" placeholder="비밀번호">
                                 <label for="remember-check">
                                     <input type="checkbox" id="remember-check">아이디 저장하기
                                 </label>
