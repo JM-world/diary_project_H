@@ -90,7 +90,7 @@ public class BoardController {
     	    // 게시글 정보를 가져와서 JSP에 전달
     	    Board board = boardService.getBoard(bid);
     	    model.addAttribute("board", board);
-        return "board/detailBoard";
+    	    return "board/detailBoard";
     }
     
     @GetMapping("/delete/{bid}")

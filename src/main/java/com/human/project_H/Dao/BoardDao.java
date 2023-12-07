@@ -25,8 +25,12 @@ public interface BoardDao {
             "WHERE b.rnum > #{offset}")
     List<Board> getBoardList(int offset, int limit);
 
-    @Select("SELECT * FROM board WHERE bid = #{bid}")
+    @Select("SELECT b.*, u.nickname " +
+            "FROM board b " +
+            "JOIN users u ON b.custId = u.custId " +
+            "WHERE b.bid = #{bid}")
     Board getBoard(int bid);
+
 
     
     @Insert("INSERT INTO board" +

@@ -6,15 +6,15 @@
     <title>FullCalendar in JSP</title>
 
     <!-- Bootstrap CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
     <!-- FullCalendar CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.css" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.js"></script>
 
     <style>
@@ -25,7 +25,7 @@
         }
 
         #background {
-            background: url('img/CCC.jpg') center center / cover no-repeat fixed;
+            background: url('/project_H/img/pa.jpg') center center/cover no-repeat fixed;
             height: 100vh;
             position: fixed;
             width: 100%;
@@ -75,6 +75,16 @@
             font-size: 36px;
             margin-left: 50px;
         }
+
+        /* New styles for right-aligned navbar items */
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        /* Updated styles for the "로그인" and "로그아웃" buttons */
+        .nav-item {
+            margin-left: 15px;
+        }
     </style>
 
     <script>
@@ -84,11 +94,11 @@
         }
 
         // 변경된 스크립트: 사이드바 토글
-        $(document).ready(function() {
+        $(document).ready(function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                dateClick: function(info) {
+                dateClick: function (info) {
                     console.log('Clicked on: ' + info.dateStr);
                     openModal(info.dateStr);
                 }
@@ -110,21 +120,20 @@
         });
 
         // 변경된 부분: 일기 쓰기 모달 열기
-  	function openModalForWritingDiary() {
-    $('#myModal2').modal('show');
-    $('#exampleModalLabel2').text("일기 쓰기");
-    $('#modalTitle2').text('색깔을 골라보세요!');
-    $('#modalContent6').html('<a href="${pageContext.request.contextPath}/selectColors" onclick="openDiaryPage()">일기 쓰기</a>');
-    
-    // 다른 모달 내용 초기화
-    $('#modalTitle').empty();
-    $('#modalContent').empty();
-    $('#modalContent2').empty();
-    $('#modalContent3').empty();
-    $('#modalContent4').empty();
-    $('#modalContent5').empty();
-}
+        function openModalForWritingDiary() {
+            $('#myModal2').modal('show');
+            $('#exampleModalLabel2').text("일기 쓰기");
+            $('#modalTitle2').text('색깔을 골라보세요!');
+            $('#modalContent6').html('<a href="${pageContext.request.contextPath}/selectColors" onclick="openDiaryPage()">일기 쓰기</a>');
 
+            // 다른 모달 내용 초기화
+            $('#modalTitle').empty();
+            $('#modalContent').empty();
+            $('#modalContent2').empty();
+            $('#modalContent3').empty();
+            $('#modalContent4').empty();
+            $('#modalContent5').empty();
+        }
 
         function openModal(date) {
             $('#myModal').modal('show');
@@ -206,5 +215,22 @@
             </div>
         </div>
     </div>
+
+    <!-- 변경된 네비게이션 바 (Navbar) -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav">
+            <c:if test="${not empty sessUname}">
+                <span class="navbar-text me-3">${sessUname}님 환영합니다.</span>
+            </c:if>
+            <li class="nav-item ms-3">
+                <c:if test="${not empty sessUid}">
+                    <a class="nav-link" href="/project_H/user/logout"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+                </c:if>
+                <c:if test="${empty sessUid}">
+                    <a class="nav-link" href="/project_H/user/login"><i class="fas fa-sign-in-alt"></i> 로그인</a>
+                </c:if>
+            </li>
+        </ul>
+    </nav>
 </body>
 </html>

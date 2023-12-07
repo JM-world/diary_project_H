@@ -28,7 +28,7 @@ public interface BoardService {
     
     void increaseviewCount(int bid);
     
-    
+
     
 }
 

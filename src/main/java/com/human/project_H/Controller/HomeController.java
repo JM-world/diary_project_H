@@ -30,17 +30,17 @@ public class HomeController {
 	
 	
 
-	@GetMapping("/diary")	// routing 정보,  localhost:8090/project_H/calendar
+	@GetMapping("/diary")	
 	public String diary(Model model) {
 		model.addAttribute("menu", "home");
-		return "diary/diary";				// webapp/WEB-INF/view/calendar.jsp 를 렌더링해서 보여줌
+		return "diary/diary";				
 	}
 	
 
-	@GetMapping("/diary/write")	// routing 정보,  localhost:8090/project_H/calendar
+	@GetMapping("/diary/write") 
 	public String diarylist(Model model) {
 		model.addAttribute("menu", "home");
-		return "diary/diaryWrite";				// webapp/WEB-INF/view/calendar.jsp 를 렌더링해서 보여줌
+		return "diary/diaryWrite";				
 	}
 	
 

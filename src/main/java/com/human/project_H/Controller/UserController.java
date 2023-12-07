@@ -38,7 +38,7 @@ public class UserController {
 			
 			// 환영 메세지
 			model.addAttribute("msg", user.getUname() + "님 환영합니다.");
-			model.addAttribute("url", "/project_H/home");
+			model.addAttribute("url", "/project_H/calendar");
 		} else if (result == userService.WRONG_PASSWORD) {
 			model.addAttribute("msg", "패스워드 입력이 잘못되었습니다.");
 			model.addAttribute("url", "/project_H/user/login");

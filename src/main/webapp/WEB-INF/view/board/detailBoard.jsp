@@ -103,7 +103,8 @@
             </div>
         </div>
         <div class="form-group-author">
-            <label for="writer">작성자: ${board.nickname} </label>
+           <label for="writer">작성자: <c:out value="${board.nickname}" /></label>
+ 
         </div>
       
             <label for="content">내용</label>
@@ -118,8 +119,6 @@
 			<a href="${pageContext.request.contextPath}/board/delete/${board.bid}" class="delete_btn btn btn-danger">삭제</a>
 			<a href="${pageContext.request.contextPath}/board/list/1" class="list_btn btn btn-primary">목록</a>
 			         
-            
-
         </div>
     </div>
 </body>
