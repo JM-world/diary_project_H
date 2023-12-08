@@ -16,7 +16,18 @@ public class TodayColor {
 	 
 	 public TodayColor() {}
 	 
-	 public TodayColor(String mainColor_name,String mainColor_code1,String color_code2) {
+	 
+	 public TodayColor(String color_code2, String title, String subTitle, String explan, String question) {
+	
+		this.color_code2 = color_code2;
+		this.title = title;
+		this.subTitle = subTitle;
+		this.explan = explan;
+		this.question = question;
+	}
+
+
+	public TodayColor(String mainColor_name,String mainColor_code1,String color_code2) {
      this.mainColor_name = mainColor_name;
      this.mainColor_code1 = mainColor_code1;
      this.color_code2 = color_code2;

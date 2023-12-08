@@ -12,8 +12,13 @@ public interface TodayColorDao {
 	@Select("SELECT * FROM todaycolor")
     List<TodayColor> getAllColors();
 	
-	@Select("SELECT * FROM todaycolor WHERE cid = #{cid}")
-    TodayColor getTodayColorId(int cid);
+	
+	
+	@Select("select * from (select * from todaycolor where maincolor_code1 = #{color} order by dbms_random.value ) where rownum <=1")
+	TodayColor choiceTodayColor(String color);
+	
+	@Select("select * from todayColor where cid = #{cid}")
+	TodayColor searchTodayColor(int cid);
 
 
 }

@@ -8,204 +8,71 @@
         body {
             background-image: url('/project_H/img/pa.jpg');
             background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .color-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
         }
 
         .color-button {
-            position: relative;
+            display: inline-block;
             width: 50px;
             height: 50px;
             margin: 5px;
             cursor: pointer;
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            outline: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .color-checkbox {
-            opacity: 1;
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            left: 150%;
-            transform: translate(-50%, -50%);
-        }
-
-        .checkmark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 12px;
-            display: none;
-        }
-
-        .color-label {
-            text-align: center;
-        }
-
-        h2 {
-            margin-top: 160px;
-            position: absolute;
-            top: 0;
-        }
-
-        .submit-button,
-        .btn-3d {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .submit-button {
-            background-color: #c88f80;
-            color: #fff;
-            border: none;
-        }
-
-        .btn-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .btn-3d {
-            background-color: cyan;
-            color: #fff;
-            border: none;
-            display: inline-block;
-        }
-
-        .btn-3d:hover {
-            background-color: #0a7f8e;
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
 
-<h2>기분에 따라 색깔을 선택하세요</h2>
+    <h2>기분에 따른 색깔을 골라 보세요 !</h2>
 
-<form action="processColor.jsp" method="post">
+    <form action="/project_H/diary/color" method="post">
+        <label for="color">색깔 선택하기:</label>
 
-    <div class="color-container">
-        <!-- 빨간색 -->
-        <div class="color-button" style="background-color: #c88f80;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="빨간색">
-            <div class="checkmark">&#10003;</div>
+        <div>
+            <div class="color-button" style="background-color: #c88f80;" onclick="selectColor('r')"></div>
+            <div class="color-button" style="background-color: #d3a570;" onclick="selectColor('o')"></div>
+            <div class="color-button" style="background-color: #dedab9;" onclick="selectColor('y')"></div>
+            <div class="color-button" style="background-color: #c2d18c;" onclick="selectColor('g')"></div>
+            <div class="color-button" style="background-color: #c5cfcc;" onclick="selectColor('bl')"></div>
+            <div class="color-button" style="background-color: #bbb8cc;" onclick="selectColor('pu')"></div>
+            <div class="color-button" style="background-color: #d0adb4;" onclick="selectColor('pi')"></div>
+            <div class="color-button" style="background-color: #d2c49b;" onclick="selectColor('br')"></div>
+            <div class="color-button" style="background-color: #b1b6b2;" onclick="selectColor('a')"></div>
         </div>
-        <div class="color-label">빨간색</div>
 
-        <!-- 주황색 -->
-        <div class="color-button" style="background-color: #d3a570;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="주황색">
-            <div class="checkmark">&#10003;</div>
-        </div>
-        <div class="color-label">주황색</div>
+        <br><br>
 
-        <!-- 노란색 -->
-        <div class="color-button" style="background-color: #dedab9;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="노란색">
-            <div class="checkmark">&#10003;</div>
-        </div>
-        <div class="color-label">노란색</div>
+        <input type="hidden" name="color" id="selectedColor" value="">
 
-        <!-- 초록색 -->
-        <div class="color-button" style="background-color: #c2d18c;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="초록색">
-            <div class="checkmark">&#10003;</div>
-        </div>
-        <div class="color-label">초록색</div>
+        <button type="submit">제출하기</button>
+    </form>
 
-        <!-- 파란색 -->
-        <div class="color-button" style="background-color: #c5cfcc;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="파란색">
-            <div class="checkmark">&#10003;</div>
-        </div>
-        <div class="color-label">파란색</div>
-
-        <!-- 보라색 -->
-        <div class="color-button" style="background-color: #bbb8cc;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="보라색">
-            <div class="checkmark">&#10003;</div>
-        </div>
-        <div class="color-label">보라색</div>
-
-        <!-- 분홍색 -->
-        <div class="color-button" style="background-color: #d0adb4;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="분홍색">
-            <div class="checkmark">&#10003;</div>
-        </div>
-        <div class="color-label">분홍색</div>
-
-        <!-- 갈색 -->
-        <div class="color-button" style="background-color: #d2c49b;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="갈색">
-            <div class="checkmark">&#10003;</div>
-        </div>
-        <div class="color-label">갈색</div>
-
-        <!-- 무채색 -->
-        <div class="color-button" style="background-color: #b1b6b2;">
-            <input type="checkbox" class="color-checkbox" name="selectedColors" value="무채색">
-            <div class="checkmark">&#10003;</div>
-        </div>
-        <div class="color-label">무채색</div>
-	</div>
-  
-
-    <br><br>
-
-    <input type="hidden" name="color" id="selectedColor" value="">
-    <div class="btn-container">
-        <a href="#" class="btn-3d cyan">일기 쓰러 가기</a>
-    </div>
-</form>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const colorButtons = document.querySelectorAll('.color-button');
-
-        colorButtons.forEach(function (button) {
-            const checkbox = button.querySelector('.color-checkbox');
-            const checkmark = button.querySelector('.checkmark');
-
-            button.addEventListener('click', function () {
-                checkbox.checked = !checkbox.checked;
-                checkmark.style.display = checkbox.checked ? 'flex' : 'none';
-                updateSelectedColor();
-            });
-        });
-    });
-
-
-</script>
+    <script>
+        function selectColor(color) {
+        	if (color == "r")
+            	document.getElementById("selectedColor").value = "#c88f80";
+        	else if (color == "o")
+            	document.getElementById("selectedColor").value = "#d3a570";
+        	else if (color == "y")
+            	document.getElementById("selectedColor").value = "#dedab9";
+        	else if (color == "g")
+            	document.getElementById("selectedColor").value = "#c2d18c";
+        	else if (color == "bl")
+            	document.getElementById("selectedColor").value = "#c5cfcc";
+        	else if (color == "pu")
+            	document.getElementById("selectedColor").value = "#bbb8cc";
+        	else if (color == "pi")
+            	document.getElementById("selectedColor").value = "#d0adb4";
+        	else if (color == "br")
+            	document.getElementById("selectedColor").value = "#d2c49b";
+        	else if (color == "a")
+            	document.getElementById("selectedColor").value = "#b1b6b2";
+            	
+        }
+    </script>
 
 </body>
 </html>

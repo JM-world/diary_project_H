@@ -10,7 +10,11 @@ public interface TodayColorService {
 	
 	List<TodayColor> getAllColors();
 	
-	
-	TodayColor getTodayColorId(int cid);
+
+
+	TodayColor choiceTodayColor(String color);
+
+
+	TodayColor searchTodayColor(int cid);
 	
 }

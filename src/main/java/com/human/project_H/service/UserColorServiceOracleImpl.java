@@ -64,7 +64,7 @@ public class UserColorServiceOracleImpl implements UserColorService {
 	}
 
 	@Override
-	public void insertUserColorSave(String custId, int cid, String buffer) {
+	public void insertUserColorSave(String custId, Long cid, String buffer) {
 		userColorDao.insertUserColorSave(custId, cid, buffer);
 		
 	}

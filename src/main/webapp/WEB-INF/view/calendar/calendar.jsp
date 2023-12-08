@@ -118,13 +118,18 @@
                 $('#sidebar').width(0);
             });
         });
-
+        
+        // <종문 추가> 일기 쓰기 중복 확인
+		function checkDuplication() {
+        	
+        }
+     
         // 변경된 부분: 일기 쓰기 모달 열기
         function openModalForWritingDiary() {
             $('#myModal2').modal('show');
             $('#exampleModalLabel2').text("일기 쓰기");
             $('#modalTitle2').text('색깔을 골라보세요!');
-            $('#modalContent6').html('<a href="${pageContext.request.contextPath}/selectColors" onclick="openDiaryPage()">일기 쓰기</a>');
+            $('#modalContent6').html('<a href="${pageContext.request.contextPath}/diary/color" onclick="openDiaryPage()">일기 쓰기</a>');
 
             // 다른 모달 내용 초기화
             $('#modalTitle').empty();

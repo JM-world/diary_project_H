@@ -3,6 +3,8 @@ package com.human.project_H.Controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,20 +27,84 @@ public class UserColorController {
 	@Autowired
 	private TodayColorService todayColorService;
 	
+	// 오늘 날짜 변수
+	LocalDate today = LocalDate.now();
+	
 	@GetMapping("/color")
 	public String getAllColors(Model model) {
-        List<TodayColor> todayColors = todayColorService.getAllColors();
-        model.addAttribute("todayColors", todayColors);
-        return "diary/selectColor"; 
+		List<TodayColor> todayColors = todayColorService.getAllColors();
+		model.addAttribute("todayColors", todayColors);
+		return "diary/selectColor"; 
 	}
 	
-	// custId와 cid를 고정값으로 둔 상태.
-	// 연결이 완료되면 지울 것!!!
-	private String custId = "maria";
-	private int cid = 33;
-	
-	
-	LocalDate today = LocalDate.now();
+	@PostMapping("/color")
+	public String getAllColors(String color, HttpSession session, Model model) {
+		String sessCustId = (String) session.getAttribute("sessCustId");
+		UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
+		
+		String mainColor;
+		String subColor;
+		String title;
+		String subTitle;
+		String explan;
+		String question;
+		String oneWord;
+		
+		System.out.println(color+ " " + sessCustId + " " + userColor);
+		if (userColor == null) {
+			TodayColor todayColor = todayColorService.choiceTodayColor(color);
+			userColorService.insertUserColorSave(sessCustId, todayColor.getCid() , " ");
+			
+			mainColor = todayColor.getMainColor_code1();
+			subColor = todayColor.getColor_code2();
+			title = todayColor.getTitle();
+			subTitle = todayColor.getSubTitle();
+			explan = todayColor.getExplan();
+			question = todayColor.getQuestion();
+			oneWord = todayColor.getOneWord();
+			System.out.println(mainColor + subColor + title);
+			
+			model.addAttribute("mainColor", mainColor);
+			model.addAttribute("subColor", subColor);
+			model.addAttribute("title", title);
+			model.addAttribute("subTitle", subTitle);
+			model.addAttribute("explan", explan);
+			model.addAttribute("question", question);
+			model.addAttribute("oneWord", oneWord);
+			model.addAttribute("Content", " ");
+			model.addAttribute("todayColor", todayColor);
+			
+			model.addAttribute("url", "/project_H/diary/diaryWrite");
+			
+		} else if (userColor.getCommitFlag() == false ) {
+			TodayColor todayColor = todayColorService.searchTodayColor(userColor.getCid());
+			
+			mainColor = todayColor.getMainColor_code1();
+			subColor = todayColor.getColor_code2();
+			title = todayColor.getTitle();
+			subTitle = todayColor.getSubTitle();
+			explan = todayColor.getExplan();
+			question = todayColor.getQuestion();
+			oneWord = todayColor.getOneWord();
+			
+			System.out.println(todayColor+ title);
+			
+			model.addAttribute("mainColor", mainColor);
+			model.addAttribute("subColor", subColor);
+			model.addAttribute("title", title);
+			model.addAttribute("subTitle", subTitle);
+			model.addAttribute("explan", explan);
+			model.addAttribute("question", question);
+			model.addAttribute("oneWord", oneWord);
+			model.addAttribute("Content", userColor.getContent());
+			model.addAttribute("msg", "저장된 일기를 불러옵니다.");
+			model.addAttribute("url", "/project_H/diary/diaryWrite");
+		} else {
+			model.addAttribute("msg", "오늘은 일기를 더 적을 수 없어요.");
+			model.addAttribute("url", "/project_H/calendar");
+		}
+		return "common/alertMsg";
+	}
 	
 	// 임시저장 기능을 위해 선언된 변수
 	private String buffer;
@@ -48,7 +114,7 @@ public class UserColorController {
 	// 일기 선택 화면
 	@GetMapping("/home")
 	public String diarySelect() {
-		return "ho";
+		return "diary/selectColor";
 	}
 	
 	
@@ -59,13 +125,15 @@ public class UserColorController {
 	
 	// 일기 쓰기 화면 POST
 	@PostMapping("/diaryWrite")
-	public String boardWriteProc(String content, boolean commit, boolean share, Model model) {
+	public String boardWriteProc(String content, boolean commit, boolean share, HttpSession session, Model model) {
+
 		
 		// 공백제외 30자가 넘어갔을 때 제출 가능
 		if (content.replaceAll("\\s", "").length() >= 30) {
 				commit = true;
 				content = content.trim();
-				UserColor userColor = userColorService.searchUserColor(custId, today.toString());
+				String sessCustId = (String) session.getAttribute("sessCustId");
+				UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
 				userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
 				model.addAttribute("msg", "작성 완료되었어요.");
 				model.addAttribute("url", "/project_H/home");
@@ -73,7 +141,7 @@ public class UserColorController {
 		}
 		else {
 			model.addAttribute("msg", "일기 내용이 충분하지 않아요.");
-			model.addAttribute("url", "/sample/diary/diaryWrite");
+			model.addAttribute("url", "/project_H/diary/diaryWrite");
 		}
 			
 			
@@ -84,24 +152,20 @@ public class UserColorController {
 	// 10글자 마다 해당 UCID content 컬럼에 update됨
 	@ResponseBody
 	@GetMapping("/write_in")
-	public String writeIn(String contentIn) {
+	public String writeIn(String contentIn, HttpSession session) {
 		buffer = contentIn;
 		System.out.println(buffer);
-		 
-		UserColor userColor = userColorService.searchUserColor(custId, today.toString());
+		String sessCustId = (String) session.getAttribute("sessCustId");
+		UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
 		try {
-		if (userColor == null) {
-			userColorService.insertUserColorSave(custId, cid, buffer);
-		} else {
+			 
 			if (buffer.isEmpty()) {
 				userColorService.updateUserColorSave(userColor.getUcid(), " ", today.toString());
 			} else {
 			userColorService.updateUserColorSave(userColor.getUcid(), buffer, today.toString());
 			}
-		}
 		} catch (Exception e) {
-			if (userColor == null) 
-				userColorService.insertUserColorSave(custId, cid, " ");
+			
 		}
 		return "";
 	}

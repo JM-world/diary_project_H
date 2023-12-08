@@ -18,11 +18,15 @@ public class TodayColorServiceImpl implements TodayColorService {
         return todayColorDao.getAllColors();
     }
 
-    // 수정된 메소드명: getTodayColorById
-    @Override
-    public TodayColor getTodayColorId(int cid) {
-        return todayColorDao.getTodayColorId(cid);
-    }
+	@Override
+	public TodayColor choiceTodayColor(String color) {
+		return todayColorDao.choiceTodayColor(color);
+	}
+
+	@Override
+	public TodayColor searchTodayColor(int cid) {
+		return todayColorDao.searchTodayColor(cid);
+	}
     
 
 }

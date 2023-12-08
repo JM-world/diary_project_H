@@ -30,7 +30,7 @@ public class UserController {
 	public String homeProc(String custId, String pwd, HttpSession session, Model model) {
 		int result = userService.login(custId, pwd);
 		if (result == userService.CORRECT_LOGIN) {
-			session.setAttribute("sesscustId", custId);
+			session.setAttribute("sessCustId", custId);
 			User user = userService.getUser(custId);
 			session.setAttribute("sessUname", user.getUname());
 			session.setAttribute("sessEmail", user.getEmail());
