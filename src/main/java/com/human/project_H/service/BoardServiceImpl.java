@@ -55,6 +55,14 @@ public class BoardServiceImpl implements BoardService {
 		boardDao.increaseviewCount(bid);
 	}
 	
-	
+    @Override
+    public void increaseHitCount(int bid) {
+    	boardDao.increaseHitCount(bid);
+    }
+
+    @Override
+    public int getHitCount(int bid) {
+        return boardDao.getHitCount(bid);
+    }
 	
 }

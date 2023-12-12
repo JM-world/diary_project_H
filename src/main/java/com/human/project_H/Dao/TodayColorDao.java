@@ -20,5 +20,6 @@ public interface TodayColorDao {
 	@Select("select * from todayColor where cid = #{cid}")
 	TodayColor searchTodayColor(int cid);
 
-
+	@Select("select * from todayColor where color_code2 = #{color_code2}")
+	TodayColor getAllColorCode2(String color_code2);
 }

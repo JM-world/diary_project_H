@@ -28,7 +28,9 @@ public interface BoardService {
     
     void increaseviewCount(int bid);
     
-
+    void increaseHitCount(int bid);
+    
+    int getHitCount(int bid);
     
 }
 

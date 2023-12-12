@@ -17,4 +17,6 @@ public interface TodayColorService {
 
 	TodayColor searchTodayColor(int cid);
 	
+	TodayColor getAllColorCode2(String color_code2);
+	
 }

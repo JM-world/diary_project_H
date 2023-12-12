@@ -23,7 +23,7 @@ public interface UserColorService {
 	
 	void changeShareFlag(int ucid, int value);
 
-	void insertUserColorSave(String custId, Long long1, String buffer);
+	void insertUserColorSave(String custId, int i, String buffer);
 
 	void updateUserColorSave(int ucid, String buffer, String modTime);
 

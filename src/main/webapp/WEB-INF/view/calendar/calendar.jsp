@@ -212,7 +212,6 @@
                 <div class="modal-body">
                     <p id="modalTitle2"></p>
                     <p id="modalContent6"></p>
-                    <a href="${pageContext.request.contextPath}/selectColors" id="modalContent6" onclick="openDiaryPage()">일기 쓰기</a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -230,9 +229,6 @@
             <li class="nav-item ms-3">
                 <c:if test="${not empty sessUid}">
                     <a class="nav-link" href="/project_H/user/logout"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
-                </c:if>
-                <c:if test="${empty sessUid}">
-                    <a class="nav-link" href="/project_H/user/login"><i class="fas fa-sign-in-alt"></i> 로그인</a>
                 </c:if>
             </li>
         </ul>

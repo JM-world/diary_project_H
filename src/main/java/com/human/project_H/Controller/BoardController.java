@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.human.project_H.entity.Board;
 import com.human.project_H.service.BoardService;
@@ -105,5 +106,16 @@ public class BoardController {
 
         // 다른 로직들...
         return "board/view";
+    }
+    
+    
+    @GetMapping("/like/{bid}")
+    @ResponseBody
+    public int likeBoard(@PathVariable int bid) {
+        // 게시글의 공감 수 증가 로직 수행
+        boardService.increaseHitCount(bid);
+
+        // 증가된 좋아요 수를 반환
+        return boardService.getHitCount(bid);
     }
 }

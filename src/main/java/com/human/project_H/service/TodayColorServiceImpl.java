@@ -17,6 +17,13 @@ public class TodayColorServiceImpl implements TodayColorService {
     public List<TodayColor> getAllColors() {
         return todayColorDao.getAllColors();
     }
+    
+    @Override
+    public TodayColor getAllColorCode2(String color_Code2) {
+        // colorCode2에 해당하는 TodayColor를 가져오는 로직을 추가
+        return todayColorDao.getAllColorCode2(color_Code2);
+    }
+    
 
 	@Override
 	public TodayColor choiceTodayColor(String color) {

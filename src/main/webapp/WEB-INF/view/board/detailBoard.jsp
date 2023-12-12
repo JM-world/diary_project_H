@@ -118,8 +118,29 @@
          <a href="${pageContext.request.contextPath}/board/update/${board.bid}" class="update_btn btn btn-warning">수정</a>
 			<a href="${pageContext.request.contextPath}/board/delete/${board.bid}" class="delete_btn btn btn-danger">삭제</a>
 			<a href="${pageContext.request.contextPath}/board/list/1" class="list_btn btn btn-primary">목록</a>
-			         
+			<button id="likeBtn" class="btn btn-success">공감</button>
+			<!-- 공감 수 표시 -->
+			<div id="hitCount">좋아요: ${board.hitCount}</div>         
         </div>
     </div>
+		    <script>
+		$(document).ready(function() {
+		    // 공감 버튼 클릭 시
+		    $("#likeBtn").click(function() {
+		        var boardId = "${board.bid}"; // 게시글 ID
+		        $.ajax({
+		            type: "GET",
+		            url: "${pageContext.request.contextPath}/board/like/" + boardId,
+		            success: function(data) {
+		                // 성공적으로 공감이 증가하면 화면 갱신
+		                $("#hitCount").text("좋아요: " + data);
+		            },
+		            error: function(error) {
+		                console.log("Error: " + error);
+		            }
+		        });
+		    });
+		});
+</script>
 </body>
 </html>

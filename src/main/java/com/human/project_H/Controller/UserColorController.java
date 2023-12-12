@@ -42,68 +42,36 @@ public class UserColorController {
 		String sessCustId = (String) session.getAttribute("sessCustId");
 		UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
 		
-		String mainColor;
-		String subColor;
-		String title;
-		String subTitle;
-		String explan;
-		String question;
-		String oneWord;
-		
-		System.out.println(color+ " " + sessCustId + " " + userColor);
 		if (userColor == null) {
 			TodayColor todayColor = todayColorService.choiceTodayColor(color);
 			userColorService.insertUserColorSave(sessCustId, todayColor.getCid() , " ");
 			
-			mainColor = todayColor.getMainColor_code1();
-			subColor = todayColor.getColor_code2();
-			title = todayColor.getTitle();
-			subTitle = todayColor.getSubTitle();
-			explan = todayColor.getExplan();
-			question = todayColor.getQuestion();
-			oneWord = todayColor.getOneWord();
-			System.out.println(mainColor + subColor + title);
+			session.setAttribute("todayColor", new TodayColor(todayColor.getMainColor_code1(), 
+					todayColor.getColor_code2(), todayColor.getTitle(), todayColor.getSubTitle(), todayColor.getExplan(),
+					todayColor.getQuestion(), todayColor.getOneWord()));
+			session.setAttribute("content", " ");
 			
-			model.addAttribute("mainColor", mainColor);
-			model.addAttribute("subColor", subColor);
-			model.addAttribute("title", title);
-			model.addAttribute("subTitle", subTitle);
-			model.addAttribute("explan", explan);
-			model.addAttribute("question", question);
-			model.addAttribute("oneWord", oneWord);
-			model.addAttribute("Content", " ");
-			model.addAttribute("todayColor", todayColor);
+			model.addAttribute("msg", "오늘의 색은 " + todayColor.getTitle() + "이에요 :)");
 			
-			model.addAttribute("url", "/project_H/diary/diaryWrite");
+			return "diary/diaryWrite";
 			
 		} else if (userColor.getCommitFlag() == false ) {
 			TodayColor todayColor = todayColorService.searchTodayColor(userColor.getCid());
 			
-			mainColor = todayColor.getMainColor_code1();
-			subColor = todayColor.getColor_code2();
-			title = todayColor.getTitle();
-			subTitle = todayColor.getSubTitle();
-			explan = todayColor.getExplan();
-			question = todayColor.getQuestion();
-			oneWord = todayColor.getOneWord();
+			session.setAttribute("todayColor", new TodayColor(todayColor.getMainColor_code1(), 
+					todayColor.getColor_code2(), todayColor.getTitle(), todayColor.getSubTitle(), todayColor.getExplan(),
+					todayColor.getQuestion(), todayColor.getOneWord()));
 			
-			System.out.println(todayColor+ title);
+			session.setAttribute("content", userColor.getContent());
+			model.addAttribute("msg", "저장된 일기를 불러올게요.");
 			
-			model.addAttribute("mainColor", mainColor);
-			model.addAttribute("subColor", subColor);
-			model.addAttribute("title", title);
-			model.addAttribute("subTitle", subTitle);
-			model.addAttribute("explan", explan);
-			model.addAttribute("question", question);
-			model.addAttribute("oneWord", oneWord);
-			model.addAttribute("Content", userColor.getContent());
-			model.addAttribute("msg", "저장된 일기를 불러옵니다.");
-			model.addAttribute("url", "/project_H/diary/diaryWrite");
+			return "diary/diaryWrite";
+			
 		} else {
 			model.addAttribute("msg", "오늘은 일기를 더 적을 수 없어요.");
 			model.addAttribute("url", "/project_H/calendar");
+			return "common/alertMsg";
 		}
-		return "common/alertMsg";
 	}
 	
 	// 임시저장 기능을 위해 선언된 변수
@@ -114,7 +82,7 @@ public class UserColorController {
 	// 일기 선택 화면
 	@GetMapping("/home")
 	public String diarySelect() {
-		return "diary/selectColor";
+		return "ho";
 	}
 	
 	
@@ -126,7 +94,6 @@ public class UserColorController {
 	// 일기 쓰기 화면 POST
 	@PostMapping("/diaryWrite")
 	public String boardWriteProc(String content, boolean commit, boolean share, HttpSession session, Model model) {
-
 		
 		// 공백제외 30자가 넘어갔을 때 제출 가능
 		if (content.replaceAll("\\s", "").length() >= 30) {
@@ -136,16 +103,21 @@ public class UserColorController {
 				UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
 				userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
 				model.addAttribute("msg", "작성 완료되었어요.");
-				model.addAttribute("url", "/project_H/home");
-			
+				
+				return "calendar/calendar";
 		}
-		else {
-			model.addAttribute("msg", "일기 내용이 충분하지 않아요.");
-			model.addAttribute("url", "/project_H/diary/diaryWrite");
-		}
+		
+//		else {
+//			String sessCustId = (String) session.getAttribute("sessCustId");
+//			UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());		
+//			session.setAttribute("content", userColor.getContent());
+//			model.addAttribute("msg", "일기 내용이 충분하지 않아요.");
+//			
+//			return "redirect:/diary/diaryWrite";
+//		}
 			
-			
-		return "common/alertMsg";
+		return "";
+		
 	}
 	
 	// 임시 저장 기능

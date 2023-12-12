@@ -3,7 +3,7 @@ package com.human.project_H.entity;
 
 
 public class TodayColor {
-	 private Long cid;
+	 private int cid;
 	 private int mood;
 	 private String mainColor_name;
 	 private String mainColor_code1;
@@ -17,23 +17,21 @@ public class TodayColor {
 	 public TodayColor() {}
 	 
 	 
-	 public TodayColor(String color_code2, String title, String subTitle, String explan, String question) {
-	
+	 
+	 public TodayColor(String mainColor_code1, String color_code2, String title, String subTitle,
+			String explan, String question, String oneWord) {
+		this.mainColor_code1 = mainColor_code1;
 		this.color_code2 = color_code2;
 		this.title = title;
 		this.subTitle = subTitle;
 		this.explan = explan;
 		this.question = question;
+		this.oneWord = oneWord;
 	}
 
 
-	public TodayColor(String mainColor_name,String mainColor_code1,String color_code2) {
-     this.mainColor_name = mainColor_name;
-     this.mainColor_code1 = mainColor_code1;
-     this.color_code2 = color_code2;
-     
-	 }
-	 public TodayColor(Long cid, int mood, String mainColor_name, String mainColor_code1, String color_code2,
+
+	public TodayColor(int cid, int mood, String mainColor_name, String mainColor_code1, String color_code2,
 			String title, String subTitle, String explan, String question, String oneWord) {
 		this.cid = cid;
 		this.mood = mood;
@@ -47,11 +45,11 @@ public class TodayColor {
 		this.oneWord = oneWord;
 	}
 
-	public Long getCid() {
+	public int getCid() {
 		return cid;
 	}
 
-	public void setCid(Long cid) {
+	public void setCid(int cid) {
 		this.cid = cid;
 	}
 

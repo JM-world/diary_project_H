@@ -19,7 +19,7 @@ public interface UserColorDaoOracle {
 	public UserColor searchUserColor(String custId, String modTime);
 	
 	@Insert("insert into USERCOLOR values (default, #{custId}, #{cid}, #{buffer}, default, default, default, default, default, default)")
-	public void insertUserColorSave(String custId, Long cid, String buffer);
+	public void insertUserColorSave(String custId, int cid, String buffer);
 
 	@Update("update usercolor set content = #{buffer} where ucid = #{ucid} and to_char(modTime,'YYYY-MM-DD') = #{modTime}")
 	public void updateUserColorSave(int ucid, String buffer, String modTime);

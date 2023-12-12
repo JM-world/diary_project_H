@@ -46,4 +46,10 @@ public interface BoardDao {
     // 조회수 증가
     @Update("UPDATE board SET viewCount = viewCount + 1 WHERE bid = #{bid}")
     void increaseviewCount(int bid);
+    
+    @Update("UPDATE board SET hitCount = hitCount + 1 WHERE bid = #{bid}")
+    int increaseHitCount(int bid);
+    
+    int getHitCount(int bid);
+    
 }
