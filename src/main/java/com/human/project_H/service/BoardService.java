@@ -9,7 +9,7 @@ public interface BoardService {
     public static final int CORRECT_LOGIN = 0;
     public static final int WRONG_PASSWORD = 1;
     public static final int UID_NOT_EXIST = 2;
-    public static final int RECORDS_PER_PAGE = 15; // 한 페이지당 5개 레코드를 보여줌
+    public static final int RECORDS_PER_PAGE = 15; // 한 페이지당 15개 레코드를 보여줌
 
     int getPageCount();
 

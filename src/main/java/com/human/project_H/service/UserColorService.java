@@ -5,6 +5,10 @@ import java.util.List;
 import com.human.project_H.entity.UserColor;
 
 public interface UserColorService {
+    int CORRECT_LOGIN = 0;
+    int  WRONG_PASSWORD = 1;
+    int  UID_NOT_EXIST = 2;
+    int RECORDS_PER_PAGE = 15; // 한 페이지당 5개 레코드를 보여줌
 	
 	UserColor getUserColor(int ucid);
 	
@@ -12,8 +16,9 @@ public interface UserColorService {
 	
 	int getCommitFlag(UserColor userColor);
 	
+	int getPageCount();
 	
-	List<UserColor> getUserColorList();
+	List<UserColor> getUserColorList(int page);
 	
 	void updateUserColor(UserColor userColor);
 	
@@ -30,4 +35,6 @@ public interface UserColorService {
 	void updateUserColorCommit(int ucid, String content, boolean commit, boolean share);
 	
 	 List<UserColor> getSharedUserColors();
+	 
+	 void increaseViewCount(int ucid);
 }

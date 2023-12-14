@@ -1,7 +1,9 @@
 package com.human.project_H.Controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
 
 import javax.servlet.http.HttpSession;
 
@@ -9,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.human.project_H.entity.Board;
 import com.human.project_H.entity.TodayColor;
 import com.human.project_H.entity.UserColor;
 import com.human.project_H.service.TodayColorService;
@@ -25,8 +29,12 @@ import com.human.project_H.service.UserColorService;
 @RequestMapping("/diary")
 public class UserColorController {
 	
+
 	@Autowired
 	private TodayColorService todayColorService;
+	
+
+
 	
 	// 오늘 날짜 변수
 	LocalDate today = LocalDate.now();
@@ -42,6 +50,7 @@ public class UserColorController {
 	public String getAllColors(String color, HttpSession session, Model model) {
 //		String sessCustId = (String) session.getAttribute("sessCustId");
 		String sessCustId = (String) session.getAttribute("sessCustId");
+		System.out.println(sessCustId);
 		UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
 		
 		if (userColor == null) {
@@ -80,6 +89,26 @@ public class UserColorController {
 	private String buffer;
 	
 	@Autowired private UserColorService userColorService;
+	
+	 @GetMapping("/list/{page}")
+	    public String list(@PathVariable int page, HttpSession session, Model model) {
+	        List<UserColor> list = userColorService.getUserColorList(page);
+	        model.addAttribute("userColorList", list);
+	        list.forEach(x -> System.out.println(x));
+
+	        int totalusers = userColorService.getPageCount();
+	        int totalPages = (int) Math.ceil((double) totalusers / userColorService.RECORDS_PER_PAGE);
+	        List<String> pageList = new ArrayList<>();
+	        for (int i = 1; i <= totalPages; i++)
+	            pageList.add(String.valueOf(i));
+	        model.addAttribute("pageList", pageList);
+	        session.setAttribute("currentUserPage", page);
+
+	        return "diary/diaryboard";
+	    }
+	
+	
+	
 	
 	// 일기 선택 화면
 	@GetMapping("/home")
@@ -149,7 +178,6 @@ public class UserColorController {
 	    public String getSharedBoardList(Model model) {
 	        List<UserColor> list = userColorService.getSharedUserColors();
 	        model.addAttribute("sharelist", list);
-	        System.out.println(list);
 	        // 뷰 이름을 반환해야 합니다.
 	        return "diary/diaryboard";
 	   
@@ -157,25 +185,38 @@ public class UserColorController {
 	    }
 	 // 일기 쓰기 화면 POST
 	    @PostMapping("/sharedBoard")
-	    public String boarddiaryshareProc(String content, boolean commit, boolean share, HttpSession session, Model model) {
-	        if (content.replaceAll("\\s", "").length() >= 30) {
+	    public String boarddiaryshareProc(String content, boolean commit, boolean share, HttpSession session, Model model) { 
+	    	if (content.replaceAll("\\s", "").length() >= 30) {
 	            commit = true;
 	            content = content.trim();
 	            String sessCustId = (String) session.getAttribute("sessCustId");
 	            UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
 	            userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
 	            model.addAttribute("msg", "작성 완료되었어요.");
-
 	            if (share) {
 	                // 공유 여부가 true일 때 공유 게시판으로 이동
-	                return "diary/diaryboard";
+	                return  "redirect:/diary/list/1";
 	            } else {
 	                // 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
-	                return "calendar/calendar";
+	                return "redirect:/diary/calendar";
+	                
 	            }
 	        }
 
 	        return "diary/diaryboard";
+	    }
+	    
+	    @GetMapping("/view/{ucid}")
+	    public String viewBoard(@PathVariable int ucid, Model model) {
+	    	userColorService.increaseViewCount(ucid);
+
+	    	    // 게시글 정보를 가져와서 JSP에 전달
+	    		UserColor usercolor = userColorService.getUserColor(ucid);
+	    		
+	    	    model.addAttribute("userColor", usercolor);
+	    	    
+	 
+	    	    return "diary/detaildiary";
 	    }
 
 }

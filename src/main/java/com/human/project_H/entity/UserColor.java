@@ -1,13 +1,14 @@
 package com.human.project_H.entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 
 public class UserColor {
 	private int ucid;
 	private String custId;
 	private int cid;
 	private String content;
-	private LocalDateTime modTime;
+	private Timestamp modTime;
 	private int hitCount;
 	private int viewCount;
 	private int emotion;
@@ -24,7 +25,7 @@ public class UserColor {
 	
 	
 	
-	public UserColor(String custId, LocalDateTime modTime) {
+	public UserColor(String custId, Timestamp modTime) {
 		this.custId = custId;
 		this.modTime = modTime;
 	}
@@ -37,7 +38,7 @@ public class UserColor {
 		this.shareFlag = shareFlag;
 	}
 
-	public UserColor(int ucid, String custId, int cid, String content, LocalDateTime modTime, int hitCount, int viewCount,
+	public UserColor(int ucid, String custId, int cid, String content, Timestamp modTime, int hitCount, int viewCount,
 			int emotion, boolean commitFlag, boolean shareFlag) {
 		super();
 		this.ucid = ucid;
@@ -84,11 +85,11 @@ public class UserColor {
 		this.content = content;
 	}
 
-	public LocalDateTime getModTime() {
+	public Timestamp getModTime() {
 		return modTime;
 	}
 
-	public void setModTime(LocalDateTime modTime) {
+	public void setModTime(Timestamp modTime) {
 		this.modTime = modTime;
 	}
 

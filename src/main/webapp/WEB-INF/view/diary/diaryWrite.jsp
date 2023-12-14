@@ -126,9 +126,10 @@
             </div>
         </div>
         <div class="input-container">
-            <form action="/project_H/diary/diaryWrite" method="post" onsubmit="return wordCheck()">
+            <form action="/project_H/diary/sharedBoard" method="post" onsubmit="return wordCheck()">
                 <textarea class="form-control" rows="40" name="content" id="content" onkeyup="checkContentAndRead()">${content}</textarea>
                 <button type="submit">제출하기</button>
+                
 	            <div class="form-check" style="position: absolute;bottom: 0; right: 0; padding: 10px;">
 	                <input type="checkbox" id="share" name="share" class="form-check-input">
 	                <input type="hidden" name="_share" value="on" />
