@@ -21,8 +21,8 @@ public class UserServiceOracleImpl implements UserService {
 
 	@Override
 	public User getUser(String custId) {
-		User user = userDao.getUser(custId);
-		return user;
+		
+		return userDao.getUser(custId);
 	}
 
 	@Override
@@ -57,6 +57,11 @@ public class UserServiceOracleImpl implements UserService {
 			return CORRECT_LOGIN;
 		else
 			return WRONG_PASSWORD;
+	}
+
+	@Override
+	public List<Integer> getPageList() {
+		return null;
 	}
 
 }

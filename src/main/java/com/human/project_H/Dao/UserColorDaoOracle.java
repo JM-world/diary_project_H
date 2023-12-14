@@ -1,6 +1,8 @@
 package com.human.project_H.Dao;
 
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -26,4 +28,13 @@ public interface UserColorDaoOracle {
 
 	@Update("update USERCOLOR set content = #{content}, modTime = current_timestamp, commitFlag=#{commit}, shareFlag=#{share} where UCID=#{ucid}")
 	public void updateUserColorCommit(int ucid, String content, boolean commit, boolean share);
-}
+	
+
+	    @Select("SELECT uc.*, u.nickname, tc.title " +
+	            "FROM USERCOLOR uc " +
+	            "JOIN USERS u ON uc.custId = u.custId " +
+	            "JOIN TODAYCOLOR tc ON uc.cid = tc.cid " +
+	            "WHERE uc.shareFlag = 1")
+	public List<UserColor> getSharedUserColors();
+	}
+

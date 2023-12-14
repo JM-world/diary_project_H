@@ -129,13 +129,13 @@
             <form action="/project_H/diary/diaryWrite" method="post" onsubmit="return wordCheck()">
                 <textarea class="form-control" rows="40" name="content" id="content" onkeyup="checkContentAndRead()">${content}</textarea>
                 <button type="submit">제출하기</button>
+	            <div class="form-check" style="position: absolute;bottom: 0; right: 0; padding: 10px;">
+	                <input type="checkbox" id="share" name="share" class="form-check-input">
+	                <input type="hidden" name="_share" value="on" />
+	                <label>공유게시판에 포스팅하기</label>
+	                <br>
+	            </div>
             </form>
-            <div class="form-check" style="position: absolute;bottom: 0; right: 0; padding: 10px;">
-                <input type="checkbox" id="share" name="share" class="form-check-input">
-                <input type="hidden" name="_share" value="on" />
-                <label>공유게시판에 포스팅하기</label>
-                <br>
-            </div>
         </div>
     </div>
 </body>

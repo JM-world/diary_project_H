@@ -1,6 +1,5 @@
 package com.human.project_H.Controller;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.human.project_H.entity.Board;
 import com.human.project_H.service.BoardService;
@@ -22,6 +20,7 @@ import com.human.project_H.service.BoardService;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
+    
     @Autowired
     private BoardService boardService;
 
@@ -44,7 +43,6 @@ public class BoardController {
 
     @GetMapping("/update/{bid}")
     public String updateForm(@PathVariable int bid, Model model) {
-        // 게시글 정보를 가져와서 JSP에 전달
         Board board = boardService.getBoard(bid);
         model.addAttribute("board", board);
         return "board/updateBoard";
@@ -52,70 +50,59 @@ public class BoardController {
 
     @PostMapping("/update")
     public String updateBoard(Board board) {
-        // 게시글 업데이트
         boardService.updateBoard(board);
         return "redirect:/board/list/1";
     }
 
     @GetMapping("/write")
     public String WriteForm(Model model) {
-    	model.addAttribute("board", new Board());
+        model.addAttribute("board", new Board());
         return "board/writeBoard";
     }
-    
+
     @PostMapping("/write")
     public String insertBoard(@ModelAttribute Board board, HttpSession session, Model model) {
-        // 기존 코드 유지
-    	System.out.println(board);
-        
-        // "CUSTID" 값을 세션에서 가져와서 설정
-        String custId = (String) session.getAttribute("custId");
-        board.setCustId("admin");
-        System.out.println(board);
-        
-
-        // 기존 코드 유지
-
-        // BoardService를 통해 insertBoard 메서드 호출
+        String custId = (String) session.getAttribute("sessCustId");
+        board.setCustId(custId);
+        System.out.println(custId);
         boardService.insertBoard(board);
-
-        // 게시글 작성 후 목록 페이지로 리다이렉션
-        return "redirect:/board/list/1";
+        int currentPage = (int) session.getAttribute("currentUserPage");
+        return "redirect:/board/list/" + currentPage;
     }
-
 
     @GetMapping("/view/{bid}")
     public String viewBoard(@PathVariable int bid, Model model) {
-    	   boardService.increaseviewCount(bid);
+    	   boardService.increaseViewCount(bid);
 
     	    // 게시글 정보를 가져와서 JSP에 전달
     	    Board board = boardService.getBoard(bid);
     	    model.addAttribute("board", board);
     	    return "board/detailBoard";
     }
+
+    @GetMapping("/like/{bid}")
+    public String likeBoard(@PathVariable int bid, HttpSession session) {
+        String custId = (String) session.getAttribute("sessCustId");
+
+        // 사용자가 현재 게시글에 대해 이미 공감을 눌렀는지 확인
+        boolean hasLiked = boardService.hasUserLiked(custId, bid);
+
+        if (!hasLiked) {
+            // 사용자가 공감을 누르지 않은 경우에만 공감수 증가
+            boardService.increaseHitCount(custId, bid);
+
+            // 사용자가 현재 게시글에 대해 공감을 눌렀음을 기록
+            boardService.addLikeRecord(custId, bid);
+        }
+
+        // 상세 페이지로 이동
+        return "redirect:/board/view/" + bid;
+    }
+
     
     @GetMapping("/delete/{bid}")
     public String deleteBoard(@PathVariable int bid) {
-        // 게시글 삭제
         boardService.deleteBoard(bid);
         return "redirect:/board/list/1";
-    }
-    public String view(@PathVariable int bid, Model model) {
-        // 조회수 증가
-        boardService.increaseviewCount(bid);
-
-        // 다른 로직들...
-        return "board/view";
-    }
-    
-    
-    @GetMapping("/like/{bid}")
-    @ResponseBody
-    public int likeBoard(@PathVariable int bid) {
-        // 게시글의 공감 수 증가 로직 수행
-        boardService.increaseHitCount(bid);
-
-        // 증가된 좋아요 수를 반환
-        return boardService.getHitCount(bid);
     }
 }

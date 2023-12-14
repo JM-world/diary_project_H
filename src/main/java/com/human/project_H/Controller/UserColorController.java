@@ -20,6 +20,7 @@ import com.human.project_H.service.UserColorService;
 
 
 
+
 @Controller
 @RequestMapping("/diary")
 public class UserColorController {
@@ -39,6 +40,7 @@ public class UserColorController {
 	
 	@PostMapping("/color")
 	public String getAllColors(String color, HttpSession session, Model model) {
+//		String sessCustId = (String) session.getAttribute("sessCustId");
 		String sessCustId = (String) session.getAttribute("sessCustId");
 		UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
 		
@@ -91,7 +93,6 @@ public class UserColorController {
 		return "diary/diaryWrite";			// webapp/WEB-INF/view/diaryWrite.jsp 를 렌더링해서 보여줄 것
 	}
 	
-	// 일기 쓰기 화면 POST
 	@PostMapping("/diaryWrite")
 	public String boardWriteProc(String content, boolean commit, boolean share, HttpSession session, Model model) {
 		
@@ -142,4 +143,50 @@ public class UserColorController {
 		return "";
 	}
 	
+	
+
+	    @GetMapping("/sharedBoard")
+	    public String getSharedBoardList(Model model) {
+	        List<UserColor> list = userColorService.getSharedUserColors();
+	        model.addAttribute("sharelist", list);
+	        System.out.println(list);
+	        // 뷰 이름을 반환해야 합니다.
+	        return "diary/diaryboard";
+	   
+	    
+	    }
+	 // 일기 쓰기 화면 POST
+	    @PostMapping("/sharedBoard")
+	    public String boarddiaryshareProc(String content, boolean commit, boolean share, HttpSession session, Model model) {
+	        if (content.replaceAll("\\s", "").length() >= 30) {
+	            commit = true;
+	            content = content.trim();
+	            String sessCustId = (String) session.getAttribute("sessCustId");
+	            UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
+	            userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
+	            model.addAttribute("msg", "작성 완료되었어요.");
+
+	            if (share) {
+	                // 공유 여부가 true일 때 공유 게시판으로 이동
+	                return "diary/diaryboard";
+	            } else {
+	                // 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
+	                return "calendar/calendar";
+	            }
+	        }
+
+	        return "diary/diaryboard";
+	    }
+
 }
+
+
+
+
+
+
+
+
+
+	
+

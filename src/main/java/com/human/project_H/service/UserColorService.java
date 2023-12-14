@@ -28,4 +28,6 @@ public interface UserColorService {
 	void updateUserColorSave(int ucid, String buffer, String modTime);
 
 	void updateUserColorCommit(int ucid, String content, boolean commit, boolean share);
+	
+	 List<UserColor> getSharedUserColors();
 }

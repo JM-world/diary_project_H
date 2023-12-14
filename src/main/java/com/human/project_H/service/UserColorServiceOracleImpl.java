@@ -80,7 +80,11 @@ public class UserColorServiceOracleImpl implements UserColorService {
 		userColorDao.updateUserColorCommit(ucid, content, commit, share);
 		
 	}
-
+	
+	   @Override
+	    public List<UserColor> getSharedUserColors() {
+	        return userColorDao.getSharedUserColors();
+	  }
 	
 
 }

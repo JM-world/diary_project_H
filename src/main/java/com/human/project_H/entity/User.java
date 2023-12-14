@@ -28,10 +28,10 @@ public class User {
 		this.regDate = regDate;
 		this.isDeleted = isDeleted;
 	}
-	public String getCustid() {
+	public String getcustId() {
 		return custId;
 	}
-	public void setCustid(String custId) {
+	public void setcustId(String custId) {
 		this.custId = custId;
 	}
 	public String getPwd() {
@@ -70,6 +70,9 @@ public class User {
 	public void setIsDeleted(int isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	
+
+	
 	@Override
 	public String toString() {
 		return "User [custId=" + custId + ", pwd=" + pwd + ", uname=" + uname + ", nickName=" + nickName + ", email=" + email

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,12 +77,10 @@
             margin-left: 50px;
         }
 
-        /* New styles for right-aligned navbar items */
         .navbar-nav {
             margin-left: auto;
         }
 
-        /* Updated styles for the "로그인" and "로그아웃" buttons */
         .nav-item {
             margin-left: 15px;
         }
@@ -153,23 +152,9 @@
     </script>
 </head>
 <body>
+	<%@ include file="../common/top.jsp" %>
     <!-- 배경 이미지를 담당하는 추가된 요소 -->
     <div id="background"></div>
-
-    <!-- 변경된 사이드바 버튼 및 구조 -->
-    <div id="sidebar">
-        <button type="button" class="closebtn" onclick="closeNav()">×</button>
-        <a href="javascript:void(0)" onclick="openModalForWritingDiary()">일기 쓰기</a>
-        <a href="#">나의 일기</a>
-        <a href="${pageContext.request.contextPath}/board/list/1">게시판</a>
-        <a href="#">지도</a>
-    </div>
-
-    <!-- 변경된 사이드바 토글 버튼 -->
-    <button type="button" id="sidebarCollapse" class="btn btn-info">
-        <i class="fas fa-align-left"></i>
-        <span>눌러보세요</span>
-    </button>
 
     <!-- Bootstrap Modal 예제 -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -219,19 +204,5 @@
             </div>
         </div>
     </div>
-
-    <!-- 변경된 네비게이션 바 (Navbar) -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <ul class="navbar-nav">
-            <c:if test="${not empty sessUname}">
-                <span class="navbar-text me-3">${sessUname}님 환영합니다.</span>
-            </c:if>
-            <li class="nav-item ms-3">
-                <c:if test="${not empty sessUid}">
-                    <a class="nav-link" href="/project_H/user/logout"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
-                </c:if>
-            </li>
-        </ul>
-    </nav>
 </body>
 </html>

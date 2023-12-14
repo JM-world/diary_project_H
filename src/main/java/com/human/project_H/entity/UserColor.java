@@ -14,6 +14,12 @@ public class UserColor {
 	private boolean commitFlag;
 	private boolean shareFlag;
 	
+	private String title;
+	private String nickname;
+    private User user;  // User 테이블과 연결되는 필드
+    private TodayColor todayColor;  // TodayColor 테이블과 연결되는 필드
+    
+    
 	public UserColor() { } 
 	
 	
@@ -125,6 +131,68 @@ public class UserColor {
 	public void setShareFlag(boolean shareFlag) {
 		this.shareFlag = shareFlag;
 	}
+
+	
+	public User getUser() {
+		return user;
+	}
+
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+
+	public TodayColor getTodayColor() {
+		return todayColor;
+	}
+
+
+
+	public void setTodayColor(TodayColor todayColor) {
+		this.todayColor = todayColor;
+	}
+
+
+
+	public String getTitle() {
+		return title;
+	}
+
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	
+
+	public String getNickname() {
+		return nickname;
+	}
+
+
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	
+
+
+	public String getCustId() {
+		return custId;
+	}
+
+
+
+	public void setCustId(String custId) {
+		this.custId = custId;
+	}
+
+
 
 	@Override
 	public String toString() {

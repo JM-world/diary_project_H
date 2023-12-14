@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,13 +7,16 @@
     <title>Color Selection Page</title>
     <style>
         body {
+        	position: relative;
             background-image: url('/project_H/img/pa.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             margin: 0;
             padding: 0;
-        }
+            z-index: -1; 
+        } 
+        
 
         .color-button {
             display: inline-block;
@@ -25,7 +29,7 @@
     </style>
 </head>
 <body>
-
+	<%@ include file="../common/top.jsp" %>
     <h2>기분에 따른 색깔을 골라 보세요 !</h2>
 
     <form action="/project_H/diary/color" method="post">

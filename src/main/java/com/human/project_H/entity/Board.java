@@ -18,8 +18,21 @@ public class Board {
 
     // 기본 생성자
     public Board() { }
+    
 
-    // 생성자
+
+
+    public Board(BigDecimal bid, String custId, int hitCount) {
+		super();
+		this.bid = bid;
+		this.custId = custId;
+		this.hitCount = hitCount;
+	}
+
+
+
+
+	// 생성자
     public Board(String title, String content, String custId) {
         this.title = title;
         this.content = content;
@@ -108,6 +121,7 @@ public class Board {
         this.hitCount = hitCount;
     }
 
+    
     public int getIsDeleted() {
         return isDeleted;
     }
@@ -123,8 +137,14 @@ public class Board {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+    
+    
 
-    // toString 메서드
+ 
+
+
+
+	// toString 메서드
     @Override
     public String toString() {
         return "Board [bid=" + bid + ", custId=" + custId + ", title=" + title + ", content=" + content + ", modTime="

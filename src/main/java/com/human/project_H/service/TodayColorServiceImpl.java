@@ -35,5 +35,6 @@ public class TodayColorServiceImpl implements TodayColorService {
 		return todayColorDao.searchTodayColor(cid);
 	}
     
+	
 
 }
