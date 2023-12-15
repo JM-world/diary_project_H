@@ -30,10 +30,12 @@
                                     <input type="checkbox" id="remember-check">아이디 저장하기
                                 </label>
                                 <input type="submit" value="Login">
-							            <img src="/project_H/img/글씨3.png" alt="글씨3" style="position: absolute; top: -150px; left:-540px; width: 500px; height: 400px;">
-							            <img src="/project_H/img/문구.png" alt="문구" style="position: absolute; top: 0px; left:-500px; width: 500px; height: 500px;">
+                                <img src="/project_H/img/글씨3.png" alt="글씨3" style="position: absolute; top: -150px; left:-540px; width: 500px; height: 400px;">
+                                <img src="/project_H/img/문구.png" alt="문구" style="position: absolute; top: 0px; left:-500px; width: 500px; height: 500px;">
                             </form>
                         </div>
+                        &nbsp;&nbsp;<button class="btn btn-warning" onclick="location.href='/project_H/oauth2/authorization/kakao'" style="width: 93%; height: 48px;">카카오 로그인</button>
+                        &nbsp;&nbsp;<button class="btn btn-success mt-3" onclick="location.href='/project_H/oauth2/authorization/naver'" style="width: 93%; height: 48px;">네이버 로그인</button>
                     </div>
                 </div>
             </div>

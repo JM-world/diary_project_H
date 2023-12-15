@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+	<%@ include file="common/head.jsp" %>
  <script>
 	 //리소스 로딩(예: 자원 로딩)을 시뮬레이트하여 콘텐츠를 표시하기 전에 지연
 	 setTimeout(function() {
@@ -50,6 +50,5 @@
     </div>
 	<%@ include file="common/top.jsp" %>
 	<h1>gg</h1>
-	<%@ include file="common/bottom.jsp" %>
 </body>
 </html>

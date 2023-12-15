@@ -1,97 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Hi+Melody&family=Silkscreen&display=swap" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
-	<style>
-    h1 {
-        font-family: 'Silkscreen', sans-serif;
-    }
 
-    h4 {
-        font-family: 'Hi Melody', sans-serif;
-    }
-
-    body {
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-        overflow: hidden;
-    }
-
-    a {
-        text-decoration: none;
-        color: black;
-    }
-
-    a:hover {
-        color: red;
-    }
-
-    .tooltip-light-pink .tooltip-inner {
-        background-color: #FFD9EB;
-        color: #000;
-    }
-
-    .tooltip-light-pink .tooltip-arrow {
-        border-bottom-color: #FFD9EB;
-    }
-
-    .nav-link.btn:hover {
-        background-color: transparent !important;
-    }
-
-    #content h4 a {
-        text-decoration: none;
-    }
-
-    #content h4 a:hover {
-        text-decoration: none;
-    }
-</style>
-	
-	
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // data-bs-toggle="tooltip" 속성을 가진 모든 엘리먼트에 대한 툴팁 초기화
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-
-        // 버튼 엘리먼트에 대한 툴팁 초기화
-        var buttonTooltipTriggerList = [].slice.call(document.querySelectorAll('button[data-bs-toggle="tooltip"]'));
-        var buttonTooltipList = buttonTooltipTriggerList.map(function (buttonTooltipTriggerEl) {
-          var tooltip = new bootstrap.Tooltip(buttonTooltipTriggerEl);
-
-          // 마우스가 버튼을 벗어날 때 툴팁을 숨기도록 이벤트 리스너 추가
-          buttonTooltipTriggerEl.addEventListener('mouseleave', function () {
-            tooltip.hide();
-          });
-
-          return tooltip;
-        });
-        
-     	// Write a Diary 버튼 클릭 시 모달 열기
-        var writeDiaryButton = document.getElementById('writeDiaryButton');
-        var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-
-        writeDiaryButton.addEventListener('click', function () {
-          logoutModal.show();
-        });
-        
-      });
-  </script>
-</head>
-<body>
-    
     <div id="content">
     <!-- Your actual content goes here -->
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
@@ -128,23 +36,30 @@
               <i class="far fa-comments"></i>
             </a>
           <li class="nav-item me-3">
-            <c:if test="${not empty sessUid}">
-              <button id="writeDiaryButton" class="nav-link btn btn-outline-secondary" title="로그아웃"
-              	data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                <i class="fas fa-sign-out-alt"></i>
-              </button>
+            <c:if test="${not empty sessCustId}">
+              <div class="dropdown">
+				  <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileMenu" data-bs-toggle="dropdown">
+				    <i class="fas fa-user"></i>
+				  </button>
+				  <ul class="dropdown-menu dropdown-menu-end">
+				    <li><a class="dropdown-item" href="#">개인정보 수정</a></li>
+				    <li><hr class="dropdown-divider"></hr></li>
+				    <li><a class="dropdown-item text-danger" href="/project_H/user/logout">로그아웃</a></li>
+				  </ul>
+			  </div>
             </c:if>
-            <c:if test="${empty sessUid}">
-              <button id="writeDiaryButton" class="nav-link btn btn-outline-secondary" title="로그인"
+            <c:if test="${empty sessCustId}">
+              <a href="/project_H/user/login" class="nav-link btn btn-outline-secondary" title="로그인"
               	data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
                 <i class="fas fa-sign-in-alt"></i>
-              </button>
+              </a>
             </c:if>
           </li>
         </ul>
       </div>
     </nav>
-	
+    
+  <c:if test="${not empty sessCustId}">
 	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -162,7 +77,7 @@
         </div>
       </div>
     </div>
+   </c:if>
     
   </div>
-</body>
-</html>
+

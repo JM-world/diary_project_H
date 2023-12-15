@@ -92,6 +92,8 @@ public class UserColorController {
 	
 	 @GetMapping("/list/{page}")
 	    public String list(@PathVariable int page, HttpSession session, Model model) {
+		 	String sessCustId = (String)session.getAttribute("sessCustId");
+		 	System.out.println(sessCustId);
 	        List<UserColor> list = userColorService.getUserColorList(page);
 	        model.addAttribute("userColorList", list);
 	        list.forEach(x -> System.out.println(x));
@@ -198,7 +200,7 @@ public class UserColorController {
 	                return  "redirect:/diary/list/1";
 	            } else {
 	                // 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
-	                return "redirect:/diary/calendar";
+	                return "calendar/calendar";
 	                
 	            }
 	        }
@@ -207,7 +209,9 @@ public class UserColorController {
 	    }
 	    
 	    @GetMapping("/view/{ucid}")
-	    public String viewBoard(@PathVariable int ucid, Model model) {
+	    public String viewBoard(@PathVariable int ucid, HttpSession session, Model model) {
+	    	String sessCustId = (String)session.getAttribute("sessCustId");
+		 	System.out.println(sessCustId);
 	    	userColorService.increaseViewCount(ucid);
 
 	    	    // 게시글 정보를 가져와서 JSP에 전달

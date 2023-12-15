@@ -74,6 +74,7 @@ public class UserController {
 	
 	@GetMapping("/list/{page}")
 	public String list(@PathVariable int page, HttpSession session, Model model) {
+		
 		List<User> list = userService.getUserList(page);
 		model.addAttribute("userList", list);
 		
@@ -121,10 +122,10 @@ public class UserController {
 	}
 	
 	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/user/login";
-	}
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "home";
+    }
 	
 	@GetMapping("/register")
 	
