@@ -1,36 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Hi+Melody&family=Silkscreen&display=swap" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
-	<style>
-    h1 {
-        font-family: 'Silkscreen', sans-serif;
-    }
+  <link href="https://fonts.googleapis.com/css2?family=Hi+Melody&family=Noto+Sans+KR&family=Silkscreen&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
+  
 
-    h4 {
-        font-family: 'Hi Melody', sans-serif;
-    }
-
-    body {
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-        overflow: hidden;
-    }
-
-    a {
-        text-decoration: none;
-        color: black;
-    }
-
-    a:hover {
-        color: red;
-    }
-
+  <style>
+  
+  	body {
+        	position: relative;
+            background-image: url('/project_H/img/pa.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            height: 200vh;
+            margin: 0;
+            padding: 0;
+            z-index: -1; 
+        }
+        
     .tooltip-light-pink .tooltip-inner {
         background-color: #FFD9EB;
         color: #000;
@@ -51,8 +43,7 @@
     #content h4 a:hover {
         text-decoration: none;
     }
-</style>
-	
+  </style>
 	
   <script>
     document.addEventListener('DOMContentLoaded', function () {

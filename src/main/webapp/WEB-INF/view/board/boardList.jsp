@@ -7,8 +7,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>게시판</title>
+    
  	<script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
-
     <style>
 
 

@@ -26,4 +26,6 @@ public interface UserService {
 	int login(String custId, String pwd);
 	 
 	List<Integer> getPageList(); 
+	
+
 }

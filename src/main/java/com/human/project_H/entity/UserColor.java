@@ -19,6 +19,7 @@ public class UserColor {
 	private String nickname;
     private User user;  // User 테이블과 연결되는 필드
     private TodayColor todayColor;  // TodayColor 테이블과 연결되는 필드
+    private String todayColorTitle;
     
     
 	public UserColor() { } 
@@ -40,7 +41,6 @@ public class UserColor {
 
 	public UserColor(int ucid, String custId, int cid, String content, Timestamp modTime, int hitCount, int viewCount,
 			int emotion, boolean commitFlag, boolean shareFlag) {
-		super();
 		this.ucid = ucid;
 		this.custId = custId;
 		this.cid = cid;

@@ -25,7 +25,7 @@
             </a>
           </li>
           <li class="nav-item me-3">
-            <a href="#" class="nav-link btn btn-outline-secondary" title="내가 쓴 일기"
+            <a href="/project_H/diary/diarylist" class="nav-link btn btn-outline-secondary" title="내가 쓴 일기"
             	data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
               <i class="fas fa-book"></i>
             </a>

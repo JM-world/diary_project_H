@@ -147,7 +147,7 @@
             $('#modalContent2').text('오늘의 기분: ');
             $('#modalContent3').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">일간 분석 데이터</a>');
             $('#modalContent4').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">월간 분석 데이터</a>');
-            $('#modalContent5').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">내가 쓴 일기 보러 가기</a>');
+           
         }
     </script>
 </head>
@@ -172,7 +172,7 @@
                     <p id="modalContent2"></p>
                     <p id="modalContent3"></p>
                     <p id="modalContent4"></p>
-                    <p id="modalContent5"></p>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

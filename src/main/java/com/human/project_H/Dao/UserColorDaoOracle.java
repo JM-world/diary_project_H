@@ -47,8 +47,16 @@ public interface UserColorDaoOracle {
 	UserColor getUserColor(int ucid);
 	
 	
+	@Select("SELECT uc.*, u.nickname, tc.title, uc.modTime " +
+	        "FROM USERCOLOR uc " +
+	        "JOIN users u ON uc.custId = u.custId " +
+	        "JOIN todaycolor tc ON uc.cid = tc.cid " +
+	        "WHERE uc.custId = #{custId} AND uc.isDeleted = 0")
+	List<UserColor> getUserColorListByCustId(String custId);
 
 
+	
+	
 
 
 

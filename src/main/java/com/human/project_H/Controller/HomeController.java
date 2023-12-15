@@ -1,7 +1,6 @@
 package com.human.project_H.Controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,12 +27,6 @@ public class HomeController {
 
 
 
-	@GetMapping("/diary")	
-	public String diary(Model model) {
-		model.addAttribute("menu", "home");
-		return "diary/diary";				
-	}
-	
-	
+
 
 }

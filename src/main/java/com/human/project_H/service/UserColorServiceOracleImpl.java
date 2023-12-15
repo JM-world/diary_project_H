@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.human.project_H.Dao.UserColorDaoOracle;
-import com.human.project_H.entity.Board;
 import com.human.project_H.entity.UserColor;
 
 @Service
@@ -95,5 +94,10 @@ public class UserColorServiceOracleImpl implements UserColorService {
 	public void increaseViewCount(int ucid) {
 		userColorDao.increaseViewCount(ucid);
 	}
+
+	@Override
+	public List<UserColor> getUserColorListByCustId(String custId) {
+		return userColorDao.getUserColorListByCustId(custId);
+}
 
 }

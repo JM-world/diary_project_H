@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.human.project_H.entity.Board;
 import com.human.project_H.entity.TodayColor;
 import com.human.project_H.entity.UserColor;
 import com.human.project_H.service.TodayColorService;
@@ -108,6 +107,22 @@ public class UserColorController {
 
 	        return "diary/diaryboard";
 	    }
+	 	
+	 // 사용자 일기 목록 
+	 @GetMapping("/diarylist") // 
+	 public String diarylist(HttpSession session, Model model) {
+	     String sessCustId = (String) session.getAttribute("sessCustId");
+	     System.out.println(sessCustId);
+	     
+	     // 사용자가 작성한 일기 목록을 가져옴
+	     List<UserColor> userdiaryList = userColorService.getUserColorListByCustId(sessCustId);
+	     
+	     // 가져온 일기 목록을 뷰에 전달
+	     model.addAttribute("userDiaryList", userdiaryList);
+
+	     // 뷰 이름을 반환 (WEB-INF/views/ 하위의 경로를 사용)
+	     return "diary/diaryList";
+	 }
 	
 	
 	
@@ -200,7 +215,7 @@ public class UserColorController {
 	                return  "redirect:/diary/list/1";
 	            } else {
 	                // 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
-	                return "calendar/calendar";
+	            	return "redirect:/diary/diarylist";
 	                
 	            }
 	        }

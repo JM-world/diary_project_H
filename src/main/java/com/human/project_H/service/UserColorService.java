@@ -37,4 +37,9 @@ public interface UserColorService {
 	 List<UserColor> getSharedUserColors();
 	 
 	 void increaseViewCount(int ucid);
+
+	 List<UserColor> getUserColorListByCustId(String custId);
+	 
+	 
+	 
 }
