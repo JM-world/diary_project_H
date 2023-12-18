@@ -61,9 +61,20 @@ public class UserController {
 		}
 		user.setUname(uname);
 		user.setEmail(email);
+		
+		// 수정 업데이트
 		userService.updateUser(user);
 		
-		return "redirect:/user/list/" + session.getAttribute("currentUserPage");
+		if (sessCustId.equals("admin2")) {
+			model.addAttribute("msg", "수정이 완료되었습니다.");
+			model.addAttribute("url", "redirect:/user/list/" + session.getAttribute("currentUserPage"));
+			return "common/alertMsg";
+		} else {
+			model.addAttribute("msg", "수정이 완료되었어요.");
+			model.addAttribute("url", "/project_H/home");
+			return "common/alertMsg";
+		}
+		
 	}
 	
 	@GetMapping("/delete/{custId}")
@@ -76,65 +87,73 @@ public class UserController {
 	}
 	
 	@GetMapping("/list/{page}")
-	public String list(@PathVariable int page, HttpSession session, Model model) {
-		List<User> list = userService.getUserList(page);
-		model.addAttribute("userList", list);
-		
-		int totalUsers = userService.getUserCount();
-		int totalPages = (int) Math.ceil((double)totalUsers / userService.RECORDS_PER_PAGE);
-		List<String> pageList = new ArrayList<>();
-		for (int i=1; i<=totalPages; i++)
-			pageList.add(String.valueOf(i));
-		model.addAttribute("pageList", pageList);
-		session.setAttribute("currentUserPage", page);
-		model.addAttribute("menu", "user");
-		
-		return "user/list";
-	}
+    public String list(@PathVariable int page, HttpSession session, Model model) {
+        List<User> list;
+
+        // 세션에서 사용자 권한을 확인
+        String userRole = (String) session.getAttribute("userRole");
+
+        if ("admin".equals(userRole)) {
+            // admin으로 로그인한 경우
+            list = userService.getUserList(page);
+            model.addAttribute("userList", list);
+            model.addAttribute("menu", "user");
+
+            int totalUsers = userService.getUserCount();
+            int totalPages = (int) Math.ceil((double) totalUsers / userService.RECORDS_PER_PAGE);
+            List<String> pageList = new ArrayList<>();
+            for (int i = 1; i <= totalPages; i++)
+                pageList.add(String.valueOf(i));
+            model.addAttribute("pageList", pageList);
+            session.setAttribute("currentUserPage", page);
+
+            return "user/list";
+        } else {
+            // 그 외의 경우
+            return "user/list2";
+        }
+    }
 	
 	
 	@GetMapping("/login")
-	public String homeForm() {
-		return "user/login";
-	}
-	
-	@PostMapping("/login")
-	public String homeProc(String custId, String pwd, HttpSession session, Model model) {
-	    int result = userService.login(custId, pwd);
-	    if (result == userService.CORRECT_LOGIN) {
-	        session.setAttribute("sessCustId", custId);
-	        User user = userService.getUser(custId);
-	        session.setAttribute("sessUname", user.getUname());
-	        session.setAttribute("sessEmail", user.getEmail());
+    public String homeForm() {
+        return "user/login";
+    }
 
-	        // admin2로 로그인한 경우 리스트 페이지로 이동
-	        if ("admin2".equals(custId)) {
-//	            List<User> list = userService.getUserList(1); // 페이지 번호 변경 가능
-//	            model.addAttribute("userList", list);
-//	            int totalUsers = userService.getUserCount();
-//	            int totalPages = (int) Math.ceil((double) totalUsers / userService.RECORDS_PER_PAGE);
-//	            List<String> pageList = new ArrayList<>();
-//	            for (int i = 1; i <= totalPages; i++)
-//	                pageList.add(String.valueOf(i));
-//	            model.addAttribute("pageList", pageList);
-//	            model.addAttribute("menu", "user");
-	            return "redirect:/user/list/1";
-	        }
+    @PostMapping("/login")
+    public String homeProc(String custId, String pwd, HttpSession session, Model model) {
+        int result = userService.login(custId, pwd);
 
-	        // 환영 메세지
-	        model.addAttribute("msg", user.getUname() + "님 환영합니다.");
-	        model.addAttribute("url", "/project_H/home");
-	    } else if (result == userService.WRONG_PASSWORD) {
-	        model.addAttribute("msg", "패스워드 입력이 잘못되었습니다.");
-	        model.addAttribute("url", "/project_H/user/login");
-	    } else { // custId_NOT_EXIST
-	        model.addAttribute("msg", "ID 입력이 잘못되었습니다.");
-	        model.addAttribute("url", "/project_H/user/login");
-	    }
-	    return "common/alertMsg";
-	}
+        // Check if the user is deleted
+        if (result == userService.CORRECT_LOGIN && !userService.isUserDeleted(custId)) {
+            session.setAttribute("sessCustId", custId);
+            User user = userService.getUser(custId);
+            session.setAttribute("sessUname", user.getUname());
+            session.setAttribute("sessEmail", user.getEmail());
 
-	
+            // admin2로 로그인한 경우 리스트 페이지로 이동
+            if ("admin2".equals(custId)) {
+                return "redirect:/user/list/1";
+            }
+
+            // 환영 메세지
+            model.addAttribute("msg", user.getUname() + "님 환영합니다.");
+            model.addAttribute("url", "/project_H/home");
+        } else if (result == userService.WRONG_PASSWORD) {
+            model.addAttribute("msg", "패스워드 입력이 잘못되었습니다.");
+            model.addAttribute("url", "/project_H/user/login");
+        } else if (result == userService.CUSTID_NOT_EXIST) {
+            model.addAttribute("msg", "ID 입력이 잘못되었습니다.");
+            model.addAttribute("url", "/project_H/user/login");
+        } else if (result == userService.ISDELETED) {
+            model.addAttribute("msg", "탈퇴된 회원입니다.");
+            model.addAttribute("url", "/project_H/user/login");
+        }
+
+        return "common/alertMsg";
+    
+
+   }
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();

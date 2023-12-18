@@ -48,20 +48,31 @@ public class UserServiceOracleImpl implements UserService {
 		userDao.deleteUser(custId);
 	}
 
-	@Override
-	public int login(String custId, String pwd) {
-		User user = userDao.getUser(custId);
-		if (user == null)
-			return CUSTID_NOT_EXIST;
-		if (BCrypt.checkpw(pwd, user.getPwd()))
-			return CORRECT_LOGIN;
-		else
-			return WRONG_PASSWORD;
-	}
 
 	@Override
 	public List<Integer> getPageList() {
 		return null;
 	}
+	@Override
+    public int login(String custId, String pwd) {
+        User user = userDao.getUser(custId);
+        if (user == null)
+            return CUSTID_NOT_EXIST;
+        if (BCrypt.checkpw(pwd, user.getPwd()))
+            if (user.getIsDeleted() == 0)
+                return CORRECT_LOGIN;
+            else
+                return ISDELETED;
+        else
+            return WRONG_PASSWORD;
+    }
+	
+	@Override
+    public boolean isUserDeleted(String custId) {
+
+        return false;
+    }
+	
+	
 
 }

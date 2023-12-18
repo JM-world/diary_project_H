@@ -5,6 +5,7 @@ import java.util.List;
 import com.human.project_H.entity.User;
 
 public interface UserService {
+	public static final int ISDELETED = 4; 
 	public static final int CORRECT_LOGIN = 0;
 	public static final int WRONG_PASSWORD = 1;
 	public static final int CUSTID_NOT_EXIST = 2;
@@ -22,6 +23,7 @@ public interface UserService {
 	
 	void deleteUser(String custId);
 	
+	boolean isUserDeleted(String custId); 
 	
 	int login(String custId, String pwd);
 	 

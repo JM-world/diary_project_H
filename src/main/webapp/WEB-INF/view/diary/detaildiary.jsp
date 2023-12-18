@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
@@ -64,7 +63,7 @@ body {
 	margin-bottom: 20px;
 }
 
-#todayDiary {
+#todayDiaryInfo {
 	font-size: 1.2em;
 	font-weight: bold;
 	text-align: right;
@@ -135,6 +134,21 @@ body {
 	background-color: #0056b3;
 }
 </style>
+<script>
+    function updateDiary() {
+        // 게시글 수정을 위한 URL로 이동 또는 필요한 동작 수행
+       	window.location.href = '/project_H/diary/update/${userColor.ucid}';
+        alert('게시글 수정 기능이 호출되었습니다.');
+    }
+
+    function deleteDiary() {
+        // 게시글 삭제를 위한 URL로 이동 또는 필요한 동작 수행
+        // 예: window.location.href = '/project_H/diary/delete/${userColor.ucid}';
+        alert('게시글 삭제 기능이 호출되었습니다.');
+    }
+</script>
+</head>
+
 <body>
 	<div class="layout">
 		<!-- 일기 상세 정보 표시 -->
@@ -156,16 +170,10 @@ body {
 		</div>
 		<hr
 			style="border-top: 2px solid #c3adec; width: 100%; margin: 10px 0;">
-		<div id="todayDiary">
+		<div id="todayDiaryInfo">
 			<p>조회수: ${userColor.viewCount}</p>
-		</div>
-		<div id="todayDiary">
 			<p>좋아요: ${userColor.hitCount}</p>
-			<p>
-				작성일:
-				<fmt:formatDate value="${userColor.modTime}"
-					pattern="yyyy-MM-dd HH:mm" />
-			</p>
+			<p>작성일: <fmt:formatDate value="${userColor.modTime}" pattern="yyyy-MM-dd HH:mm" /></p>
 		</div>
 		
 		<div class="button-container">
@@ -182,11 +190,6 @@ body {
 		<div style="margin-top: 20px;">
 			<a href="/project_H/diary/list/1">← 목록으로 돌아가기</a>
 		</div>
-
-
-
-	</div>
-
 	</div>
 </body>
 

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.human.project_H.entity.Board;
 import com.human.project_H.entity.TodayColor;
 import com.human.project_H.entity.UserColor;
 import com.human.project_H.service.TodayColorService;
@@ -181,9 +182,14 @@ public class UserColorController {
 					}
 					//추가한부분끝
 					model.addAttribute("msg", "작성 완료되었어요.");
-					return "calendar/calendar";
+					if (share) {
+						// 공유 여부가 true일 때 공유 게시판으로 이동
+						return "redirect:/diary/list/1";
+					} else {
+						// 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
+						return "redirect:/diary/diarylist";
+					}
 			}
-
 //		else {
 //			String sessCustId = (String) session.getAttribute("sessCustId");
 //			UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());		
@@ -192,8 +198,8 @@ public class UserColorController {
 //			
 //			return "redirect:/diary/diaryWrite";
 //		}
-			return "";
 			
+			return "";
 		}
 
 
@@ -264,5 +270,23 @@ public class UserColorController {
 
 		return "diary/detaildiary";
 	}
-
+	
+	  // 수정 페이지로 이동
+    @GetMapping("/update/{ucid}")
+    public String updateDiaryForm(@PathVariable("ucid") int ucid, Model model) {
+        UserColor userColor = userColorService.getUserColor(ucid);
+        model.addAttribute("userColor", userColor);
+        return "diary/diaryUpdate";
+    }
+    
+    
+    @PostMapping("/update")
+    public String updateDiary(int ucid, String buffer, String modTime) {
+    	userColorService.updateUserColorSave(ucid,buffer,modTime);
+        return "redirect:/diary/diaryList";
+    }
+ 
 }
+	
+	
+
