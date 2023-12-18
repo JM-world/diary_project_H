@@ -7,12 +7,21 @@ import org.springframework.stereotype.Service;
 
 import com.human.project_H.Dao.UserColorDaoOracle;
 import com.human.project_H.entity.UserColor;
+import com.human.project_H.entity.UserSentiment;
 
 @Service
 public class UserColorServiceOracleImpl implements UserColorService {
 
 	@Autowired
 	private UserColorDaoOracle userColorDao;
+
+	// 추가한 부분
+	@Override
+	public UserSentiment insertSentiment(String custId, String sentiment, double positive_score, double neutral_score,
+			double negative_score) {
+		userColorDao.insertSentiment(custId, sentiment, positive_score, neutral_score, negative_score);
+		return null;
+	}
 
 	@Override
 	public UserColor searchUserColor(String custId, String modTime) {
@@ -98,6 +107,6 @@ public class UserColorServiceOracleImpl implements UserColorService {
 	@Override
 	public List<UserColor> getUserColorListByCustId(String custId) {
 		return userColorDao.getUserColorListByCustId(custId);
-}
+	}
 
 }

@@ -5,26 +5,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<%@ include file="../common/head.jsp" %>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>게시판</title>
     
- 	<script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
+ 	
     <style>
-
-
-	   
-
-		body {
-        background-image: url('/project_H/img/pa.jpg'); /* 배경 이미지의 경로를 수정하세요 /
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        margin: 0; / 페이지 전체의 margin을 0으로 설정하여 꽉 차게 배경 이미지를 표시합니다. */
-        padding: 0;
-    	
-    	}
-    
-    
     
         #container {
             width: 70%;
@@ -131,10 +117,12 @@
 	        margin-bottom: -100px; /* 이미지와 하단의 간격을 조절합니다. */
 	    }
 	
-	    .table {
-	        background-color: rgba(255, 255, 255, 0.3);
-	        margin-top: -50px; /* 테이블과 상단의 간격을 조절합니다. */
-	    }
+		.table {
+	    background-color: rgba(255, 255, 255, 0);
+	    margin-top: -50px;
+		}
+		
+			 	
 	    
 		#write {
 	        position: relative;
@@ -144,6 +132,7 @@
     </style>
 </head>
 <body>
+<%@ include file="../common/top.jsp" %>
     <div id="container">
         <div align="right">
             <!-- Login 검증 -->

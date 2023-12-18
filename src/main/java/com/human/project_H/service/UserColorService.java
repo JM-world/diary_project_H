@@ -3,6 +3,7 @@ package com.human.project_H.service;
 import java.util.List;
 
 import com.human.project_H.entity.UserColor;
+import com.human.project_H.entity.UserSentiment;
 
 public interface UserColorService {
     int CORRECT_LOGIN = 0;
@@ -15,6 +16,8 @@ public interface UserColorService {
 	UserColor searchUserColor(String custId, String modTime);
 	
 	int getCommitFlag(UserColor userColor);
+	
+	UserSentiment insertSentiment(String custId, String sentiment, double positive_score, double neutral_score, double negative_score);
 	
 	int getPageCount();
 	

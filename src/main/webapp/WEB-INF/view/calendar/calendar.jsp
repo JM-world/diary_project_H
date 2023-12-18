@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>FullCalendar in JSP</title>
-
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -17,6 +16,7 @@
     <!-- FullCalendar CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.css" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.js"></script>
+    <%@ include file="../common/head.jsp" %>
 
     <style>
         body {
@@ -85,22 +85,35 @@
             margin-left: 15px;
         }
     </style>
-
-    <script>
+ <script>
         // 내가 쓴 일기 페이지로 이동하는 함수
         function openDiaryPage() {
             alert("일기 페이지로 이동합니다.");
         }
 
-        // 변경된 스크립트: 사이드바 토글
+     	// 변경된 스크립트: 사이드바 토글
         $(document).ready(function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                dateClick: function (info) {
-                    console.log('Clicked on: ' + info.dateStr);
-                    openModal(info.dateStr);
-                }
+                datesSet: function(info) {
+                	var allDates = info.view.currentStart;
+                    var endDate = info.view.currentEnd;
+                    var allVisibleDates = [];
+
+                    var currentDay = new Date(allDates);
+                    while (currentDay <= endDate) {
+                      allVisibleDates.push(new Date(currentDay));
+                      currentDay.setDate(currentDay.getDate() + 1);
+                    }
+
+                    calendar.allVisibleDates = allVisibleDates; // calendar 객체에 저장
+                  },
+	            dateClick: function (info) {
+	                console.log('Clicked on: ' + info.dateStr);
+	                openModal(info.dateStr, calendar.allVisibleDates);
+	            }
+                
             });
 
             calendar.render();
@@ -123,6 +136,7 @@
         	
         }
      
+        
         // 변경된 부분: 일기 쓰기 모달 열기
         function openModalForWritingDiary() {
             $('#myModal2').modal('show');
@@ -136,20 +150,48 @@
             $('#modalContent2').empty();
             $('#modalContent3').empty();
             $('#modalContent4').empty();
-            $('#modalContent5').empty();
+          
         }
 
-        function openModal(date) {
-            $('#myModal').modal('show');
-            $('#exampleModalLabel').text(date);
-            $('#modalTitle').text('오늘의 컬러: ');
+        function openModal(date, allVisibleDates) {
+        	
+        	var day = new Date(date).getDate();
+        	
+        	$('#myModal').modal('show');
+        	$('#exampleModalLabel').text(date);
+        	
+            //console.log(date); // 가져온 값 콘솔에 출력 또는 다른 곳에 사용
+            var data = [];
+            for (var i = 0; i < allVisibleDates.length; i++) {
+			    var currentString = allVisibleDates[i].toString();
+			    var slicedText = currentString.slice(0, 7); // "Dec"를 포함한 문자열 추출
+			
+			    if (slicedText.includes("Dec")) {
+			        // "Dec"를 "12"로 대체
+			        currentString = currentString.replace("Dec", "12");
+			        currentString = currentString.slice(4, 14);
+			        var stringWithoutSpaces = currentString.replace(/\s/g, '-');
+			        var parts = stringWithoutSpaces.split('-'); // '-'를 기준으로 문자열 분리
+			        var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1]; // 원하는 형식으로 재구성
+			        data.push(formattedDate);
+			    } else if (slicedText.includes("Jan")) {
+			        // "Jan"를 "1"로 대체
+			        currentString = currentString.replace("Jan", "1");
+			        currentString = currentString.slice(4, 14);
+			        var stringWithoutSpaces = currentString.replace(/\s/g, '-');
+			        var parts = stringWithoutSpaces.split('-'); // '-'를 기준으로 문자열 분리
+			        var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1]; // 원하는 형식으로 재구성
+			        data.push(formattedDate);
+			    }
+			}
+            console.log(data[day -1]);
+            $('#modalTitle').text('오늘의 컬러: ' + data[day -1]);
             $('#modalContent').text('오늘 가장 많이 쓴 단어: ');
             $('#modalContent2').text('오늘의 기분: ');
             $('#modalContent3').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">일간 분석 데이터</a>');
             $('#modalContent4').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">월간 분석 데이터</a>');
-           
+            
         }
-    </script>
 </head>
 <body>
 	<%@ include file="../common/top.jsp" %>

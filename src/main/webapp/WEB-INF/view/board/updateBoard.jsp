@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 수정</title>
     <style>
         body {
@@ -24,21 +26,21 @@
         }
 
         h2 {
-            text-align: left; /* 왼쪽 정렬 추가 */
+            text-align: left;
             color: #333;
         }
 
         form {
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* 왼쪽 정렬 추가 */
+            align-items: flex-start;
         }
 
         label {
             margin-bottom: 10px;
             font-weight: bold;
             color: #555;
-            text-align: left; /* 왼쪽 정렬 추가 */
+            text-align: left;
         }
 
         input#title {
@@ -48,14 +50,13 @@
             box-sizing: border-box;
         }
 
-       
         textarea#content {
-            width: 100%; 
-   			min-height: 500px; 
+            width: 100%;
+            min-height: 500px;
             padding: 10px;
             margin-bottom: 20px;
             box-sizing: border-box;
-            resize: none; 
+            resize: none;
         }
 
         button {
@@ -71,33 +72,60 @@
         button:hover {
             background-color: #45a049;
         }
+        .update-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #FFA500;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none;
+	    }
+	
+	    /* btn-warning 스타일 덮어쓰기 */
+	    .update-btn.btn-warning {
+	        background-color: #FFA500;
+	        border-color: #FFA500;
+	        color: #fff;
+	    }
+	
+	    .update-btn.btn-warning:hover {
+	        background-color: #FF8C00;
+	        border-color: #FF8C00;
+	        color: #fff;
+	    }
     </style>
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h2>게시글 수정</h2>
+        <h2>게시글 수정</h2>
 
-    <form action="${pageContext.request.contextPath}/board/update" method="post">
-        <input type="hidden" name="bid" value="${board.bid}" />
-        <label for="title">제목:</label>
-        <input type="text" id="title" name="title" value="${board.title}" /><br/>
-        <label for="content">내용:</label>
-        <textarea id="content" name="content">${board.content}</textarea><br/>
-        <input type="submit" value="수정" onclick="updateTimestamp()" />
-    </form>
+        <form action="${pageContext.request.contextPath}/board/update" method="post">
+            <input type="hidden" name="bid" value="${board.bid}" />
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title" value="${board.title}" />
+            <label for="content">내용:</label>
+            <textarea id="content" name="content">${board.content}</textarea>
+            <button type="submit" class="update-btn btn btn-warning" onclick="updateTimestamp()">수정</button>
 
-    <script>
-        function updateTimestamp() {
-            // 현재 시간을 가져와서 hidden 필드에 설정
-            var currentDate = new Date();
-            var formattedDate = currentDate.toISOString();
-            document.getElementById('timestamp').value = formattedDate;
-        }
-    </script>
+            
+        </form>
 
-</div>
+        <script>
+            function updateTimestamp() {
+                var currentDate = new Date();
+                var formattedDate = currentDate.toISOString();
+                document.getElementById('timestamp').value = formattedDate;
+            }
+        </script>
+
+    </div>
 
 </body>
+
 </html>

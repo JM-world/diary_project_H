@@ -54,7 +54,8 @@ public interface UserColorDaoOracle {
 	        "WHERE uc.custId = #{custId} AND uc.isDeleted = 0")
 	List<UserColor> getUserColorListByCustId(String custId);
 
-
+	@Insert("insert into USER_SENTIMENT values (default, #{custId}, #{sentiment}, #{positive_score}, #{neutral_score}, #{negative_score}, SYSTIMESTAMP)")
+	public void insertSentiment(String custId, String sentiment, double positive_score, double neutral_score, double negative_score);
 	
 	
 

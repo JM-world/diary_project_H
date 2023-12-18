@@ -3,28 +3,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <html>
 <head>
-    <!-- 최신 버전의 CSS 파일 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <!-- 부가적인 테마 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
+    <%@ include file="../common/head.jsp" %>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: url('/project_H/img/pa.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-
         .container {
             width: 60%;
             margin: 50px auto;
-        }
-
-        #content {
-            resize: none;
-            height: 450px; 
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         #header {
@@ -34,66 +27,56 @@
             background-color: rgba(0, 0, 0, 0.5);
         }
 
-        .form-group-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap; /* 여러 행에 걸쳐 정렬 */
-            margin-bottom: 10px; /* 아래쪽 여백 조절 가능 */
+        .form-group-title,
+        .form-group-author {
+            margin-bottom: 10px;
         }
 
-        .form-group-title label {
-            margin-right: 20px; /* 오른쪽 여백 조절 가능 */
+        .form-group-hitcount i {
+            margin-left: 5px;
         }
 
+        #content {
+            resize: none;
+            height: 450px;
+        }
+
+        .form-group,
+        .form-group-title,
+        .form-group-author,
         .form-group-hitcount {
             display: flex;
-            align-items: center; /* 가운데 정렬 */
-        }
-
-        .form-group-hitcount label {
-            margin-left: 10px; /* 왼쪽 여백 조절 가능 */
-        }
-
-        .form-group-author {
-            display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px; /* 윗쪽 여백 조절 가능 */
-            margin-bottom: 10px; /* 아래쪽 여백 조절 가능 */
         }
 
-        .form-group-author label {
-            margin-right: 20px; /* 오른쪽 여백 조절 가능 */
-        }
-
-        .form-group {
-            margin-bottom: 10px;
-            border: none;
-            display: flex;
-            justify-content: space-between; /* 좌우로 간격을 벌립니다. */
-            align-items: center; /* 세로 중앙 정렬을 유지합니다. */
-        }
-
-        .form-group label {
-            margin-bottom: 5px; /* 라벨 아래 여백 조절 */
-            margin-left: auto; /* 라벨을 오른쪽으로 이동시킵니다. */
-        }
-        
         .form-group-buttons {
             display: flex;
             justify-content: flex-end;
+            margin-top: 10px;
         }
 
+        .form-group-buttons a,
         .form-group-buttons button {
             margin-left: 10px;
+        }
+
+        .btn {
+            border-radius: 5px;
+        }
+
+        #hitCount {
+            font-weight: bold;
+            font-size: 16px;
         }
     </style>
 
     <title>상세 내용</title>
 </head>
 
-<body>
+<body>	
+ <%@ include file="../common/top.jsp" %>
+
     <div class="container">
         <div class="form-group-title">
             <label for="title">제목: ${board.title}</label>
