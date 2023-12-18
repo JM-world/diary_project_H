@@ -50,7 +50,7 @@ public class UserColorServiceOracleImpl implements UserColorService {
 
 	@Override
 	public void deleteUserColor(int ucid) {
-		// TODO Auto-generated method stub
+		 userColorDao.deleteUserColor(ucid);
 
 	}
 
@@ -108,5 +108,13 @@ public class UserColorServiceOracleImpl implements UserColorService {
 	public List<UserColor> getUserColorListByCustId(String custId) {
 		return userColorDao.getUserColorListByCustId(custId);
 	}
+	
+	@Override
+    public void updateUserColorContent(int ucid, String content) {
+        // 여기에서 다른 로직이 필요하다면 추가
+        userColorDao.updateUserColorContent(ucid, content);
+    }
+	
+
 
 }

@@ -43,6 +43,9 @@ public interface UserColorService {
 
 	 List<UserColor> getUserColorListByCustId(String custId);
 	 
+	 void updateUserColorContent(int ucid, String content);
 	 
+	
+
 	 
 }

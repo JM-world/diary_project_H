@@ -45,7 +45,7 @@
                                 <i class="fas fa-user"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/project_H/user/list/${page}">개인정보 수정</a></li>
+                               <li><a class="dropdown-item" href="/project_H/user/list/1">개인정보 수정</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

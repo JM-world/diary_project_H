@@ -136,17 +136,22 @@ body {
 </style>
 <script>
     function updateDiary() {
-        // 게시글 수정을 위한 URL로 이동 또는 필요한 동작 수행
-       	window.location.href = '/project_H/diary/update/${userColor.ucid}';
-        alert('게시글 수정 기능이 호출되었습니다.');
+        var confirmUpdate = confirm('게시글을 수정하시겠습니까?');
+        if (confirmUpdate) {
+            window.location.href = '/project_H/diary/update/${userColor.ucid}';
+        }
     }
 
     function deleteDiary() {
-        // 게시글 삭제를 위한 URL로 이동 또는 필요한 동작 수행
-        // 예: window.location.href = '/project_H/diary/delete/${userColor.ucid}';
-        alert('게시글 삭제 기능이 호출되었습니다.');
+        var confirmDelete = confirm('게시글을 삭제하시겠습니까?');
+        if (confirmDelete) {
+            alert('게시글이 삭제 되었습니다.');
+            // 삭제를 위한 URL로 이동 또는 필요한 동작 수행
+            예: window.location.href = '/project_H/diary/delete/${userColor.ucid}';
+        }
     }
 </script>
+
 </head>
 
 <body>
@@ -162,6 +167,7 @@ body {
 		</div>
 		<div id="todayColor">
 			<p>오늘의 색: ${userColor.title}</p>
+			<p>오늘의 기분: ${userColor.sentiment}</p>
 		</div>
 		<hr
 			style="border-top: 2px solid #c3adec; width: 100%; margin: 10px 0;">
@@ -187,9 +193,9 @@ body {
 		    </c:if>
 		</div>
 		
-		<div style="margin-top: 20px;">
-			<a href="/project_H/diary/list/1">← 목록으로 돌아가기</a>
-		</div>
+		     <div style="margin-top: 20px;">
+            <a href="javascript:history.back()">← 뒤로가기</a>
+        </div>
 	</div>
 </body>
 

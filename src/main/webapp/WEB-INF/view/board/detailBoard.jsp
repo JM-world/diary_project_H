@@ -13,7 +13,7 @@
     <style>
         .container {
             width: 60%;
-            margin: 50px auto;
+            margin: -250px auto;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
@@ -69,13 +69,17 @@
             font-weight: bold;
             font-size: 16px;
         }
+
+        .form-group-date {
+            text-align: right;
+        }
     </style>
 
     <title>상세 내용</title>
 </head>
 
 <body>	
- <%@ include file="../common/top.jsp" %>
+    <%@ include file="../common/top.jsp" %>
 
     <div class="container">
         <div class="form-group-title">
@@ -92,13 +96,13 @@
         <label for="content">내용</label>
         <textarea id="content" name="content" class="form-control" readonly="readonly"><c:out value="${board.content}" /></textarea>
  
-        <div class="form-group">
+        <div class="form-group-date">
             <label for="regdate">작성날짜: </label>
             <fmt:formatDate value="${board.modTime}" pattern="yyyy-MM-dd" />
         </div>
         <div class="form-group-buttons">
-            <a href="${pageContext.request.contextPath}/board/update/${board.bid}" class="update_btn btn btn-warning">수정</a>
-            <a href="${pageContext.request.contextPath}/board/delete/${board.bid}" class="delete_btn btn btn-danger">삭제</a>
+           <a href="#" class="update_btn btn btn-warning" onclick="confirmUpdate('${pageContext.request.contextPath}/board/update/${board.bid}')">수정</a>
+            <a href="#" class="delete_btn btn btn-danger" onclick="confirmDelete('${pageContext.request.contextPath}/board/delete/${board.bid}')">삭제</a>
             <a href="${pageContext.request.contextPath}/board/list/1" class="list_btn btn btn-primary">목록</a>
             <button id="likeBtn" class="btn btn-success" onclick="likeButtonClicked('${board.bid}')">공감</button>
             <div id="hitCount">좋아요: ${board.hitCount}</div>         
@@ -106,22 +110,16 @@
     </div>
     <script>
         function likeButtonClicked(boardId) {
-            // 서버로 공감 수 업데이트 요청 보내기
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "${pageContext.request.contextPath}/board/like/" + boardId, true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var hitCount = parseInt(xhr.responseText);
                     if (!isNaN(hitCount) && hitCount >= 0) {
-                        // 성공적으로 공감이 증가하면 화면 갱신
                         document.getElementById("hitCount").innerText = "좋아요: " + hitCount;
-
-                        // 공감 여부에 따라 버튼 비활성화
                         if (hitCount > 0) {
                             document.getElementById("likeBtn").disabled = true;
                         }
-
-                        // 성공 후 상세 페이지로 이동
                         var url = "${pageContext.request.contextPath}/board/view/" + boardId;
                         window.location.href = url;
                     } else {
@@ -131,8 +129,20 @@
             };
             xhr.send();
         }
-
-        // 페이지 로딩 시 공감 여부에 따라 버튼 비활성화
+        
+        function confirmDelete(deleteUrl) {
+            var confirmDelete = confirm("삭제하시겠습니까?");
+            if (confirmDelete) {
+                window.location.href = deleteUrl;
+            }
+        }
+	
+        function confirmUpdate(updateUrl) {
+            var confirmUpdate = confirm("수정하시겠습니까?");
+            if (confirmUpdate) {
+                window.location.href = updateUrl;
+            }
+        }
         var initialHitCount = ${board.hitCount};
         if (initialHitCount > 0) {
             document.getElementById("likeBtn").disabled = true;

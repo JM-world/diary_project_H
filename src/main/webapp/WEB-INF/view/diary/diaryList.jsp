@@ -72,7 +72,7 @@ body {
 							<a href="${pageContext.request.contextPath}/diary/view/${userDiary.ucid}">
 								${userDiary.nickname}님의 '${userDiary.title}' 색 일기 </a>
 						</h5>
-						<h6 class="card-subtitle mb-2 text-muted">기분:${userDiary.emotion}</h6>
+						<h6 class="card-subtitle mb-2 text-muted">기분:${userDiary.sentiment}</h6>
 						<p class="card-text">내용 : ${userDiary.content}</p>
 						<p class="card-text">수정 시간: <fmt:formatDate value="${userDiary.modTime}" pattern="yyyy-MM-dd HH:mm" /></p>
 						

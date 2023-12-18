@@ -15,7 +15,7 @@ public interface UserDao {
 	@Select("select count(uname) from users where isDeleted=0")
 	public int getUserCount();
 	
-	@Select("select * from users where custId=#{custId}")
+	@Select("select * from users where custId=#{custId} and isDeleted=0")
 	public User getUser(String custId);
 	
 	// #{CUSTID} --> user.getcustId()

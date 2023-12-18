@@ -20,8 +20,21 @@ public class UserColor {
     private User user;  // User 테이블과 연결되는 필드
     private TodayColor todayColor;  // TodayColor 테이블과 연결되는 필드
     private String todayColorTitle;
+    private String sentiment;
     
     
+	public String getSentiment() {
+		return sentiment;
+	}
+
+
+
+	public void setSentiment(String sentiment) {
+		this.sentiment = sentiment;
+	}
+
+
+
 	public UserColor() { } 
 	
 	

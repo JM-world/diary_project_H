@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -97,6 +99,8 @@ public class UserColorController {
 		String sessCustId = (String) session.getAttribute("sessCustId");
 		System.out.println(sessCustId);
 		List<UserColor> list = userColorService.getUserColorList(page);
+		
+		Collections.reverse(list);
 		model.addAttribute("userColorList", list);
 		list.forEach(x -> System.out.println(x));
 
@@ -119,6 +123,8 @@ public class UserColorController {
 
 		// 사용자가 작성한 일기 목록을 가져옴
 		List<UserColor> userdiaryList = userColorService.getUserColorListByCustId(sessCustId);
+		
+		Collections.reverse(userdiaryList);
 
 		// 가져온 일기 목록을 뷰에 전달
 		model.addAttribute("userDiaryList", userdiaryList);
@@ -267,6 +273,7 @@ public class UserColorController {
 		UserColor usercolor = userColorService.getUserColor(ucid);
 
 		model.addAttribute("userColor", usercolor);
+		System.out.println(usercolor);
 
 		return "diary/detaildiary";
 	}
@@ -281,11 +288,19 @@ public class UserColorController {
     
     
     @PostMapping("/update")
-    public String updateDiary(int ucid, String buffer, String modTime) {
-    	userColorService.updateUserColorSave(ucid,buffer,modTime);
-        return "redirect:/diary/diaryList";
+    public String updateDiary(@RequestParam("ucid") int ucid, @RequestParam("content") String content) {
+        userColorService.updateUserColorContent(ucid, content);
+        return "redirect:/diary/list/1";
     }
- 
+    
+    
+    // 삭제 기능
+    @GetMapping("/delete/{ucid}")
+    public String deleteDiary(@PathVariable("ucid") int ucid) {
+        userColorService.deleteUserColor(ucid);
+        return "redirect:/diary/list/1";
+    }
+
 }
 	
 	

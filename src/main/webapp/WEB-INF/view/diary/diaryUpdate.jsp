@@ -72,6 +72,7 @@
         button:hover {
             background-color: #45a049;
         }
+
         .update-btn {
             display: inline-block;
             padding: 10px 20px;
