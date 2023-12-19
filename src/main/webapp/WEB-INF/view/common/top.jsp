@@ -44,6 +44,12 @@
 	            <i class="far fa-list-alt"></i>
 	            </a>
 	            </li>
+	           <li class="nav-item me-3">
+		         <a href="/project_H/api/local" class="nav-link btn btn-outline-secondary" title="상담센터 지도"
+		            data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
+		          <i class="fas fa-map-marker-alt"></i>
+		            </a>
+         		 </li>
 				<li class="nav-item me-3">
            			<c:if test="${not empty sessCustId}">
               			<div class="dropdown">

@@ -161,8 +161,8 @@
                         <th width="5%">번호</th>
                         <th width="35%">제목</th>
                         <th width="10%">작성자</th>
-                        <th width="10%">조회수</th>
                         <th width="20%">작성일</th>
+                        <th width="10%">조회수</th>
                         <th width="10%"><i class="fa-regular fa-thumbs-up"></i></th>
                     </tr>
                 </thead>
@@ -178,11 +178,11 @@
                             </td>
                             <td>${board.nickname}</td>
                             <!-- fmt:formatDate를 사용하여 시간:분 형식으로 표시 -->
-                            <td>${board.viewCount}</td>
                             <td>
                                 <fmt:formatDate value="${board.modTime}" pattern="yyyy-MM-dd HH:mm"/>
                                 
                             </td>
+                            	<td>${board.viewCount}</td>
                             	<td>${board.hitCount}</td>
                             
                             

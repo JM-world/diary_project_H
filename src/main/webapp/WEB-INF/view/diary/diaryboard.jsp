@@ -7,12 +7,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시판</title>
-<script src="https://kit.fontawesome.com/fdb840a8cc.js"
-	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 <style>
 body {
 	background-image: url('/project_H/img/pa.jpg');
@@ -132,6 +130,8 @@ body {
 </style>
 </head>
 <body>
+<%@ include file="../common/head.jsp"%>
+	<%@ include file="../common/top.jsp"%>
 	<div id="container">
 		<div align="right">
 			<!-- Login 검증 -->
@@ -157,8 +157,8 @@ body {
 						<th width="5%">번호</th>
 						<th width="35%">제목</th>
 						<th width="10%">작성자</th>
-						<th width="10%">조회수</th>
 						<th width="20%">작성일</th>
+						<th width="10%">조회수</th>
 						<th width="10%"><i class="fa-regular fa-thumbs-up"></i></th>
 					</tr>
 				</thead>
@@ -170,9 +170,9 @@ body {
 							<td><a href=${pageContext.request.contextPath}/diary/view/${sharedBoard.ucid}>
 									${sharedBoard.nickname}님의 '${sharedBoard.title}색' 일기 </a></td>
 							<td>${sharedBoard.nickname}</td>
-							<td>${sharedBoard.viewCount}</td>
 							<td><fmt:formatDate value="${sharedBoard.modTime}"
 									pattern="yyyy-MM-dd HH:mm" /></td>
+							<td>${sharedBoard.viewCount}</td>
 							<td>${sharedBoard.hitCount}</td>
 						</tr>
 					</c:forEach>

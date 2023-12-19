@@ -1,19 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+<%@ include file="../common/head.jsp" %>
+    
     <title>키워드로 상담센터 검색하기</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: url('/project_H/img/pa.jpg') center center fixed;
-            background-size: cover;
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            
             flex-direction: column;
         }
 
@@ -42,21 +41,19 @@
             font-size: 16px;
         }
 
-        button {
-            padding: 5px 10px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
+        
     </style>
 </head>
 <body>
+<%@ include file="../common/top.jsp" %>
 <div>
-    <label for="keyword">상담센터 키워드:</label>
+    <label for="keyword" style="margin-top:20px;">상담센터 키워드:</label>
     <input type="text" id="keyword" />
-    <button onclick="searchCounselingCenters()">검색</button>
+    <button onclick="searchCounselingCenters()" style="padding: 5px 10px;">검색</button>
 </div>
-<div id="map" style="width:100%;height:350px;"></div>
+<div id="map-container" style="display: flex; justify-content: center; align-items: center;">
+    <div id="map" style="width: 80vw; height: 80vw; max-width: 700px; max-height: 700px; border: 2px solid white; border-radius: 10px; overflow: hidden;"></div>
+</div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=163531f559b3b1b15070b9932b6799e2&libraries=services"></script>
 <script>
@@ -98,7 +95,7 @@ function displayMarker(place) {
 
     kakao.maps.event.addListener(marker, 'click', function () {
         var content =
-            '<div style="padding:15px;font-size:14px;">' + // 큰 패딩과 작은 폰트 크기로 수정
+            '<div style="padding:20px;font-size:12px; margin-bottom:20px;">' + // 큰 패딩과 작은 폰트 크기로 수정
             '<strong>' + place.place_name + '</strong><br>' +
             '전화번호: ' + place.phone + '<br>' +
             '위치: ' + place.address_name +

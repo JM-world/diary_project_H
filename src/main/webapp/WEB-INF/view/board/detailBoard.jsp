@@ -11,8 +11,7 @@
 	rel="stylesheet">
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://kit.fontawesome.com/fdb840a8cc.js"
-	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <%@ include file="../common/head.jsp"%>
@@ -104,31 +103,38 @@
 			<fmt:formatDate value="${board.modTime}" pattern="yyyy-MM-dd" />
 		</div>
 		<div class="form-group-buttons">
-			<a href="#" class="update_btn btn btn-warning"
-				onclick="confirmUpdate('${pageContext.request.contextPath}/board/update/${board.bid}')">수정</a>
-			<a href="#" class="delete_btn btn btn-danger"
-				onclick="confirmDelete('${pageContext.request.contextPath}/board/delete/${board.bid}')">삭제</a>
-			<a href="${pageContext.request.contextPath}/board/list/1"
-				class="list_btn btn btn-primary">목록</a>
+			  <%-- 수정 버튼은 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
+		    <c:if test="${board.custId eq sessionScope.sessCustId}">
+		        <button id="likeBtn" onclick="updateDiary()">수정</button>
+		    </c:if>
+		    <%-- 삭제 버튼도 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
+		    <c:if test="${board.custId eq sessionScope.sessCustId}">
+		        <button id="likeBtn" onclick="deleteDiary()">삭제</button>
+		    </c:if>
 			<button id="likeBtn" class="btn btn-success"
 				onclick="likeButtonClicked('${board.bid}')">공감</button>
-			<div id="hitCount">좋아요: ${board.hitCount}</div>
 		</div>
+				     <div style="margin-top: 20px;">
+            <a href="javascript:history.back()">← 뒤로가기</a>
+	</div>
 	</div>
 <script>
-		function confirmDelete(deleteUrl) {
-			var confirmDelete = confirm("삭제하시겠습니까?");
-			if (confirmDelete) {
-				window.location.href = deleteUrl;
-			}
-		}
+function updateDiary() {
+    var confirmUpdate = confirm('게시글을 수정하시겠습니까?');
+    if (confirmUpdate) {
+        window.location.href = '/project_H/board/update/${board.bid}';
+    }
+}
 
-		function confirmUpdate(updateUrl) {
-			var confirmUpdate = confirm("수정하시겠습니까?");
-			if (confirmUpdate) {
-				window.location.href = updateUrl;
-			}
-		}
+function deleteDiary() {
+    var confirmDelete = confirm('게시글을 삭제하시겠습니까?');
+    if (confirmDelete) {
+        alert('게시글이 삭제 되었습니다.');
+        // 삭제를 위한 URL로 이동 또는 필요한 동작 수행
+        예: window.location.href = '/project_H/board/delete/${board.bid}';
+    }
+}
+
 	    function likeButtonClicked(boardId) {
 	        // 서버에 좋아요 수 업데이트를 요청하는 URL
 	       var likeUrl = "${pageContext.request.contextPath}/board/like/" + boardId;

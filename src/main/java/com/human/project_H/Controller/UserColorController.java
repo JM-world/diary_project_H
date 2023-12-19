@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -100,7 +101,7 @@ public class UserColorController {
 		System.out.println(sessCustId);
 		List<UserColor> list = userColorService.getUserColorList(page);
 		
-		Collections.reverse(list);
+		Collections.sort(list, Comparator.comparing(UserColor::getModTime).reversed());
 		model.addAttribute("userColorList", list);
 		list.forEach(x -> System.out.println(x));
 
@@ -116,7 +117,7 @@ public class UserColorController {
 	}
 
 	// 사용자 일기 목록
-	@GetMapping("/diarylist") //
+	@GetMapping("/diarylist") 
 	public String diarylist(HttpSession session, Model model) {
 		String sessCustId = (String) session.getAttribute("sessCustId");
 		System.out.println(sessCustId);
@@ -125,7 +126,7 @@ public class UserColorController {
 		// 사용자가 작성한 일기 목록을 가져옴
 		List<UserColor> userdiaryList = userColorService.getUserColorListByCustId(sessCustId);
 		
-		Collections.reverse(userdiaryList);
+		Collections.sort(userdiaryList, Comparator.comparing(UserColor::getModTime).reversed());
 
 		// 가져온 일기 목록을 뷰에 전달
 		model.addAttribute("userDiaryList", userdiaryList);
