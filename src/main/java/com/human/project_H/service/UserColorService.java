@@ -45,6 +45,8 @@ public interface UserColorService {
 	 
 	 void updateUserColorContent(int ucid, String content);
 	 
+	 int commitCount();
+	 
 	
 
 	 

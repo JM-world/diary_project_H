@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service; // Service 어노테이션 추가
 
 import com.human.project_H.Dao.TodayColorDao;
+import com.human.project_H.entity.HomeColor;
 import com.human.project_H.entity.TodayColor;
 
 @Service // Service 어노테이션 추가
@@ -33,6 +34,21 @@ public class TodayColorServiceImpl implements TodayColorService {
 	@Override
 	public TodayColor searchTodayColor(int cid) {
 		return todayColorDao.searchTodayColor(cid);
+	}
+	
+	@Override
+	public HomeColor homeColor(String modTime) {
+		return todayColorDao.homeColor(modTime);
+	}
+
+	@Override
+	public TodayColor choiceHomeColor() {
+		return todayColorDao.choiceHomeColor();
+	}
+
+	@Override
+	public void insertHomeColor(String mainColor, String mainColor_code, String todayWord) {
+		todayColorDao.insertHomeColor(mainColor, mainColor_code, todayWord);
 	}
     
 	

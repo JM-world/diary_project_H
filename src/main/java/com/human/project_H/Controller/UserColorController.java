@@ -3,7 +3,6 @@ package com.human.project_H.Controller;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.human.project_H.entity.Board;
 import com.human.project_H.entity.TodayColor;
 import com.human.project_H.entity.UserColor;
 import com.human.project_H.service.TodayColorService;

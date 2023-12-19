@@ -111,10 +111,13 @@ public class UserColorServiceOracleImpl implements UserColorService {
 	
 	@Override
     public void updateUserColorContent(int ucid, String content) {
-        // 여기에서 다른 로직이 필요하다면 추가
         userColorDao.updateUserColorContent(ucid, content);
     }
 	
+	@Override
+	public int commitCount() {
+		return userColorDao.commitCount();
+	}
 
 
 }
