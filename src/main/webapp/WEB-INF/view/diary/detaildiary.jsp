@@ -150,7 +150,16 @@ body {
             예: window.location.href = '/project_H/diary/delete/${userColor.ucid}';
         }
     }
+    
+   
+    function likeButtonClicked(ucid) {
+        var likeUrl = "${pageContext.request.contextPath}/diary/like/" + ucid;
+        window.location.href = likeUrl;
+    }
+
 </script>
+
+
 
 </head>
 
@@ -191,6 +200,9 @@ body {
 		    <c:if test="${userColor.custId eq sessionScope.sessCustId}">
 		        <button id="deleteBtn" onclick="deleteDiary()">삭제</button>
 		    </c:if>
+		      <button id="likeBtn" onclick="likeButtonClicked('${userColor.ucid}')">공감</button>
+
+	
 		</div>
 		
 		     <div style="margin-top: 20px;">

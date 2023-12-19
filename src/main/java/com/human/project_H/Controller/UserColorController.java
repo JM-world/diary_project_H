@@ -5,7 +5,9 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -118,7 +120,8 @@ public class UserColorController {
 	public String diarylist(HttpSession session, Model model) {
 		String sessCustId = (String) session.getAttribute("sessCustId");
 		System.out.println(sessCustId);
-
+		
+		
 		// 사용자가 작성한 일기 목록을 가져옴
 		List<UserColor> userdiaryList = userColorService.getUserColorListByCustId(sessCustId);
 		
@@ -297,6 +300,31 @@ public class UserColorController {
     public String deleteDiary(@PathVariable("ucid") int ucid) {
         userColorService.deleteUserColor(ucid);
         return "redirect:/diary/list/1";
+    }
+    
+    
+    @GetMapping("/like/{ucid}")
+    public String likeDiary(@PathVariable int ucid, HttpSession session) {
+        String custId = (String) session.getAttribute("sessCustId");
+
+        // 세션에서 현재 사용자가 이미 공감한 게시물 ID 목록을 가져옴
+        Set<Integer> likedPost = (Set<Integer>) session.getAttribute("likedPost");
+        if (likedPost == null) {
+        	likedPost = new HashSet<>();
+        }
+
+        // 이미 공감한 게시물인지 확인
+        if (!likedPost.contains(ucid)) {
+            // 사용자가 공감하지 않은 경우에만 공감 처리
+        	userColorService.increaseHitCount(ucid);
+
+            // 세션에 공감한 게시물 ID 추가
+        	likedPost.add(ucid);
+            session.setAttribute("likedPost", likedPost);
+        }
+
+        // 상세 페이지로 이동
+        return "redirect:/diary/view/" + ucid;
     }
 
 }

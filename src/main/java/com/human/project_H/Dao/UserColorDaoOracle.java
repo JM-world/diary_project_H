@@ -66,4 +66,10 @@ public interface UserColorDaoOracle {
 
 	@Delete("DELETE FROM USERCOLOR WHERE UCID = #{ucid}")
 	void deleteUserColor(int ucid);
+	
+	@Update("UPDATE usercolor SET hitCount = hitCount + 1 WHERE ucid = #{ucid}")
+	void increaseHitCount(int ucid);
+	
+    @Select("SELECT hitCount FROM usercolor WHERE ucid = #{ucid}")
+    int getHitCount(int ucid);
 }

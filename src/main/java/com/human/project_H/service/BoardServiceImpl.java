@@ -60,22 +60,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int increaseHitCount(String custId, int bid) {
-        boolean userLiked = boardDao.hasUserLiked(custId, bid);
+    public int increaseHitCount(int bid) {
+        boardDao.increaseHitCount(bid);
 
-        if (!userLiked) {
-            // 사용자가 공감을 누르지 않았다면 공감수 증가
-            boardDao.increaseHitCount(bid);
-
-            // 사용자가 공감을 눌렀음을 기록
-            boardDao.addLikeRecord(custId, bid);
-
-            // 증가된 공감수를 반환
-            return boardDao.getHitCount(bid);
-        } else {
-            // 이미 공감을 눌렀다면 현재 공감수를 반환
-            return boardDao.getHitCount(bid);
-        }
+        return boardDao.getHitCount(bid);
     }
 
     @Override

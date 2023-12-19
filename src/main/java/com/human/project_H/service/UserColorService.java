@@ -47,6 +47,8 @@ public interface UserColorService {
 	 
 	 int commitCount();
 	 
+	 int increaseHitCount(int ucid);
+	 
 	
 
 	 

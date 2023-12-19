@@ -66,7 +66,7 @@ public class UserController {
 
 		if (sessCustId.equals("admin2")) {
 			model.addAttribute("msg", "수정이 완료되었습니다.");
-			model.addAttribute("url", "redirect:/user/list/" + session.getAttribute("currentUserPage"));
+			model.addAttribute("url", "/project_H/user/list/" + session.getAttribute("currentUserPage"));
 			return "common/alertMsg";
 		} else {
 			model.addAttribute("msg", "수정이 완료되었어요.");

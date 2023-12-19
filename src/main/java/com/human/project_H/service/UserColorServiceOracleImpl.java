@@ -50,7 +50,7 @@ public class UserColorServiceOracleImpl implements UserColorService {
 
 	@Override
 	public void deleteUserColor(int ucid) {
-		 userColorDao.deleteUserColor(ucid);
+		userColorDao.deleteUserColor(ucid);
 
 	}
 
@@ -108,16 +108,22 @@ public class UserColorServiceOracleImpl implements UserColorService {
 	public List<UserColor> getUserColorListByCustId(String custId) {
 		return userColorDao.getUserColorListByCustId(custId);
 	}
-	
+
 	@Override
-    public void updateUserColorContent(int ucid, String content) {
-        userColorDao.updateUserColorContent(ucid, content);
-    }
-	
+	public void updateUserColorContent(int ucid, String content) {
+		userColorDao.updateUserColorContent(ucid, content);
+	}
+
 	@Override
 	public int commitCount() {
 		return userColorDao.commitCount();
 	}
 
+	@Override
+	public int increaseHitCount(int ucid) {
+		userColorDao.increaseHitCount(ucid);
+
+		return userColorDao.getHitCount(ucid);
+	}
 
 }
