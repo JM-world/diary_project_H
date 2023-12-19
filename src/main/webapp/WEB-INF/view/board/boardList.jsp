@@ -58,14 +58,17 @@
         .table > tbody > tr > td:nth-child(1),
         .table > thead > tr > th:nth-child(3),
         .table > tbody > tr > td:nth-child(3),
-        .table > thead > tr > th:nth-child(4),
-        .table > tbody > tr > td:nth-child(4),
         .table > thead > tr > th:nth-child(5),
         .table > tbody > tr > td:nth-child(5),
         .table > thead > tr > th:nth-child(6),
         .table > tbody > tr > td:nth-child(6) {
             width: 10%;
         }
+        
+		.table > thead > tr > th:nth-child(4),
+		.table > tbody > tr > td:nth-child(4) {
+		    width: 20%; 
+		}
 
         /* 제목 너비 조정 */
         .table > thead > tr > th:nth-child(2),
@@ -161,33 +164,33 @@
                         <th width="5%">번호</th>
                         <th width="35%">제목</th>
                         <th width="10%">작성자</th>
-                        <th width="20%">작성일</th>
-                        <th width="10%">조회수</th>
-                        <th width="10%"><i class="fa-regular fa-thumbs-up"></i></th>
+                        <th width="40%">작성일</th>
+                        <th width="5%">조회수</th>
+                        <th width="5%"><i class="fa-regular fa-thumbs-up"></i></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="board" items="${boardList}" varStatus="status">
-                        <tr>
-                            <td>${board.bid}</td>
-                            <td id="title">
-                                <a href="/project_H/board/view/${board.bid}">${board.title}</a>
-                                <c:if test="${board.viewCount >= 20}">
-                                    <span class="viewCount">hit!</span>
-                                </c:if>
-                            </td>
-                            <td>${board.nickname}</td>
-                            <!-- fmt:formatDate를 사용하여 시간:분 형식으로 표시 -->
-                            <td>
-                                <fmt:formatDate value="${board.modTime}" pattern="yyyy-MM-dd HH:mm"/>
-                                
-                            </td>
-                            	<td>${board.viewCount}</td>
-                            	<td>${board.hitCount}</td>
-                            
-                            
-                        </tr>
-                    </c:forEach>
+                   <c:forEach var="board" items="${boardList}" varStatus="status">
+    <tr>
+        <td>${board.bid}</td>
+        <td id="title">
+            <a href="/project_H/board/view/${board.bid}">
+                ${board.title}
+                <!-- 20회 이상 조회수일 때 이미지 표시 -->
+                <c:if test="${board.viewCount >= 20}">
+                    <img src="/project_H/img/hit.jpg"  style="width: 20px; height: 20px;">
+                </c:if>
+			            </a>
+			        </td>
+			        <td>${board.nickname}</td>
+			        <!-- fmt:formatDate를 사용하여 시간:분 형식으로 표시 -->
+			        <td>
+			            <fmt:formatDate value="${board.modTime}" pattern="yyyy-MM-dd HH:mm"/>
+			        </td>
+			        <td>${board.viewCount}</td>
+			        <td>${board.hitCount}</td>
+    </tr>
+</c:forEach>
                 </tbody>
             </table>
 

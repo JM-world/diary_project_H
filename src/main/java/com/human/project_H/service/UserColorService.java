@@ -49,7 +49,9 @@ public interface UserColorService {
 	 
 	 int increaseHitCount(int ucid);
 	 
-	
+	String getAuthorCustId(int ucid);
+	 
+	 
 
 	 
 }

@@ -4,11 +4,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<%@ include file="../common/head.jsp" %>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나의 일기 목록</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+        <!-- 부트스트랩 JS 및 Popper.js, jQuery CDN 추가 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -83,9 +89,41 @@
 	        height: 30px;
 	        display: inline-block;
 	    }
+		.scroll-to-top {
+		    display: none;
+		    position: fixed;
+		    bottom: 20px;
+		    right: 20px;
+		    background-color: #c3adec;
+		    color: #black;
+		    padding: 10px 15px;
+		    border-radius: 5px;
+		    text-decoration: none;
+		}
+		
+		.scroll-to-top:hover {
+		    background-color: #c3adec;
+		}
+		
+		/* 스크롤 위치에 따라 버튼 표시/숨김 */
+		body {
+		    margin: 0;
+		    padding: 0;
+		    box-sizing: border-box;
+		}
+		
+		html {
+		    scroll-behavior: smooth;
+		}
+		
+		.scroll-to-top.visible {
+		    display: block;
+		}
+		
     </style>
 </head>
 <body>
+<%@ include file="../common/top.jsp" %>
     <div class="container mt-5">
         <h1 class="mb-4 text-center text-white">나의 일기 목록</h1>
 
@@ -124,10 +162,22 @@
     </div>
 </c:forEach>
     </div>
+	<!-- Scroll to Top Button -->
+	<a href="#top" class="scroll-to-top">맨 위로 이동</a>
+	  <!-- 스크립트를 HTML 문서의 끝 부분에 추가 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var scrollBtn = document.querySelector('.scroll-to-top');
 
-    <!-- 부트스트랩 JS 및 Popper.js, jQuery CDN 추가 -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            window.addEventListener('scroll', function () {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    scrollBtn.classList.add('visible');
+                } else {
+                    scrollBtn.classList.remove('visible');
+                }
+            });
+        });
+    </script>
+    
 </body>
 </html>

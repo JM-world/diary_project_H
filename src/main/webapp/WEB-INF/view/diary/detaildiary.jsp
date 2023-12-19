@@ -3,38 +3,40 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
+<%@ include file="../common/head.jsp" %>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>일기장</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<%@ include file="../common/head.jsp"%>
 <style>
+
 body {
-	background-color: #f8f9fa;
-	font-family: 'Hi Melody', cursive;
-	background-image: url('/project_H/img/pa.jpg');
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	margin: 0;
-	padding: 0;
+    background-color: #f8f9fa;
+    font-family: 'Hi Melody', cursive;
+    background-image: url('/project_H/img/pa.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
 }
 
 .layout {
-	max-width: 700px;
-	margin: auto;
-	padding: 20px;
-	background-color: #ffffff;
-	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-	margin-top: 50px;
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    margin-top: 50px;
+    flex: 1;
+    box-sizing: border-box;
+    border: 2px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+   	background: linear-gradient(to right, ${userColor.color_code2}, ${userColor.color_code2}, ${userColor.mainColor_code1});
 }
 
 #todayHeader {
@@ -71,20 +73,7 @@ body {
 	margin-bottom: 10px;
 }
 
-#content {
-	resize: none;
-	width: 100%;
-	min-height: 300px;
-	padding: 20px;
-	border: 2px solid #c3adec;
-	border-radius: 0;
-	margin-bottom: 20px;
-	display: block;
-	margin: 30px auto;
-	margin-left: auto;
-	margin-right: auto;
-	transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
+
 
 #todayContent {
 	font-size: 1.2em;
@@ -148,7 +137,7 @@ body {
         if (confirmDelete) {
             alert('게시글이 삭제 되었습니다.');
             // 삭제를 위한 URL로 이동 또는 필요한 동작 수행
-            예: window.location.href = '/project_H/diary/delete/${userColor.ucid}';
+           	window.location.href = '/project_H/diary/delete/${userColor.ucid}';
         }
     }
     
@@ -159,36 +148,50 @@ body {
     }
 
 </script>
-
-
-
 </head>
-
 <body>
+<%@ include file="../common/top.jsp" %>
 	<div class="layout">
 		<!-- 일기 상세 정보 표시 -->
 		<div id="todayHeader">
 			<h2>${userColor.nickname}님의'${userColor.title}'색일기</h2>
 		</div>
 		<hr
-			style="border-top: 2px solid #c3adec; width: 100%; margin: 10px 0;">
+			style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
 		<div id="todaytitle">
 			<p>작성자: ${userColor.nickname}</p>
 		</div>
 		<div id="todayColor">
 			<p>오늘의 색: ${userColor.title}</p>
 			<p>오늘의 기분: ${userColor.sentiment}</p>
+
+    <c:choose>
+        <c:when test="${userColor.sentiment eq 'positive'}">
+            <img src="/project_H/img/happy.png" alt="Happy" width="30" height="30" />
+        </c:when>
+        <c:when test="${userColor.sentiment eq 'negative'}">
+            <img src="/project_H/img/sad.png" alt="Sad" width="30" height="30" />
+        </c:when>
+        <c:when test="${userColor.sentiment eq 'neutral'}">
+            <img src="/project_H/img/neutral.png" alt="Neutral" width="30" height="30" />
+        </c:when>
+        <c:otherwise>
+            <!-- 기분이 Happy, Sad, Neutral이 아닌 경우에 대한 처리 -->
+            <p>이미지가 없음</p>
+        </c:otherwise>
+    </c:choose>
 		</div>
 		<hr
-			style="border-top: 2px solid #c3adec; width: 100%; margin: 10px 0;">
+			style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
 		<div id="todayContent">
 			<p>내용: ${userColor.content}</p>
 		</div>
+
 		<hr
-			style="border-top: 2px solid #c3adec; width: 100%; margin: 10px 0;">
+			style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
 		<div id="todayDiaryInfo">
 			<p>조회수: ${userColor.viewCount}</p>
-			<p>좋아요: ${userColor.hitCount}</p>
+			<p>공감수: ${userColor.hitCount}</p>
 			<p>작성일: <fmt:formatDate value="${userColor.modTime}" pattern="yyyy-MM-dd HH:mm" /></p>
 		</div>
 		
@@ -201,14 +204,16 @@ body {
 		    <c:if test="${userColor.custId eq sessionScope.sessCustId}">
 		        <button id="deleteBtn" onclick="deleteDiary()">삭제</button>
 		    </c:if>
-		      <button id="likeBtn" onclick="likeButtonClicked('${userColor.ucid}')">공감</button>
+		   <c:if test="${userColor.custId ne sessionScope.sessCustId}">
+	    <button id="likeBtn" onclick="likeButtonClicked('${userColor.ucid}')">공감</button>
+	</c:if>
 
-	
-		</div>
+</div>
 		
-		     <div style="margin-top: 20px;">
-            <a href="javascript:history.back()">← 뒤로가기</a>
-        </div>
+		
+	<div style="margin-top: 20px;">
+    <a href="/project_H/diary/diarylist">돌아가기</a>
+</div>
 	</div>
 </body>
 

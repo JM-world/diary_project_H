@@ -126,6 +126,7 @@ public class UserColorController {
 		// 사용자가 작성한 일기 목록을 가져옴
 		List<UserColor> userdiaryList = userColorService.getUserColorListByCustId(sessCustId);
 		
+		
 		Collections.sort(userdiaryList, Comparator.comparing(UserColor::getModTime).reversed());
 
 		// 가져온 일기 목록을 뷰에 전달
@@ -147,57 +148,67 @@ public class UserColorController {
 	}
 
 		// 일기 쓰기 화면 POST
-		@PostMapping("/diaryWrite")
-		public String boardWriteProc(String content, boolean commit, boolean share, HttpSession session, Model model) {
-			
-			// 공백제외 30자가 넘어가거나 900자 이하일 때 제출 가능
-			if (content.replaceAll("\\s", "").length() >= 30 && content.replaceAll("\\s", "").length() <= 900) {
-					commit = true;
-					content = content.trim();
-					String sessCustId = (String) session.getAttribute("sessCustId");
-					UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
-					userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
-					// 추가한부분
-					try {
-					String userInput = (String) content;
-					userInput = URLEncoder.encode(content, "utf-8");
-					String apiUrl = "http://192.168.0.233:5000/chatbot/sentiment?userInput=" + userInput;
-					
-					URI uri = new URI(apiUrl);
-					RestTemplate rest = new RestTemplate();
-					ResponseEntity<String> response = rest.getForEntity(uri, String.class);
-				
-					// Rest api 데이터 파서
-					JSONParser json = new JSONParser();
-					JSONObject obj = (JSONObject) json.parse(response.getBody().toString());
-					String sentiment = (String) obj.get("sentiment");
-					// Rest api 데이터 파서
-					
-					// 감정 점수 만들기
-					double negative_score = (double) obj.get("negative_score");
-					double positive_score = (double) obj.get("positive_score");
-					double neutral_score = (double) obj.get("neutral_score");
-					
-					System.out.println(sentiment);
-					System.out.println(positive_score);
-					System.out.println(neutral_score);
-					System.out.println(negative_score);
-					
-					// 서비스에있는 insertSentiment 함수로 user_sentiment 테이블에 전송
-					userColorService.insertSentiment(sessCustId, sentiment, positive_score, neutral_score, negative_score);
-					} catch (Exception e) {
-						System.out.println("예외발생");
-					}
-					//추가한부분끝
-					model.addAttribute("msg", "작성 완료되었어요.");
-					if (share) {
-						// 공유 여부가 true일 때 공유 게시판으로 이동
-						return "redirect:/diary/list/1";
-					} else {
-						// 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
-						return "redirect:/diary/diarylist";
-					}
-			}
+	@PostMapping("/diaryWrite")
+	public String boardWriteProc(String content, boolean commit, boolean share, HttpSession session, Model model) {
+	    // 공백을 제외한 글자 수가 30자 이상이고 900자 이하일 때 제출 가능
+	    if (content.replaceAll("\\s", "").length() >= 30 && content.replaceAll("\\s", "").length() <= 900) {
+	        commit = true;
+	        content = content.trim();
+	        String sessCustId = (String) session.getAttribute("sessCustId");
+	        UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
+
+	        // 중복 저장 방지를 위해 userColor가 null이 아닌 경우에만 저장
+	        if (userColor != null && !userColor.getCommitFlag()) {
+	            userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
+
+	            // 추가한 부분
+	            try {
+	                String userInput = URLEncoder.encode(content, "utf-8");
+	                String apiUrl = "http://192.168.0.233:5000/chatbot/sentiment?userInput=" + userInput;
+
+	                URI uri = new URI(apiUrl);
+	                RestTemplate rest = new RestTemplate();
+	                ResponseEntity<String> response = rest.getForEntity(uri, String.class);
+
+	                // Rest api 데이터 파서
+	                JSONParser json = new JSONParser();
+	                JSONObject obj = (JSONObject) json.parse(response.getBody().toString());
+	                String sentiment = (String) obj.get("sentiment");
+	                // Rest api 데이터 파서
+
+	                // 감정 점수 만들기
+	                double negative_score = (double) obj.get("negative_score");
+	                double positive_score = (double) obj.get("positive_score");
+	                double neutral_score = (double) obj.get("neutral_score");
+
+	                System.out.println(sentiment);
+	                System.out.println(positive_score);
+	                System.out.println(neutral_score);
+	                System.out.println(negative_score);
+
+	                // 서비스에 있는 insertSentiment 함수로 user_sentiment 테이블에 전송
+	                userColorService.insertSentiment(sessCustId, sentiment, positive_score, neutral_score, negative_score);
+	            } catch (Exception e) {
+	                System.out.println("예외 발생");
+	            }
+	            // 추가한 부분 끝
+
+	            model.addAttribute("msg", "작성 완료되었어요.");
+	            if (share) {
+	                // 공유 여부가 true일 때 공유 게시판으로 이동
+	                return "redirect:/diary/list/1";
+	            } else {
+	                // 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
+	                return "redirect:/diary/diarylist";
+	            }
+	        }
+	    }
+
+	    // 글자 수 조건을 만족하지 않을 경우 또는 이미 저장된 경우
+	    model.addAttribute("msg", "일기 내용이 충분하지 않아요.");
+	    return "diary/diaryWrite";
+	}
+
 //		else {
 //			String sessCustId = (String) session.getAttribute("sessCustId");
 //			UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());		
@@ -207,8 +218,6 @@ public class UserColorController {
 //			return "redirect:/diary/diaryWrite";
 //		}
 			
-			return "";
-		}
 
 
 	// 임시 저장 기능
@@ -233,52 +242,26 @@ public class UserColorController {
 		return "";
 	}
 
-	@GetMapping("/sharedBoard")
-	public String getSharedBoardList(Model model) {
-		List<UserColor> list = userColorService.getSharedUserColors();
-		model.addAttribute("sharelist", list);
-		// 뷰 이름을 반환해야 합니다.
-		return "diary/diaryboard";
-
-	}
-
-	// 일기 쓰기 화면 POST
-	@PostMapping("/sharedBoard")
-	public String boarddiaryshareProc(String content, boolean commit, boolean share, HttpSession session, Model model) {
-		if (content.replaceAll("\\s", "").length() >= 30) {
-			commit = true;
-			content = content.trim();
-			String sessCustId = (String) session.getAttribute("sessCustId");
-			UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
-			userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
-			model.addAttribute("msg", "작성 완료되었어요.");
-			if (share) {
-				// 공유 여부가 true일 때 공유 게시판으로 이동
-				return "redirect:/diary/list/1";
-			} else {
-				// 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
-				return "redirect:/diary/diarylist";
-
-			}
-		}
-
-		return "diary/diaryboard";
-	}
 
 	@GetMapping("/view/{ucid}")
 	public String viewBoard(@PathVariable int ucid, HttpSession session, Model model) {
-		String sessCustId = (String) session.getAttribute("sessCustId");
-		System.out.println(sessCustId);
-		userColorService.increaseViewCount(ucid);
+	    String sessCustId = (String) session.getAttribute("sessCustId");
+	    System.out.println(sessCustId);
 
-		// 게시글 정보를 가져와서 JSP에 전달
-		UserColor usercolor = userColorService.getUserColor(ucid);
+	    UserColor usercolor = userColorService.getUserColor(ucid);
 
-		model.addAttribute("userColor", usercolor);
-		System.out.println(usercolor);
+	    // 본인 글인지 여부를 확인
+	    if (!usercolor.getCustId().equals(sessCustId)) {
+	        // 본인 글이 아니라면 조회수 증가
+	        userColorService.increaseViewCount(ucid);
+	    }
 
-		return "diary/detaildiary";
+	    model.addAttribute("userColor", usercolor);
+	    System.out.println(usercolor);
+
+	    return "diary/detaildiary";
 	}
+
 	
 	  // 수정 페이지로 이동
     @GetMapping("/update/{ucid}")
@@ -303,32 +286,38 @@ public class UserColorController {
         return "redirect:/diary/list/1";
     }
     
-    
+ 
     @GetMapping("/like/{ucid}")
     public String likeDiary(@PathVariable int ucid, HttpSession session) {
         String custId = (String) session.getAttribute("sessCustId");
 
-        // 세션에서 현재 사용자가 이미 공감한 게시물 ID 목록을 가져옴
+        // 게시물의 작성자 정보를 가져오는 메서드를 UserColorService에 추가한다고 가정
+        String authorCustId = userColorService.getAuthorCustId(ucid);
+
+        // 자신이 작성한 게시물에는 공감할 수 없도록 체크
+        if (custId != null && custId.equals(authorCustId)) {
+            // 자신이 작성한 게시물에는 공감할 수 없음
+            // 원하는 처리를 수행하거나 에러 메시지를 반환할 수 있음
+            return "redirect:/error"; // 예시로 에러 페이지로 리다이렉트
+        }
+
         Set<Integer> likedPost = (Set<Integer>) session.getAttribute("likedPost");
         if (likedPost == null) {
-        	likedPost = new HashSet<>();
+            likedPost = new HashSet<>();
         }
 
         // 이미 공감한 게시물인지 확인
         if (!likedPost.contains(ucid)) {
             // 사용자가 공감하지 않은 경우에만 공감 처리
-        	userColorService.increaseHitCount(ucid);
+            userColorService.increaseHitCount(ucid);
 
             // 세션에 공감한 게시물 ID 추가
-        	likedPost.add(ucid);
+            likedPost.add(ucid);
             session.setAttribute("likedPost", likedPost);
         }
 
         // 상세 페이지로 이동
         return "redirect:/diary/view/" + ucid;
     }
-
 }
-	
-	
 

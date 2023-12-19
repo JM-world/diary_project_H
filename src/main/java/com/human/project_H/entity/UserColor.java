@@ -21,8 +21,35 @@ public class UserColor {
     private TodayColor todayColor;  // TodayColor 테이블과 연결되는 필드
     private String todayColorTitle;
     private String sentiment;
+	private String mainColor_code1;
+	private String color_code2;
     
-    
+	
+	
+	public String getMainColor_code1() {
+		return mainColor_code1;
+	}
+
+
+
+	public void setMainColor_code1(String mainColor_code1) {
+		this.mainColor_code1 = mainColor_code1;
+	}
+
+
+
+	public String getColor_code2() {
+		return color_code2;
+	}
+
+
+
+	public void setColor_code2(String color_code2) {
+		this.color_code2 = color_code2;
+	}
+
+
+
 	public String getSentiment() {
 		return sentiment;
 	}
@@ -52,8 +79,13 @@ public class UserColor {
 		this.shareFlag = shareFlag;
 	}
 
+
+
 	public UserColor(int ucid, String custId, int cid, String content, Timestamp modTime, int hitCount, int viewCount,
-			int emotion, boolean commitFlag, boolean shareFlag) {
+			int emotion, boolean commitFlag, boolean shareFlag, String title, String nickname, User user,
+			TodayColor todayColor, String todayColorTitle, String sentiment, String mainColor_code1,
+			String color_code2) {
+
 		this.ucid = ucid;
 		this.custId = custId;
 		this.cid = cid;
@@ -64,7 +96,17 @@ public class UserColor {
 		this.emotion = emotion;
 		this.commitFlag = commitFlag;
 		this.shareFlag = shareFlag;
+		this.title = title;
+		this.nickname = nickname;
+		this.user = user;
+		this.todayColor = todayColor;
+		this.todayColorTitle = todayColorTitle;
+		this.sentiment = sentiment;
+		this.mainColor_code1 = mainColor_code1;
+		this.color_code2 = color_code2;
 	}
+
+
 
 	public int getUcid() {
 		return ucid;

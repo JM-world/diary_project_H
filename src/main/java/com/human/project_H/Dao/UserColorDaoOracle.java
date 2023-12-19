@@ -40,10 +40,15 @@ public interface UserColorDaoOracle {
 			+ "JOIN TODAYCOLOR tc ON uc.cid = tc.cid " + "WHERE uc.shareFlag = 1")
 	public List<UserColor> getSharedUserColors();
 
-	@Select("SELECT uc.*, u.nickname, tc.title, uc.content, uc.viewCount, uc.hitCount " + "FROM USERS u "
-			+ "JOIN USERCOLOR uc ON u.custId = uc.custId " + "JOIN TODAYCOLOR tc ON uc.cid = tc.cid "
-			+ "WHERE uc.shareFlag = 1 AND uc.ucid = #{ucid}")
+	@Select("SELECT uc.*, u.nickname, tc.title, tc.maincolor_code1, tc.color_code2, uc.content, uc.viewCount, uc.hitCount, us.sentiment " +
+	        "FROM USERS u " +
+	        "JOIN USERCOLOR uc ON u.custId = uc.custId " +
+	        "JOIN TODAYCOLOR tc ON uc.cid = tc.cid " +
+	        "LEFT JOIN user_sentiment us ON u.custId = us.custId " +
+	        "WHERE uc.shareFlag = 1 AND uc.ucid = #{ucid}")
 	UserColor getUserColor(int ucid);
+
+
 
 	@Select("SELECT uc.*, u.nickname, tc.title, us.sentiment, uc.modTime " + "FROM USERCOLOR uc "
 			+ "JOIN users u ON uc.custId = u.custId " + "JOIN todaycolor tc ON uc.cid = tc.cid "
@@ -72,4 +77,11 @@ public interface UserColorDaoOracle {
 	
     @Select("SELECT hitCount FROM usercolor WHERE ucid = #{ucid}")
     int getHitCount(int ucid);
+    
+    @Select("SELECT uc.custId " +
+            "FROM USERCOLOR uc " +
+            "WHERE uc.ucid = #{ucid}")
+    String getAuthorCustId(int ucid);
+
+    
 }

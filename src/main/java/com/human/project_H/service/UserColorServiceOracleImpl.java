@@ -126,4 +126,9 @@ public class UserColorServiceOracleImpl implements UserColorService {
 		return userColorDao.getHitCount(ucid);
 	}
 
+	@Override
+	public String getAuthorCustId(int ucid) {
+		return userColorDao.getAuthorCustId(ucid);
+	}
+
 }
