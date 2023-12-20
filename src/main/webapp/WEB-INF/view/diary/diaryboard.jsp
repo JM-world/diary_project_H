@@ -33,6 +33,7 @@ body {
 	margin-top: 0cm;
 }
 
+
 #write {
 	text-align: right;
 }
@@ -115,13 +116,15 @@ body {
 }
 
 #list {
-	margin-bottom: -100px;
+	
 }
+
 
 .table {
 	background-color: rgba(255, 255, 255, 0.3);
 	margin-top: -50px;
 }
+
 
 #write {
 	position: relative;
@@ -142,6 +145,7 @@ body {
 				<%-- <%@include file="login.jsp" %> --%>
 			</c:if>
 		</div>
+
 
 		<div id="list">
 			<img src="/project_H/img/누끼책.gif" alt="게시판 이미지"

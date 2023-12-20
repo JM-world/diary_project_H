@@ -4,6 +4,7 @@
 <html>
 <head>
 	<%@ include file="common/head.jsp" %>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 	<style>
 
     body {
@@ -47,6 +48,13 @@
         	text-align: center;
         	font-size: 2.0em;
         }
+        .hidden {
+		    display: none;
+		  }
+			 
+
+
+        
    
 
 </style>
@@ -108,19 +116,21 @@
 		        <!-- Bootstrap Card 1 -->
 		        <div class="card" style="width: 900px; margin-left: 30px; background-color: ${sessionScope.homeColor.mainColor_code}; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
 				    <div class="card-header" style="background-color: #f8f9fa; padding: 15px; border-bottom: 1px solid #ddd; border-radius: 10px 10px 0 0;">
-				        <h5 class="card-title" style="margin: 0; font-size: 1.5em;">&lt; 오늘의 긍정의 한 마디 &gt;</h5>
+				        <div style='color:${sessionScope.homeColor.mainColor_code}; font-weight: bold;
+				        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; margin: 0; font-size: 2.0em; text-align: center;'>오늘의 긍정의 한 마디</div>
 				    </div>
 				    <div class="card-body1" style="padding: 20px;">
-				        <h5 class="card-word" style="text-align: center; font-size: 2.5em; margin: 0;">"${sessionScope.homeColor.todayWord}"</h5>
+				        <h5 class="card-word" id="dynamicWord" style="text-align: center; font-size: 2.5em; margin: 0;">"${sessionScope.homeColor.todayWord}"</h5>
 				    </div>
 				    <div class="card-footer" style="font-size: 1.3em; background-color: #f8f9fa; padding: 15px; border-top: 1px solid #ddd; border-radius: 0 0 10px 10px;">
-				        <div style='color:${sessionScope.homeColor.mainColor_code}; float: left;'>오늘의 색: ${sessionScope.homeColor.mainColor}</div>
-				        <div style="float: right;">이 달의 총 일기 제출 수: ${sessionScope.count}</div>
+				        <div style='color:${sessionScope.homeColor.mainColor_code}; float: left; font-weight: bold;
+				        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;'>오늘의 색: ${sessionScope.homeColor.mainColor}</div>
+				        <div style='color:white; float: right; font-weight: bold;
+				        text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;'>이 달의 총 일기 제출 수: ${sessionScope.count}</div>
 				        <div style="clear: both;"></div>
 				    </div>
 				</div>
 			</div>
-		
 			
 			<div class="col-2">
 		        
@@ -129,25 +139,31 @@
 			<div class="col-5">
 		        <!-- Bootstrap Card 2 -->
 		        <div class="card" style="width: 440px; height: 440px; margin-left: 30px;">
+					<div class="card-header">
+                        <h5 class="card-title">선택한 메인 색</h5>
+                    </div>
 		            <div class="card-body2">
-		                <h5 class="card-title">유저가 가장 많이 선택한 메인 컬러 TOP 3</h5>
 		                <!-- Add card content here -->
+						<canvas id="ColorChart" width="100%" height="40"></canvas>
 		            </div>
 		        </div>
 			</div>
 			<div class="col-5">
 				<!-- Bootstrap Card 3 -->
 		        <div class="card" style="width: 440px; height: 440px; margin-left: 90px;">
+					<div class="card-header">
+                        <h5 class="card-title">감정 비율 3가지(긍정, 중립, 부정)</h5>
+                    </div>
 		            <div class="card-body3">
-		                <h5 class="card-title">감정 비율 3가지(긍정, 중립, 부정)</h5>
 		                <!-- Add card content here -->
+						<canvas id="SentiChart" width="100%" height="40"></canvas>
 		            </div>
 		        </div>
 			</div>
 			<div class="col-2">
 			</div>
 	    </div>
-	    <div class="card-container" style="margin-left:20px;">
+	   	    <div class="card-container" style="margin-left:20px;">
 		    <div class="row">
 		    	
 		    		<!-- Bootstrap Card 4 -->
@@ -158,16 +174,61 @@
 		            </div>
 				    <div class="card-body1">
 				    	<br>
-				    	<h5 class="card-word" style="text-align: center; font-size: 2.5em;">회원랭킹 <br>(공감수) TOP 10</h5>
+				    	<h5 class="card-word" style="text-align: center; font-size: 2.0em;">회원랭킹 <br>(공감수) TOP 10</h5>
 				    	<br>
 			    	</div>
 					    <div class="card-footer" style="font-size: 1.3em;">
+					    	<table class="table table-striped table-bordered table-hover" style="background-color: rgba(255, 255, 255, 0.7); border: 0;">
+				                <thead style="background-color: rgba(255, 255, 255, 0.7); border: 0;">
+				                    <tr>
+				                        <th width="20%">  </th>
+				                        <th width="45%">닉네임</th>
+				                        <th width="35%">공감수</th>
+				                    </tr>
+				                </thead>
+				                <tbody style="background-color: rgba(255, 255, 255, 0.7); border: 0;">
+				                    <c:forEach var="item" items="${userColor}" varStatus="loopStatus">
+				                        <tr>
+				                        	<c:choose>
+					                        	<c:when test="${loopStatus.index eq 0}">
+					                        		<td><img src="${pageContext.request.contextPath}/img/gold.png"
+					                        		width="30" height="30"/></td>
+					                        	</c:when>
+					                        	<c:when test="${loopStatus.index eq 1}">
+					                        		<td><img src="${pageContext.request.contextPath}/img/silver.png"
+					                        		width="30" height="30"/></td>
+					                        	</c:when>
+					                        	<c:when test="${loopStatus.index eq 2}">
+					                        		<td><img src="${pageContext.request.contextPath}/img/bronze.png"
+					                        		width="30" height="30"/></td>
+					                        	</c:when>
+					                        	<c:otherwise>
+					                            	<td style="font-size: 15px;">${loopStatus.index+1} 등</td>
+					                        	</c:otherwise>
+				                            </c:choose>
+					                            <td style="font-size: 15px;">${item.nickname}</td>
+				                            	<td style="font-size: 17px;">${item.hitCount}</td>
+				                        </tr>
+				                    </c:forEach>
+				                </tbody>
+				            </table>
 			    		</div>
 			        </div>
 		    </div>
 		</div>
 	</div>
-	    
-
+	<script src="/project_H/js/sentiCat.js"></script>
+	<script src="/project_H/js/selecCol.js"></script>
+	<script src="/project_H/js/uhit.js"></script>
+	<script>
+		let sentiCatVar = ${sentiCatJson};
+		getSentiCatProc(sentiCatVar);
+		let selecColVar = ${selcColorJson};
+		selecColProc(selecColVar);
+		let hitVar = ${hitJson};
+		getHitChart(hitVar);
+	</script>
+	
+	
 </body>
 </html>

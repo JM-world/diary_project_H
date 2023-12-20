@@ -1,20 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>FullCalendar in JSP</title>
-
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
- 
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
     <!-- FullCalendar CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.css" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.js"></script>
+    <%@ include file="../common/head.jsp" %>
 
     <style>
         body {
@@ -39,111 +41,284 @@
             background: rgba(255, 255, 255, 0.8);
             z-index: 1;
         }
-    </style>
 
-    <script>
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: white;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            color: black;
+        }
+
+        #sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        #sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .nav-item {
+            margin-left: 15px;
+        }
+    </style>
+ <script>
+ 
         // 내가 쓴 일기 페이지로 이동하는 함수
         function openDiaryPage() {
             alert("일기 페이지로 이동합니다.");
         }
 
+     	// 변경된 스크립트: 사이드바 토글
         $(document).ready(function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                datesSet: function (info) {
-                    var allDates = info.view.currentStart;
-                    var endDate = info.view.currentEnd;
-                    var allVisibleDates = [];
+	            datesSet: function(info) {
+	            	calendar.removeAllEvents();
+	                var allDates = info.view.currentStart;
+	                var endDate = info.view.currentEnd;
+	                var allVisibleDates = [];
+	
+	                var currentDay = new Date(allDates);
+	                while (currentDay <= endDate) {
+	                      allVisibleDates.push(new Date(currentDay));
+	                      currentDay.setDate(currentDay.getDate() + 1);
+	                    }
+	               		 calendar.allVisibleDates = allVisibleDates; // calendar 객체에 저장
+	           			
+                    var jsonString = ${jsonString};
+                    var words = ${words};
+                    var colorString = ${colorString};
+	        		var events = [];
+	        		var uniqueDates = {}; // 중복을 확인하기 위한 객체
+	        		console.log(words);
+	        		calendar.words = words;
+	        		calendar.jsonString = jsonString;
+	        		calendar.colorString = colorString;
+	        		
+	        		for (var i = 0; i < jsonString.length; i++) {
+	        		    var obj = jsonString[i];
+	        		    // 값이 없을 경우 이벤트 추가를 건너뛰도록 확인
+	        		    if (obj['감정'] && obj['날짜']) {
+	        		        // 중복된 '날짜' 값을 확인하여 가장 마지막 값으로 갱신
+	        		        uniqueDates[obj['날짜']] = obj['감정'];
+	        		    }
+	        		}
+        			                
+	        		// uniqueDates 객체에 저장된 마지막 '날짜' 값을 events 배열에 추가
+	        		for (var date in uniqueDates) {
+	        		    events.push({
+	        		        start: date,
+	        		        title: uniqueDates[date],
+	        		        // 기타 이벤트 속성들...
+	        		    });
+	        		}
+	        		
 
-                    var currentDay = new Date(allDates);
-                    while (currentDay <= endDate) {
-                        allVisibleDates.push(new Date(currentDay));
-                        currentDay.setDate(currentDay.getDate() + 1);
-                    }
 
-                    calendar.allVisibleDates = allVisibleDates;
-                },
-                dateClick: function (info) {
-                    console.log('Clicked on: ' + info.dateStr);
-                    openModal(info.dateStr, calendar.allVisibleDates);
-                }
+	        		console.log(events[1])
+	        		
+	        		calendar.addEventSource(events);
+	            },
+	            
+	            dateClick: function (info) {
+					
+	                console.log('Clicked on: ' + info.dateStr);
+	                
+					
+	                
+	                openModal(info.dateStr, calendar.words, calendar.jsonString, calendar.colorString);
+	            },
+	         
+	            eventContent: function(arg) {
+	                var eventEl = document.createElement('div');
+	                eventEl.innerText = arg.event.title;
+	             // additionalInfo가 정의되어 있는 경우에만 추가
+	                if (arg.event.extendedProps.additionalInfo !== undefined) {
+	                    eventEl.innerText += ' - ' + arg.event.extendedProps.additionalInfo;
+	                }
+	                
+	                return { domNodes: [eventEl] };
+	              },
+                  
+                
             });
 
             calendar.render();
-        });
 
-        function openModal(date, allVisibleDates) {
-            var day = new Date(date).getDate();
-
-            $('#myModal').modal('show');
-            $('#exampleModalLabel').text(date);
-
-            var data = [];
-            for (var i = 0; i < allVisibleDates.length; i++) {
-                var currentString = allVisibleDates[i].toString();
-                var slicedText = currentString.slice(0, 7);
-
-                if (slicedText.includes("Dec")) {
-                    currentString = currentString.replace("Dec", "12");
-                    currentString = currentString.slice(4, 14);
-                    var stringWithoutSpaces = currentString.replace(/\s/g, '-');
-                    var parts = stringWithoutSpaces.split('-');
-                    var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
-                    data.push(formattedDate);
-                } else if (slicedText.includes("Jan")) {
-                    currentString = currentString.replace("Jan", "1");
-                    currentString = currentString.slice(4, 14);
-                    var stringWithoutSpaces = currentString.replace(/\s/g, '-');
-                    var parts = stringWithoutSpaces.split('-');
-                    var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
-                    data.push(formattedDate);
+            $('#sidebarCollapse').on('click', function () {
+                if ($('#sidebar').width() === 0) {
+                    $('#sidebar').width(250);
+                } else {
+                    $('#sidebar').width(0);
                 }
-            }
-            console.log(data[day - 1]);
-            $('#modalTitle').text('오늘의 컬러: ' + data[day - 1]);
-            $('#modalContent').text('오늘 가장 많이 쓴 단어: ');
-            $('#modalContent2').text('오늘의 기분: ');
-            $('#modalContent3').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">일간 분석 데이터</a>');
-            $('#modalContent4').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">월간 분석 데이터</a>');
-           
+            });
+
+            $('#sidebar .closebtn').on('click', function () {
+                $('#sidebar').width(0);
+            });
+        });
+        
+        // <종문 추가> 일기 쓰기 중복 확인
+		function checkDuplication() {
+        	
         }
-    </script>
+     
+        
+        // 변경된 부분: 일기 쓰기 모달 열기
+        function openModalForWritingDiary() {
+            $('#myModal2').modal('show');
+            $('#exampleModalLabel2').text("일기 쓰기");
+            $('#modalTitle2').text('색깔을 골라보세요!');
+            $('#modalContent6').html('<a href="${pageContext.request.contextPath}/diary/color" onclick="openDiaryPage()">일기 쓰기</a>');
+
+            // 다른 모달 내용 초기화
+            $('#modalTitle').empty();
+            $('#modalContent').empty();
+            $('#modalContent2').empty();
+            $('#modalContent3').empty();
+            $('#modalContent4').empty();
+          
+        }
+
+		function openModal(date, words, sentiments, colors) {
+			const today = new Date();
+			const currentDate = today.toISOString().split('T')[0]; // YYYY-MM-DD 형식의 현재 날짜
+
+			const dateParts = date.split('-'); // date를 년, 월, 일로 분리
+			const currentParts = currentDate.split('-'); // currentDate를 년, 월, 일로 분리
+
+			const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // date의 년, 월, 일로 Date 객체 생성
+			const currentObj = new Date(currentParts[0], currentParts[1] - 1, currentParts[2]); // currentDate의 년, 월, 일로 Date 객체 생성
+			
+			let foundcolor = '';
+			colors.forEach(color => {
+				if (color['modtime'] === date) {
+					foundcolor = color['maincolor']
+				}
+			})
+			let foundWord = '';
+			words.forEach(word => {
+			    if (word['날짜'] === date) {
+			    	foundWord = word['단어'];
+			    }
+			});
+			let foundSentiment = '';
+			sentiments.forEach(sentiment => {
+				if (sentiment['날짜'] === date) {
+					foundSentiment = sentiment['감정']
+				}
+			})
+			$('#myModal').modal('show');
+        	$('#exampleModalLabel.modal-title').text(date);
+        	
+        	if (foundcolor !== ''){
+       			$('#modalTitle').text('오늘의 컬러: ' + foundcolor);
+        	} else {
+        		$('#modalTitle').text('');
+        	}
+       		if (foundWord !== ''){
+	        	$('#modalContent').text('오늘 가장 많이 쓴 단어: ' + foundWord);
+        	} else {
+        		$('#modalContent').text('');
+        	}
+       		if (foundSentiment !== ''){
+       			// 오늘의 기분이 있는 경우
+	        	$('#modalContent2').text('오늘의 기분: ' + foundSentiment);
+		        $('#modalContent3').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">일간 분석 데이터</a>');
+        	} else if (dateObj.getTime() < currentObj.getTime()){
+        		// 오늘의 기분이 없고, date가 현재 날짜보다 이전인 경우
+        		$('#modalContent2').text('일기를 작성하지 않았어요!');
+		        $('#modalContent3').text('바쁜 하루를 보내셨군요!');
+        	} else if (dateObj.getTime() === currentObj.getTime()){
+        		// 오늘의 기분이 없고, date가 오늘인경우
+        		$('#modalContent2').text('오늘은 일기를 작성하지 않았어요!');
+		        $('#modalContent3').html('<a href="${pageContext.request.contextPath}/diary/color" onclick="openDiaryPage()">오늘 일기 쓰러 가기</a>');
+        	} else {
+        		$('#modalContent2').text('훗날의 일기는 미리작성할수 없어요!');
+        	}
+	        $('#modalContent4').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">월간 분석 데이터</a>');
+	        $('#modalContent5').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">내가 쓴 일기 보러 가기</a>');
+            
+        }
+</script>
 </head>
 <body>
-<%@ include file="../common/head.jsp" %>
-<%@ include file="../common/top.jsp" %>
+	<%@ include file="../common/top.jsp" %>
+    <!-- 배경 이미지를 담당하는 추가된 요소 -->
+    <div id="background"></div>
 
-<!-- 배경 이미지를 담당하는 추가된 요소 -->
-<div id="background"></div>
-
-<!-- FullCalendar를 감싸는 추가된 요소 -->
-<div id='calendar'></div>
-
-<!-- Bootstrap Modal 예제 -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p id="modalTitle"></p>
-                <p id="modalContent"></p>
-                <p id="modalContent2"></p>
-                <p id="modalContent3"></p>
-                <p id="modalContent4"></p>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <!-- Bootstrap Modal 예제 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalTitle"></p>
+                    <p id="modalContent"></p>
+                    <p id="modalContent2"></p>
+                    <p id="modalContent3"></p>
+                    <p id="modalContent4"></p>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- FullCalendar를 감싸는 추가된 요소 -->
+    <div id='calendar'></div>
+
+    <!-- Bootstrap Modal 예제 -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalTitle2"></p>
+                    <p id="modalContent6"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

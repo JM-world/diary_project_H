@@ -75,4 +75,9 @@ public class BoardServiceImpl implements BoardService {
     public void addLikeRecord(String custId, int bid) {
         boardDao.addLikeRecord(custId, bid);
     }
+    
+	@Override
+	public String getAuthorCustId(int uid) {
+		return boardDao.getAuthorCustId(uid);
+	}
 }

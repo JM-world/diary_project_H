@@ -57,9 +57,10 @@
 				    <i class="fas fa-user"></i>
 				  </button>
 				  <ul class="dropdown-menu dropdown-menu-end">
-				    <li><a class="dropdown-item" style="font-weight: bold;" href="#">개인정보 수정</a></li>
+				    <li><a class="dropdown-item" style="font-weight: bold;" href="/project_H/user/list/1">개인정보 수정</a></li>
 				    <li><hr class="dropdown-divider"></hr></li>
-				    <li><a class="dropdown-item text-danger" style="font-weight: bold;" href="/project_H/user/logout">로그아웃</a></li>
+				    <li><a class="dropdown-item text-danger" style="font-weight: bold;" href="#" data-bs-toggle="modal"
+				    data-bs-target="#logoutModal">로그아웃</a></li>
 				  </ul>
 			  </div>
 		            </c:if>
@@ -75,26 +76,30 @@
     </nav>
 
     <c:if test="${not empty sessCustId}">
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <h6>로그아웃할까요?</h6>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="button" class="btn btn-danger">로그아웃</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </c:if>
+	    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-sm" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+	                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	                </div>
+	                <div class="modal-body text-center">
+	                    <h6>로그아웃할까요?</h6>
+	                </div>
+	                <div class="modal-footer justify-content-center">
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	                    <button type="button" class="btn btn-danger" onclick="performLogout()">로그아웃</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</c:if>
    <script>
+   function performLogout() {
+       
+       window.location.href = "/project_H/user/logout";
+   }
+   
     function showLoginModal() {
         $('#loginModal').modal('show');
     }

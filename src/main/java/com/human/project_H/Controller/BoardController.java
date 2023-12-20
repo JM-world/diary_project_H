@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.human.project_H.entity.Board;
+import com.human.project_H.entity.UserColor;
 import com.human.project_H.service.BoardService;
 
 @Controller
@@ -73,15 +74,27 @@ public class BoardController {
     }
 
     @GetMapping("/view/{bid}")
-    public String viewBoard(@PathVariable int bid, Model model) {
-    	   boardService.increaseViewCount(bid);
+    public String viewBoard(@PathVariable int bid, HttpSession session, Model model) {
+        String sessCustId = (String) session.getAttribute("sessCustId");
 
-    	    // 게시글 정보를 가져와서 JSP에 전달
-    	    Board board = boardService.getBoard(bid);
-    	    model.addAttribute("board", board);
-    	    return "board/detailBoard";
+        // 게시글 정보를 가져와서 JSP에 전달
+        Board board = boardService.getBoard(bid);
+        model.addAttribute("board", board);
+
+        // 로그인한 사용자와 게시글 작성자를 비교하여 자신의 게시물인지 확인
+        if (sessCustId != null && sessCustId.equals(board.getCustId())) {
+            return "board/detailBoard";
+        }
+
+        // 자신의 게시물이 아닌 경우에만 조회수 및 공감수 증가
+        boardService.increaseViewCount(bid);
+        // boardService.increaseLikeCount(bid);  // 공감수를 증가시키는 메서드를 추가해야 함
+
+        return "board/detailBoard";
     }
-    
+
+    	 
+
     @GetMapping("/like/{bid}")
     public String likeBoard(@PathVariable int bid, HttpSession session) {
         String custId = (String) session.getAttribute("sessCustId");
@@ -90,6 +103,13 @@ public class BoardController {
         Set<Integer> likedPosts = (Set<Integer>) session.getAttribute("likedPosts");
         if (likedPosts == null) {
             likedPosts = new HashSet<>();
+        }
+
+        // 게시글 정보를 가져와서 작성자와 현재 사용자를 비교하여 자신의 게시물인지 확인
+        Board board = boardService.getBoard(bid);
+        if (board != null && custId != null && custId.equals(board.getCustId())) {
+            // 자신의 게시물인 경우에는 공감 처리를 하지 않고 상세 페이지로 이동
+            return "redirect:/board/view/" + bid;
         }
 
         // 이미 공감한 게시물인지 확인
@@ -105,6 +125,7 @@ public class BoardController {
         // 상세 페이지로 이동
         return "redirect:/board/view/" + bid;
     }
+
 
     
     @GetMapping("/delete/{bid}")

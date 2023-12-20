@@ -8,7 +8,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.human.project_H.entity.SelectCalendarTodayColor;
+import com.human.project_H.entity.SelectContent;
 import com.human.project_H.entity.UserColor;
+import com.human.project_H.entity.UserSentiment;
 
 @Mapper
 public interface UserColorDaoOracle {
@@ -56,9 +59,6 @@ public interface UserColorDaoOracle {
 			+ "WHERE uc.custId = #{custId} AND uc.isDeleted = 0")
 	List<UserColor> getUserColorListByCustId(String custId);
 
-	@Insert("insert into USER_SENTIMENT values (default, #{custId}, #{sentiment}, #{positive_score}, #{neutral_score}, #{negative_score}, SYSTIMESTAMP)")
-	public void insertSentiment(String custId, String sentiment, double positive_score, double neutral_score,
-			double negative_score);
 
 	@Update("UPDATE usercolor SET content = #{content}, modTime = SYSDATE WHERE ucid = #{ucid}")
 	void updateUserColorContent(int ucid, String content);
@@ -83,5 +83,23 @@ public interface UserColorDaoOracle {
             "WHERE uc.ucid = #{ucid}")
     String getAuthorCustId(int ucid);
 
-    
+  //감정점수
+  	@Insert("insert into USER_SENTIMENT values (default, #{custId}, #{sentiment}, #{positive_score}, #{neutral_score}, #{negative_score}, SYSTIMESTAMP)")
+  	public void insertSentiment(String custId, String sentiment, double positive_score, double neutral_score, double negative_score);
+  	
+  	@Select("select * from user_sentiment where custId = #{sessCustId}")
+  	List<UserSentiment> searchUSER_SENTIMENT(String sessCustId);
+  	
+  	@Select("select * from usercolor where custid = #{sessCustId}")
+  	List<SelectContent> searchCONTENT(String sessCustId);
+  	
+
+	@Select("SELECT tc.maincolor_name, tc.title, uc.modtime\n"
+			+ "FROM todaycolor tc\n"
+			+ "INNER JOIN usercolor uc ON tc.cid = uc.cid\n"
+			+ "WHERE uc.custid = #{sessCustId}")
+	List<SelectCalendarTodayColor> searchCalcolor(String sessCustId);
+  	
+    @Select("select * from (select distinct u.nickname, sum(c.hitcount) hitCount from users u inner join userColor c on u.custid = c.custid group by u.nickname order by hitCount desc) where rownum <= 10")
+ 	List<UserColor> getHitRank();
 }

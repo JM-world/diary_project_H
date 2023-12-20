@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.human.project_H.Dao.UserColorDaoOracle;
+import com.human.project_H.entity.SelectCalendarTodayColor;
+import com.human.project_H.entity.SelectContent;
 import com.human.project_H.entity.UserColor;
 import com.human.project_H.entity.UserSentiment;
 
@@ -22,7 +24,24 @@ public class UserColorServiceOracleImpl implements UserColorService {
 		userColorDao.insertSentiment(custId, sentiment, positive_score, neutral_score, negative_score);
 		return null;
 	}
+	
+	@Override
+	public List<SelectContent> searchCONTENT(String sessCustId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public List<UserSentiment> searchUSER_SENTIMENT(String sessCustId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<SelectCalendarTodayColor> searchCalcolor(String sessCustId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	@Override
 	public UserColor searchUserColor(String custId, String modTime) {
 		UserColor userColor = userColorDao.searchUserColor(custId, modTime);
@@ -130,5 +149,12 @@ public class UserColorServiceOracleImpl implements UserColorService {
 	public String getAuthorCustId(int ucid) {
 		return userColorDao.getAuthorCustId(ucid);
 	}
-
+	
+	@Override
+	public List<UserColor> getHitRank() {
+		
+		return userColorDao.getHitRank();
+	}
+	
+	
 }

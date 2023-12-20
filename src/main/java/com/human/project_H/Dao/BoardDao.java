@@ -57,7 +57,12 @@ public interface BoardDao {
 
     @Insert("INSERT INTO board (custId, bid, title) VALUES (#{custId}, #{bid}, 'Like Record')")
     void addLikeRecord(@Param("custId") String custId, @Param("bid") int bid);
-
+    
+    
+    @Select("SELECT b.custId " +
+            "FROM boadr b " +
+            "WHERE b.uid = #{uid}")
+    String getAuthorCustId(int uid);
 
 
 

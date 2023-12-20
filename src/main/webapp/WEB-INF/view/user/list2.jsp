@@ -111,7 +111,7 @@
                             </div>
                             <div style="text-align: center;">
                                 <input class="btn btn-primary" type="submit" value="수정">
-                                <input class="btn btn-secondary ms-1" type="reset" value="취소">
+                                <a class="btn btn-secondary ms-1" href="javascript:history.go(-1)">취소></a>
                             </div>
                         </form>
                     </div>

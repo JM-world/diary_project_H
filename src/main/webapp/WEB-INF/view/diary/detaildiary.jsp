@@ -163,11 +163,12 @@ body {
 		</div>
 		<div id="todayColor">
 			<p>오늘의 색: ${userColor.title}</p>
-			<p>오늘의 기분: ${userColor.sentiment}</p>
+			<p>오늘의 감정:${userColor.sentiment}</p>
 
     <c:choose>
         <c:when test="${userColor.sentiment eq 'positive'}">
-            <img src="/project_H/img/happy.png" alt="Happy" width="30" height="30" />
+             <img src="/project_H/img/happy.png" alt="Happy" width="80" height="80" />
+         
         </c:when>
         <c:when test="${userColor.sentiment eq 'negative'}">
             <img src="/project_H/img/sad.png" alt="Sad" width="30" height="30" />
@@ -175,10 +176,6 @@ body {
         <c:when test="${userColor.sentiment eq 'neutral'}">
             <img src="/project_H/img/neutral.png" alt="Neutral" width="30" height="30" />
         </c:when>
-        <c:otherwise>
-            <!-- 기분이 Happy, Sad, Neutral이 아닌 경우에 대한 처리 -->
-            <p>이미지가 없음</p>
-        </c:otherwise>
     </c:choose>
 		</div>
 		<hr
@@ -210,11 +207,9 @@ body {
 
 </div>
 		
-		
-	<div style="margin-top: 20px;">
+<div style="margin-top: 20px; text-align: left;">
     <a href="/project_H/diary/diarylist">돌아가기</a>
 </div>
-	</div>
 </body>
 
 </html>

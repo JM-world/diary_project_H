@@ -32,5 +32,7 @@ public interface BoardService {
 
     // 사용자가 공감을 눌렀음을 기록
     void addLikeRecord(String custId, int bid);
+    
+    String getAuthorCustId(int uid);
 
 }
