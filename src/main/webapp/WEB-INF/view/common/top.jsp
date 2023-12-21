@@ -8,7 +8,8 @@
             <div>
             	<h4 style="font-weight: bold; font-family: 'Hi Melody', sans-serif;">
             		<a href="/project_H/home" style="text-decoration: none; color: black;" 
-            		onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">" 오늘의 기분, 오늘의 컬러 "</a>
+            		onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">
+            		<img src="/project_H/img/bookMain.gif" width="50" height="50 " style="border-radius: 50%;"/>  오늘의 기분, 오늘의 컬러 </a>
             	</h4>
 	           	</div>
 	        </div>
