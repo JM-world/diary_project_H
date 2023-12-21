@@ -96,9 +96,7 @@
         $(document).ready(function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-            	eventOverlap: false,
                 initialView: 'dayGridMonth',
-                
 	            datesSet: function(info) {
 	            	calendar.removeAllEvents();
 	                var allDates = info.view.currentStart;
@@ -112,116 +110,165 @@
 	                    }
 	               		 calendar.allVisibleDates = allVisibleDates; // calendar 객체에 저장
 	           			
-                    var jsonString = ${jsonString};
-                    var words = ${words};
-                    var colorString = ${colorString};
-	        		var events = [];
-	        		var uniqueDates = {}; // 중복을 확인하기 위한 객체
-	        		var colorDates = {}; // 이벤트 객체
-	        		calendar.words = words;
-	        		calendar.jsonString = jsonString;
-	        		calendar.colorString = colorString;
-	        		
-	        		for (var i = 0; i < jsonString.length; i++) {
-	        		    var obj = jsonString[i];
-	        		    // 값이 없을 경우 이벤트 추가를 건너뛰도록 확인
-	        		    if (obj['감정'] && obj['날짜']) {
-	        		        // 중복된 '날짜' 값을 확인하여 가장 마지막 값으로 갱신
-	        		        uniqueDates[obj['날짜']] = obj['감정'];
-	        		    }
-	        		}
-	        		
-	        		//console.log(uniqueDates)
-	        		
-	        		// uniqueDates 객체에 저장된 마지막 '날짜' 값을 events 배열에 추가
-	        		for (var date in uniqueDates) {
-	        		    events.push({
-	        		        start: date,
-	        		        title: uniqueDates[date],
-	        		        // 기타 이벤트 속성들...
-	        		    });
-	        		}
-	        		
-	        		for (var i = 0; i < colorString.length; i++) {
-	        		    var obj2 = colorString[i];
-	        		 	// 값이 없을 경우 이벤트 추가를 건너뛰도록 확인
-	        		    colorDates[obj2['modtime']] = obj2['maincolor'];   
-	        		}        
-	        		
-	        		
-	        		// colorDates 객체에 저장된 마지막 '날짜' 값을 events 배열에 추가
-	        		for (var date in colorDates) {
-	        		    events.push({
-	        		        start: date,
-	        		        title: colorDates[date],
-	        		        // 기타 이벤트 속성들...
-	        		    });
-	        		}
-	        		
-	        		events.sort(function(a, b) {
-	        		    return new Date(a.start) - new Date(b.start);
-	        		});
-	        		
-	        		var eventsData = {};
-	        		events.forEach(event => {
-	        			var date = event['start'];
-	        			
-	        			// 해당 날짜의 키가 이미 존재하는지 확인하고, 없다면 빈 배열로 초기화합니다.
-	        		    if (!eventsData[date]) {
-	        		        eventsData[date] = [];
-	        		    }
-	        			
-	        		 	// 해당 날짜의 배열에 이벤트 정보를 추가합니다.
-	        			eventsData[date].push({
-	        		        title: event['title'] // 이벤트의 제목(title)을 해당 날짜의 배열에 추가합니다.
-	        	        // 다른 이벤트 속성이 필요하다면 여기에 추가할 수 있습니다.
-	        	    });
-	        	});
-	        		console.log(eventsData)
-	        	
-	        		// eventsData 객체 순회
-					for (var date in eventsData) {
-					    if (eventsData.hasOwnProperty(date)) {
-					        // 각 날짜에 대한 이벤트 정보 배열
-					        var eventsForDate = eventsData[date];
-					        
-					        // 해당 날짜의 모든 이벤트 정보 배열을 순회하며 FullCalendar에 이벤트 추가
-					        eventsForDate.forEach(eventInfo => {
-					            calendar.addEvent({
-					                start: date, // 이벤트 시작 날짜
-					                title: eventInfo.title // 이벤트 제목
-					                // 다른 이벤트 속성이 있다면 여기에 추가합니다.
-					            });
-					        });
-					    }
-					}
-	            },
+	               		var jsonString = ${jsonString};
+	                    var words = ${words};
+	                    var colorString = ${colorString};
+		        		var events = [];
+		        		var uniqueDates = {}; // 중복을 확인하기 위한 객체
+		        		var colorDates = {}; // 이벤트 객체
+		        		calendar.words = words;
+		        		calendar.jsonString = jsonString;
+		        		calendar.colorString = colorString;
+		        		
+		        		for (var i = 0; i < jsonString.length; i++) {
+		        		    var obj = jsonString[i];
+		        		    // 값이 없을 경우 이벤트 추가를 건너뛰도록 확인
+		        		    if (obj['감정'] && obj['날짜']) {
+		        		        // 중복된 '날짜' 값을 확인하여 가장 마지막 값으로 갱신
+		        		        uniqueDates[obj['날짜']] = obj['감정'];
+		        		    }
+		        		}
+		        		
+		        		//console.log(uniqueDates)
+		        		
+		        		// uniqueDates 객체에 저장된 마지막 '날짜' 값을 events 배열에 추가
+		        		for (var date in uniqueDates) {
+		        			if (uniqueDates[date] === '긍정'){
+		        				title = '긍정';
+		        			} else if (uniqueDates[date] === '부정'){
+		        				title = '부정';
+		        			} else {
+		        				title = '중립';
+		        			}
+		        		    events.push({
+		        		        start: date,
+		        		        title: title,
+		        		        // 기타 이벤트 속성들...
+		        		    });
+		        		}
+		        		
+		        		for (var i = 0; i < colorString.length; i++) {
+		        		    var obj2 = colorString[i];
+		        		 	// 값이 없을 경우 이벤트 추가를 건너뛰도록 확인
+		        		    colorDates[obj2['modtime']] = obj2['maincolor'];   
+		        		}        
+		        		
+								        		
+		        		events.sort(function(a, b) {
+		        		    return new Date(a.start) - new Date(b.start);
+		        		});
+		        		
+		        		var eventsData = {};
+		        		events.forEach(event => {
+		        			var date = event['start'];
+		        			
+		        			// 해당 날짜의 키가 이미 존재하는지 확인하고, 없다면 빈 배열로 초기화합니다.
+		        		    if (!eventsData[date]) {
+		        		        eventsData[date] = [];
+		        		    }
+		        			
+		        		 	// 해당 날짜의 배열에 이벤트 정보를 추가합니다.
+		        			eventsData[date].push({
+		        		        title: event['title'] // 이벤트의 제목(title)을 해당 날짜의 배열에 추가합니다.
+		        	        // 다른 이벤트 속성이 필요하다면 여기에 추가할 수 있습니다.
+		        	    });
+		        	});
+		        		
+		        		//console.log(eventsData)
+		        		// eventsData 객체 순회
+						for (var date in eventsData) {
+						    if (eventsData.hasOwnProperty(date)) {
+						        // 각 날짜에 대한 이벤트 정보 배열
+						        var eventsForDate = eventsData[date];
+						        console.log(eventsForDate)
+						        // 해당 날짜의 모든 이벤트 정보 배열을 순회하며 FullCalendar에 이벤트 추가
+						        eventsForDate.forEach(eventInfo => {
+						        	//console.log(eventInfo.date)
+						            calendar.addEvent({
+						                start: date, // 이벤트 시작 날짜
+						                title: eventInfo.title,
+						                isEvent: true, // 이벤트인 경우 true로 설정
+						                backgroundColor : 'transparent',
+						                borderColor : 'transparent',
+						                extendedProps: {
+						                    additionalInfo: eventInfo.title // 추가 정보를 여기에 설정하세요
+						                    // 다른 추가 정보가 있다면 여기에 추가할 수 있습니다.
+						                }
+						                // 다른 이벤트 속성이 있다면 여기에 추가합니다.
+						            });
+						        });
+						    }
+						}
+						console.log(colorDates)
+		        		// colorDates 객체를 기반으로 이벤트 생성 및 배경색 지정하여 풀캘린더에 추가
+		        		for (var date in colorDates) {
+		        		    if (colorDates.hasOwnProperty(date)) {
+		        		    	console.log(colorDates[date]);
+		        		        calendar.addEvent({
+		        		            start: date, // 이벤트 시작 날짜
+		        		            display: 'background', // 배경색으로 표시
+		        		            backgroundColor: hexToRGBA(colorDates[date], 1) // colorDates 객체에서 가져온 배경색
+		        		            // 다른 이벤트 속성이 필요하다면 여기에 추가할 수 있습니다.
+		        		        });
+		        		    }
+		        		}
+		            },
+		            
+		            dateClick: function (info) {
+						
+		                console.log('Clicked on: ' + info.dateStr);
+
+		                
+						
+		                
+		                openModal(info.dateStr, calendar.words, calendar.jsonString, calendar.colorString);
+		            },
+		            
+		            eventContent: function(arg) {
+		            	var eventEl = document.createElement('div');
+		            	//배경색 제거
+		            	eventEl.style.backgroundColor = 'transparent';
+		            	
+		            	// 추가적인 이벤트 속성을 확인하여 이미지를 추가하는 예시
+		                if (arg.event.extendedProps && arg.event.extendedProps.additionalInfo === '긍정' && arg.event.extendedProps.isEvent) {
+		                    var img = document.createElement('img');
+		                    img.src = '/project_H/img/happy.png';
+		                    img.alt = 'Happy';
+		                    img.width = '20';
+		                    img.height = '20';
+		                    eventEl.appendChild(img);
+		                } else if (arg.event.extendedProps && arg.event.extendedProps.additionalInfo === '부정' && arg.event.extendedProps.isEvent) {
+		                    var img = document.createElement('img');
+		                    img.src = '/project_H/img/sad.png';
+		                    img.alt = 'Sad';
+		                    img.width = '20';
+		                    img.height = '20';
+		                    eventEl.appendChild(img);
+		                } else if (arg.event.extendedProps && arg.event.extendedProps.additionalInfo === '중립' && arg.event.extendedProps.isEvent) {
+		                	var img = document.createElement('img');
+		                    img.src = '/project_H/img/neutral.png';
+		                    img.alt = 'Neutral';
+		                    img.width = '20';
+		                    img.height = '20';
+		                    eventEl.appendChild(img);
+		                }
+		                
+		               return { domNodes: [eventEl] };
+		              }
+		            
+	                
+	            });
+
+	            calendar.render();
 	            
-	            dateClick: function (info) {
-					
-	                console.log('Clicked on: ' + info.dateStr);
+	         // 16진수 색상 코드를 rgba 형식으로 변환하는 함수
+	            function hexToRGBA(hex, alpha) {
+	              var r = parseInt(hex.substring(1, 3), 16);
+	              var g = parseInt(hex.substring(3, 5), 16);
+	              var b = parseInt(hex.substring(5, 7), 16);
 
-	                
-					
-	                
-	                openModal(info.dateStr, calendar.words, calendar.jsonString, calendar.colorString);
-	            },
-	         
-	            eventContent: function(arg) {
-	                var eventEl = document.createElement('div');
-	                eventEl.innerText = arg.event.title;
-	             
-	             	// additionalInfo가 정의되어 있는 경우에만 추가
-	                if (arg.event.extendedProps.additionalInfo !== undefined) {
-	                    eventEl.innerText += ' - ' + arg.event.extendedProps.additionalInfo;
-	                }
-	                return { domNodes: [eventEl] };
-	              },
-                  
-                
-            });
-
-            calendar.render();
+	              return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+	            }
 
             $('#sidebarCollapse').on('click', function () {
                 if ($('#sidebar').width() === 0) {
@@ -271,7 +318,7 @@
 			let foundcolor = '';
 			colors.forEach(color => {
 				if (color['modtime'] === date) {
-					foundcolor = color['maincolor']
+					foundcolor = color['maincolor_name']
 				}
 			})
 			let foundWord = '';

@@ -102,12 +102,13 @@ public interface UserColorDaoOracle {
   	List<SelectContent> searchCONTENT(String sessCustId);
   	
 
-	@Select("SELECT tc.maincolor_name, tc.title, uc.modtime\n"
+	@Select("SELECT tc.maincolor_name, tc.maincolor_code1, tc.color_code2, uc.modtime\n"
 			+ "FROM todaycolor tc\n"
 			+ "INNER JOIN usercolor uc ON tc.cid = uc.cid\n"
 			+ "WHERE uc.custid = #{sessCustId}")
 	List<SelectCalendarTodayColor> searchCalcolor(String sessCustId);
-  	
+	
+	
     @Select("select * from (select distinct u.nickname, sum(c.hitcount) hitCount from users u inner join userColor c on u.custid = c.custid group by u.nickname order by hitCount desc) where rownum <= 10")
  	List<UserColor> getHitRank();
 }

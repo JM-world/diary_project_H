@@ -165,13 +165,33 @@ public class CalendarController {
         
         for (int i = 0; i < searchUserColor.size(); i++) {
         	SelectCalendarTodayColor SelectColor = searchUserColor.get(i);	// 예시를 위해 리스트에서 값을 가져옴
-        	String maincolor = SelectColor.getMaincolor_name();
-        	String title = SelectColor.getTitle();
+        	String maincolor_name = SelectColor.getMaincolor_name();
+        	String maincolor = "";
+        	if ("초록색".equals(maincolor_name)) {
+        		maincolor = "#00FF00";
+        	} else if ("보라색".equals(maincolor_name)) {
+        		maincolor = "#4B0082";
+        	} else if ("빨간색".equals(maincolor_name)) {
+        		maincolor = "#ff0000";
+        	} else if ("분홍색".equals(maincolor_name)) {
+        		maincolor = "#FF1493";
+        	} else if ("노란색".equals(maincolor_name)) {
+        		maincolor = "#FFFF00";
+        	} else if ("주황색".equals(maincolor_name)) {
+        		maincolor = "#FFA500";
+        	} else if ("갈색".equals(maincolor_name)) {
+        		maincolor = "#A52A2A";
+        	} else if ("파란색".equals(maincolor_name)) {
+        		maincolor = "#00FFFF";
+        	} else {
+        		maincolor = SelectColor.getMaincolor_code1();
+        	} 
+        	String title = SelectColor.getColor_code2();
         	LocalDateTime modTime = SelectColor.getModTime();
             String formattedModTime = modTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        	
             Map<String, String> colordata = new HashMap<>();
             colordata.put("maincolor", maincolor);
+            colordata.put("maincolor_name", maincolor_name);
             colordata.put("title", title);
             colordata.put("modtime", formattedModTime);
             ColorArray[i] = colordata;
@@ -184,7 +204,6 @@ public class CalendarController {
         }
         // 선택한 색깔 가져오기끝
         String colorString = colors.toString();
-        //System.out.println(colorString);
         String words = jsonArray2.toString();
         //System.out.println(words);
         model.addAttribute("colorString", colorString);  // 선택한 색 모델
