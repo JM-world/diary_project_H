@@ -7,7 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시판</title>
-<script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/fdb840a8cc.js"
+	crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -32,7 +33,6 @@ body {
 	margin: auto;
 	margin-top: 0cm;
 }
-
 
 #write {
 	text-align: right;
@@ -67,14 +67,19 @@ body {
 	text-align: left;
 }
 
+/* 번호, 작성자, 작성일, 조회수, 공감수 각각의 너비 설정 */
 .table>thead>tr>th:nth-child(1), .table>tbody>tr>td:nth-child(1), .table>thead>tr>th:nth-child(3),
-	.table>tbody>tr>td:nth-child(3), .table>thead>tr>th:nth-child(4),
-	.table>tbody>tr>td:nth-child(4), .table>thead>tr>th:nth-child(5),
+	.table>tbody>tr>td:nth-child(3), .table>thead>tr>th:nth-child(5),
 	.table>tbody>tr>td:nth-child(5), .table>thead>tr>th:nth-child(6),
 	.table>tbody>tr>td:nth-child(6) {
 	width: 10%;
 }
 
+.table>thead>tr>th:nth-child(4), .table>tbody>tr>td:nth-child(4) {
+	width: 20%;
+}
+
+/* 제목 너비 조정 */
 .table>thead>tr>th:nth-child(2), .table>tbody>tr>td:nth-child(2) {
 	width: 35%;
 }
@@ -119,12 +124,10 @@ body {
 	
 }
 
-
 .table {
 	background-color: rgba(255, 255, 255, 0.3);
 	margin-top: -50px;
 }
-
 
 #write {
 	position: relative;
@@ -133,7 +136,7 @@ body {
 </style>
 </head>
 <body>
-<%@ include file="../common/head.jsp"%>
+	<%@ include file="../common/head.jsp"%>
 	<%@ include file="../common/top.jsp"%>
 	<div id="container">
 		<div align="right">
@@ -161,9 +164,9 @@ body {
 						<th width="5%">번호</th>
 						<th width="35%">제목</th>
 						<th width="10%">작성자</th>
-						<th width="20%">작성일</th>
-						<th width="10%">조회수</th>
-						<th width="10%"><i class="fa-regular fa-thumbs-up"></i></th>
+						<th width="40%">작성일</th>
+						<th width="5%">조회수</th>
+						<th width="5%"><i class="fa-regular fa-thumbs-up"></i></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -171,7 +174,8 @@ body {
 						varStatus="status">
 						<tr>
 							<td>${sharedBoard.ucid}</td>
-							<td><a href=${pageContext.request.contextPath}/diary/view/${sharedBoard.ucid}>
+							<td><a
+								href=${pageContext.request.contextPath}/diary/view/${sharedBoard.ucid}>
 									${sharedBoard.nickname}님의 '${sharedBoard.title}색' 일기 </a></td>
 							<td>${sharedBoard.nickname}</td>
 							<td><fmt:formatDate value="${sharedBoard.modTime}"

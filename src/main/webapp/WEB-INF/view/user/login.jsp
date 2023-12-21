@@ -18,11 +18,11 @@
         <div class="row">
             <div class="image-container" style="position: relative;">
                 <img src="/project_H/img/pa.jpg" alt="HHH" class="background-image">
-                <img src="/project_H/img/book2.png" alt="book1" style="position: absolute; top: 100px; left: 0px; width: 1300px; height: 800px; z-index: 1;">
-                <div class="login-container" style="position: absolute; top: 450px; left: 870px; z-index: 2; background: none;">
+                <img src="/project_H/img/book2.png" alt="book1" style="position: absolute; top: 100px; left: 0px; width: 1100px; height: 600px; z-index: 1;">
+                <div class="login-container" style="position: absolute; top: 320px; left: 770px; z-index: 2; background: none;">
                     <div class="login-wrapper">
                         <div class="container">
-                            <h2>Login <button type="button" class="btn btn-outline-black" onclick='location.href="/project_H/user/register"'>회원가입</button></h2>
+                            <h2>Login <button type="button" class="btn btn-secondary p-1" style="margin-left:130px;" onclick='location.href="/project_H/user/register"'>회원가입</button></h2>
                             <form method="post" action="/project_H/user/login" id="login-form">
                                 <input type="text" name="custId" placeholder="아이디">
                                 <input type="password" name="pwd" placeholder="비밀번호">
@@ -30,8 +30,8 @@
                                     <input type="checkbox" id="remember-check">아이디 저장하기
                                 </label>
                                 <input type="submit" value="Login">
-                                <img src="/project_H/img/글씨3.png" alt="글씨3" style="position: absolute; top: -150px; left:-540px; width: 500px; height: 400px;">
-                                <img src="/project_H/img/문구.png" alt="문구" style="position: absolute; top: 0px; left:-500px; width: 500px; height: 500px;">
+                                <img src="/project_H/img/글씨3.png" alt="글씨3" style="position: absolute; top: -50px; left:-480px; width: 450px; height: 350px;">
+                                <img src="/project_H/img/문구.png" alt="문구" style="position: absolute; top: 70px; left:-460px; width: 500px; height: 380px;">
                             </form>
                         </div>
                         &nbsp;&nbsp;<button class="btn btn-warning" onclick="location.href='/project_H/oauth2/authorization/kakao'" style="width: 93%; height: 48px;">카카오 로그인</button>

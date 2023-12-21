@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.human.project_H.entity.User;
+import com.human.project_H.entity.UserByMonth;
 
 @Mapper
 public interface UserDao {
@@ -33,6 +34,26 @@ public interface UserDao {
 	@Update("update users set isDeleted=1 where custId=#{custId}")
 	void deleteUser(String custId);			// 인터페이스이기 때문에 public 생략 가능
 	
+	// Admin page 통계용
+	@Select("select to_number(to_char(regdate, 'mm')) as month, count(*) as cnt from users "
+			+ "group by to_char(regdate, 'mm') order by month")
+	public List<UserByMonth> getNumberOfUser();
 	
+	@Select("select to_number(to_char(regdate, 'mm')) as month, count(*) as cnt from users where isDeleted=1 "
+			+ "group by to_char(regdate, 'mm') order by month")
+	public List<UserByMonth> leaveNumberOfUser();
+	
+	@Select("select count(*) from users where isDeleted=#{isDeleted} and custId like #{custId}")
+	public int getSocialCount(int isDeleted, String custId);
+	
+	@Select("select count(uname) from users where isDeleted=0 and "
+			+ "(custId like #{query} or uname like #{query} or email like #{query})")
+	public int getSearchCount(String query);
+	
+	@Select("select * from (select rownum rnum, a.* from "
+			+ "    (select * from users "
+			+ "    where isDeleted=0 and (custId like #{query} or uname like #{query} or email like #{query})) a "
+			+ "    where rownum <= #{limit}) where rnum > #{offset}")
+	public List<User> getSearchList(int offset, int limit, String query);
 	
 }

@@ -1,44 +1,61 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%@ include file="../common/head.jsp" %>
+<%@ include file="../common/head.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>일기장</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
-
 body {
-    background-color: #f8f9fa;
-    font-family: 'Hi Melody', cursive;
-    background-image: url('/project_H/img/pa.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    margin: 0;
-    padding: 0;
+	background-color: #f8f9fa;
+	font-family: 'Hi Melody', cursive;
+	background-image: url('/project_H/img/pa.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	margin: 0;
+	padding: 0;
 }
 
 .layout {
-    max-width: 700px;
-    margin: auto;
-    padding: 20px;
-    margin-top: 50px;
-    flex: 1;
-    box-sizing: border-box;
-    border: 2px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-   	background: linear-gradient(to right, ${userColor.color_code2}, ${userColor.color_code2}, ${userColor.mainColor_code1});
+	max-width: 700px;
+	margin: auto;
+	padding: 20px;
+	margin-top: 50px;
+	flex: 1;
+	box-sizing: border-box;
+	border: 2px solid #ddd;
+	padding: 10px;
+	border-radius: 5px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	background: linear-gradient(to right, ${ userColor.color_code2
 }
 
+,
+${
+userColor
+.color_code2
+}
+,
+${
+userColor
+.mainColor_code1
+}
+)
+;
+
+    
+
+}
 #todayHeader {
 	font-size: 1.7em;
 	font-weight: bold;
@@ -72,8 +89,6 @@ body {
 	text-align: right;
 	margin-bottom: 10px;
 }
-
-
 
 #todayContent {
 	font-size: 1.2em;
@@ -125,32 +140,30 @@ body {
 }
 </style>
 <script>
-    function updateDiary() {
-        var confirmUpdate = confirm('게시글을 수정하시겠습니까?');
-        if (confirmUpdate) {
-            window.location.href = '/project_H/diary/update/${userColor.ucid}';
-        }
-    }
+	function updateDiary() {
+		var confirmUpdate = confirm('게시글을 수정하시겠습니까?');
+		if (confirmUpdate) {
+			window.location.href = '/project_H/diary/update/${userColor.ucid}';
+		}
+	}
 
-    function deleteDiary() {
-        var confirmDelete = confirm('게시글을 삭제하시겠습니까?');
-        if (confirmDelete) {
-            alert('게시글이 삭제 되었습니다.');
-            // 삭제를 위한 URL로 이동 또는 필요한 동작 수행
-           	window.location.href = '/project_H/diary/delete/${userColor.ucid}';
-        }
-    }
-    
-   
-    function likeButtonClicked(ucid) {
-        var likeUrl = "${pageContext.request.contextPath}/diary/like/" + ucid;
-        window.location.href = likeUrl;
-    }
+	function deleteDiary() {
+		var confirmDelete = confirm('게시글을 삭제하시겠습니까?');
+		if (confirmDelete) {
+			alert('게시글이 삭제 되었습니다.');
+			// 삭제를 위한 URL로 이동 또는 필요한 동작 수행
+			window.location.href = '/project_H/diary/delete/${userColor.ucid}';
+		}
+	}
 
+	function likeButtonClicked(ucid) {
+		var likeUrl = "${pageContext.request.contextPath}/diary/like/" + ucid;
+		window.location.href = likeUrl;
+	}
 </script>
 </head>
 <body>
-<%@ include file="../common/top.jsp" %>
+	<%@ include file="../common/top.jsp"%>
 	<div class="layout">
 		<!-- 일기 상세 정보 표시 -->
 		<div id="todayHeader">
@@ -165,51 +178,92 @@ body {
 			<p>오늘의 색: ${userColor.title}</p>
 			<p>오늘의 감정:${userColor.sentiment}</p>
 
-    <c:choose>
-        <c:when test="${userColor.sentiment eq 'positive'}">
-             <img src="/project_H/img/happy.png" alt="Happy" width="80" height="80" />
-         
-        </c:when>
-        <c:when test="${userColor.sentiment eq 'negative'}">
-            <img src="/project_H/img/sad.png" alt="Sad" width="30" height="30" />
-        </c:when>
-        <c:when test="${userColor.sentiment eq 'neutral'}">
-            <img src="/project_H/img/neutral.png" alt="Neutral" width="30" height="30" />
-        </c:when>
-    </c:choose>
+			<c:choose>
+				<c:when test="${userColor.sentiment eq 'positive'}">
+					<img src="/project_H/img/happy.png" alt="Happy" width="80"
+						height="80" />
+				</c:when>
+				<c:when test="${userColor.sentiment eq 'negative'}">
+					<img src="/project_H/img/sad.png" alt="Sad" width="30" height="30" />
+				</c:when>
+				<c:when test="${userColor.sentiment eq 'neutral'}">
+					<img src="/project_H/img/neutral.png" alt="Neutral" width="30"
+						height="30" />
+				</c:when>
+			</c:choose>
 		</div>
 		<hr
 			style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
 		<div id="todayContent">
 			<p>내용: ${userColor.content}</p>
 		</div>
-
 		<hr
 			style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
 		<div id="todayDiaryInfo">
 			<p>조회수: ${userColor.viewCount}</p>
 			<p>공감수: ${userColor.hitCount}</p>
-			<p>작성일: <fmt:formatDate value="${userColor.modTime}" pattern="yyyy-MM-dd HH:mm" /></p>
+			<p>
+				작성일:
+				<fmt:formatDate value="${userColor.modTime}"
+					pattern="yyyy-MM-dd HH:mm" />
+			</p>
 		</div>
+		<div class="form-group-buttons">
+			<%-- 수정 버튼은 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
+			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
+				<button id="likeBtn" onclick="updateDiary()">수정</button>
+			</c:if>
+			<%-- 삭제 버튼도 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
+			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
+				<button id="likeBtn" onclick="deleteDiary()">삭제</button>
+			</c:if>
+			<button id="likeBtn" class="btn btn-success"
+				onclick="likeButtonClicked('${userColor.ucid}')">공감</button>
+		</div>
+		<div style="margin-top: 20px;">
+    <ul style="list-style: none; padding: 0; text-align: left;">
+        <li><a href="javascript:history.back()" style="color: black;">← 뒤로가기</a></li>
+    </ul>
+</div>
 		
-		<div class="button-container">
-		    <%-- 수정 버튼은 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
-		    <c:if test="${userColor.custId eq sessionScope.sessCustId}">
-		        <button id="updateBtn" onclick="updateDiary()">수정</button>
-		    </c:if>
-		    <%-- 삭제 버튼도 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
-		    <c:if test="${userColor.custId eq sessionScope.sessCustId}">
-		        <button id="deleteBtn" onclick="deleteDiary()">삭제</button>
-		    </c:if>
-		   <c:if test="${userColor.custId ne sessionScope.sessCustId}">
-	    <button id="likeBtn" onclick="likeButtonClicked('${userColor.ucid}')">공감</button>
-	</c:if>
+</div>
+			
 
-</div>
-		
-<div style="margin-top: 20px; text-align: left;">
-    <a href="/project_H/diary/diarylist">돌아가기</a>
-</div>
+	<script>
+		function updateDiary() {
+			var confirmUpdate = confirm('게시글을 수정하시겠습니까?');
+			if (confirmUpdate) {
+				window.location.href = '/project_H/diary/update/${userColor.ucid}';
+			}
+		}
+
+		function deleteDiary() {
+			var confirmDelete = confirm('게시글을 삭제하시겠습니까?');
+			if (confirmDelete) {
+				alert('게시글이 삭제 되었습니다.');
+				// 삭제를 위한 URL로 이동 또는 필요한 동작 수행
+				예: window.location.href = '/project_H/diary/delete/${userColor.ucid}';
+			}
+		}
+
+		function likeButtonClicked(ucid) {
+			var likeUrl = "${pageContext.request.contextPath}/diary/like/"
+					+ ucid;
+			$.ajax({
+				type : "GET",
+				url : likeUrl,
+				success : function(response) {
+					// 성공적으로 처리된 경우의 동작
+					console.log("공감이 성공적으로 처리되었습니다.");
+					// 페이지를 다시 로드하는 등의 동작을 추가할 수 있습니다.
+					location.reload();
+				},
+				error : function(error) {
+					console.error("공감 처리 중 오류가 발생하였습니다.", error);
+				}
+			});
+		}
+	</script>
+
 </body>
-
 </html>

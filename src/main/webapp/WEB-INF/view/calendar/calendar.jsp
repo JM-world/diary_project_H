@@ -96,7 +96,9 @@
         $(document).ready(function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
+            	eventOverlap: false,
                 initialView: 'dayGridMonth',
+                
 	            datesSet: function(info) {
 	            	calendar.removeAllEvents();
 	                var allDates = info.view.currentStart;
@@ -115,7 +117,7 @@
                     var colorString = ${colorString};
 	        		var events = [];
 	        		var uniqueDates = {}; // 중복을 확인하기 위한 객체
-	        		console.log(words);
+	        		var colorDates = {}; // 이벤트 객체
 	        		calendar.words = words;
 	        		calendar.jsonString = jsonString;
 	        		calendar.colorString = colorString;
@@ -128,7 +130,9 @@
 	        		        uniqueDates[obj['날짜']] = obj['감정'];
 	        		    }
 	        		}
-        			                
+	        		
+	        		//console.log(uniqueDates)
+	        		
 	        		// uniqueDates 객체에 저장된 마지막 '날짜' 값을 events 배열에 추가
 	        		for (var date in uniqueDates) {
 	        		    events.push({
@@ -138,16 +142,65 @@
 	        		    });
 	        		}
 	        		
-
-
-	        		console.log(events[1])
+	        		for (var i = 0; i < colorString.length; i++) {
+	        		    var obj2 = colorString[i];
+	        		 	// 값이 없을 경우 이벤트 추가를 건너뛰도록 확인
+	        		    colorDates[obj2['modtime']] = obj2['maincolor'];   
+	        		}        
 	        		
-	        		calendar.addEventSource(events);
+	        		
+	        		// colorDates 객체에 저장된 마지막 '날짜' 값을 events 배열에 추가
+	        		for (var date in colorDates) {
+	        		    events.push({
+	        		        start: date,
+	        		        title: colorDates[date],
+	        		        // 기타 이벤트 속성들...
+	        		    });
+	        		}
+	        		
+	        		events.sort(function(a, b) {
+	        		    return new Date(a.start) - new Date(b.start);
+	        		});
+	        		
+	        		var eventsData = {};
+	        		events.forEach(event => {
+	        			var date = event['start'];
+	        			
+	        			// 해당 날짜의 키가 이미 존재하는지 확인하고, 없다면 빈 배열로 초기화합니다.
+	        		    if (!eventsData[date]) {
+	        		        eventsData[date] = [];
+	        		    }
+	        			
+	        		 	// 해당 날짜의 배열에 이벤트 정보를 추가합니다.
+	        			eventsData[date].push({
+	        		        title: event['title'] // 이벤트의 제목(title)을 해당 날짜의 배열에 추가합니다.
+	        	        // 다른 이벤트 속성이 필요하다면 여기에 추가할 수 있습니다.
+	        	    });
+	        	});
+	        		console.log(eventsData)
+	        	
+	        		// eventsData 객체 순회
+					for (var date in eventsData) {
+					    if (eventsData.hasOwnProperty(date)) {
+					        // 각 날짜에 대한 이벤트 정보 배열
+					        var eventsForDate = eventsData[date];
+					        
+					        // 해당 날짜의 모든 이벤트 정보 배열을 순회하며 FullCalendar에 이벤트 추가
+					        eventsForDate.forEach(eventInfo => {
+					            calendar.addEvent({
+					                start: date, // 이벤트 시작 날짜
+					                title: eventInfo.title // 이벤트 제목
+					                // 다른 이벤트 속성이 있다면 여기에 추가합니다.
+					            });
+					        });
+					    }
+					}
 	            },
 	            
 	            dateClick: function (info) {
 					
 	                console.log('Clicked on: ' + info.dateStr);
+
 	                
 					
 	                
@@ -157,11 +210,11 @@
 	            eventContent: function(arg) {
 	                var eventEl = document.createElement('div');
 	                eventEl.innerText = arg.event.title;
-	             // additionalInfo가 정의되어 있는 경우에만 추가
+	             
+	             	// additionalInfo가 정의되어 있는 경우에만 추가
 	                if (arg.event.extendedProps.additionalInfo !== undefined) {
 	                    eventEl.innerText += ' - ' + arg.event.extendedProps.additionalInfo;
 	                }
-	                
 	                return { domNodes: [eventEl] };
 	              },
                   

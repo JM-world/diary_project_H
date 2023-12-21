@@ -139,24 +139,24 @@
 			<div class="col-5">
 		        <!-- Bootstrap Card 2 -->
 		        <div class="card" style="width: 440px; height: 440px; margin-left: 30px;">
-					<div class="card-header">
-                        <h5 class="card-title">선택한 메인 색</h5>
+					<div class="card-header" style='background-color:${sessionScope.homeColor.mainColor_code};'>
+                        <h5 class="card-title">유저들이 가장 많이 선택한 색</h5>
                     </div>
-		            <div class="card-body2">
+		            <div class="card-body2 ms-5" style="width: 80%; height: 30;">
 		                <!-- Add card content here -->
-						<canvas id="ColorChart" width="100%" height="40"></canvas>
+						<canvas id="ColorChart" style='width="80%" height="20"'></canvas>
 		            </div>
 		        </div>
 			</div>
 			<div class="col-5">
 				<!-- Bootstrap Card 3 -->
 		        <div class="card" style="width: 440px; height: 440px; margin-left: 90px;">
-					<div class="card-header">
-                        <h5 class="card-title">감정 비율 3가지(긍정, 중립, 부정)</h5>
+					<div class="card-header" style='background-color:${sessionScope.homeColor.mainColor_code};'>
+                        <h5 class="card-title">이 달의 회원 감정 비율</h5>
                     </div>
-		            <div class="card-body3">
+		            <div class="card-body3 ms-5" style="width: 80%; height: 30;">
 		                <!-- Add card content here -->
-						<canvas id="SentiChart" width="100%" height="40"></canvas>
+						<canvas id="SentiChart" width="80%" height="20"></canvas>
 		            </div>
 		        </div>
 			</div>
@@ -172,9 +172,10 @@
 			            <div class="card-header">
 		            	<h5 class="card-title">날씨</h5>
 		            </div>
-				    <div class="card-body1">
+				    <div class="card-body1" style='background-color:${sessionScope.homeColor.mainColor_code};'>
 				    	<br>
-				    	<h5 class="card-word" style="text-align: center; font-size: 2.0em;">회원랭킹 <br>(공감수) TOP 10</h5>
+				    	<h5 class="card-word" style="text-align: center; font-size: 2.0em;">
+				    		<img src="/project_H/img/crown.gif" width="30" height="30"/> 회원 랭킹 <img src="/project_H/img/crown.gif" width="30" height="30"/> <br>공감수 TOP 10</h5>
 				    	<br>
 			    	</div>
 					    <div class="card-footer" style="font-size: 1.3em;">

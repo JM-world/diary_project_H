@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -47,17 +48,24 @@ public interface UserColorDaoOracle {
 	        "FROM USERS u " +
 	        "JOIN USERCOLOR uc ON u.custId = uc.custId " +
 	        "JOIN TODAYCOLOR tc ON uc.cid = tc.cid " +
-	        "LEFT JOIN user_sentiment us ON u.custId = us.custId " +
+	        "LEFT JOIN user_sentiment us ON uc.custId = us.custId " +
+	        "AND to_char(uc.modTime, 'YYYY-MM-DD') = to_char(us.modTime, 'YYYY-MM-DD') " +
 	        "WHERE uc.shareFlag = 1 AND uc.ucid = #{ucid}")
-	UserColor getUserColor(int ucid);
+	UserColor getUserColor(@Param("ucid") int ucid);
 
 
 
-	@Select("SELECT uc.*, u.nickname, tc.title, us.sentiment, uc.modTime " + "FROM USERCOLOR uc "
-			+ "JOIN users u ON uc.custId = u.custId " + "JOIN todaycolor tc ON uc.cid = tc.cid "
-			+ "LEFT JOIN user_sentiment us ON uc.custId = us.custId "
-			+ "WHERE uc.custId = #{custId} AND uc.isDeleted = 0")
+	@Select("SELECT uc.*, u.nickname, tc.title, us.sentiment " +
+	        "FROM USERCOLOR uc " +
+	        "JOIN users u ON uc.custId = u.custId " +
+	        "JOIN todaycolor tc ON uc.cid = tc.cid " +
+	        "LEFT JOIN user_sentiment us ON uc.custId = us.custId " +
+	        "WHERE uc.custId = #{custId} AND uc.isDeleted = 0 AND uc.commitFlag = 1 " +
+	        "AND to_char(uc.modTime, 'YYYY-MM-DD') = to_char(us.modTime, 'YYYY-MM-DD') " +
+	        "AND uc.cid = tc.cid")
 	List<UserColor> getUserColorListByCustId(String custId);
+
+
 
 
 	@Update("UPDATE usercolor SET content = #{content}, modTime = SYSDATE WHERE ucid = #{ucid}")

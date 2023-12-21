@@ -1,24 +1,26 @@
 package com.human.project_H.Controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.human.project_H.entity.User;
+import com.human.project_H.entity.UserByMonth;
 import com.human.project_H.service.UserService;
 
 @Controller
@@ -86,26 +88,61 @@ public class UserController {
 	}
 
 	@GetMapping("/list/{page}")
-	public String list(@PathVariable int page, HttpSession session, Model model) {
+	public String list(@PathVariable int page,@RequestParam(name="q", defaultValue="") String query, HttpSession session, Model model) {
 		List<User> list;
 
 		String sessCustId = (String) session.getAttribute("sessCustId");
 
 		if (sessCustId.equals("admin2")) {
 			// admin으로 로그인한 경우
-			list = userService.getUserList(page);
+			list = userService.getSearchList(query, page);
 			model.addAttribute("userList", list);
 			model.addAttribute("menu", "user");
 
-			int totalUsers = userService.getUserCount();
+			int totalUsers = userService.getSearchCount(query);
 			int totalPages = (int) Math.ceil((double) totalUsers / userService.RECORDS_PER_PAGE);
 			List<String> pageList = new ArrayList<>();
 			for (int i = 1; i <= totalPages; i++)
 				pageList.add(String.valueOf(i));
 			model.addAttribute("pageList", pageList);
 			session.setAttribute("currentUserPage", page);
+			
+			// Admin page 통계용
+			List<UserByMonth> monthList = userService.getNumberOfUser();
+			JSONArray jsonArray = new JSONArray();
+			
+			Iterator<UserByMonth> it = monthList.iterator();
+			while(it.hasNext()) {
+				UserByMonth userMonth = it.next();
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("month", userMonth.getMonth());
+				jsonObject.put("numberOfPerson", userMonth.getNumberOfPerson());
+				
+				jsonArray.add(jsonObject);
+			}
+			
+			List<UserByMonth> leaveList= userService.leaveNumberOfUser();
+			JSONArray lJsonArray = new JSONArray();
+			
+			
+			Iterator<UserByMonth> lit = leaveList.iterator();
+			while(lit.hasNext()) {
+				UserByMonth lUserMonth = lit.next();
+				JSONObject lJsonObject = new JSONObject();
+				lJsonObject.put("lMonth", lUserMonth.getMonth());
+				lJsonObject.put("lNumberOfPerson", lUserMonth.getNumberOfPerson());
+				
+				lJsonArray.add(lJsonObject);
+			}
+			
+			model.addAttribute("aJson", jsonArray.toJSONString());
+			model.addAttribute("lJson", lJsonArray.toJSONString());
+			model.addAttribute("totalUsers", totalUsers);
+			model.addAttribute("kakaoUsers", userService.getSocialCount()[0]);
+			model.addAttribute("naverUsers", userService.getSocialCount()[1]);
+			model.addAttribute("leaveUsers", userService.getSocialCount()[2]);
 
-			return "user/list";
+			return "admin/list";
 		} else {
 			// 그 외의 경우
 			return "user/list2";

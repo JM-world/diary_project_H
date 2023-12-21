@@ -58,7 +58,8 @@ public class UserColorController {
 		if (userColor == null) {
 			TodayColor todayColor = todayColorService.choiceTodayColor(color);
 			userColorService.insertUserColorSave(sessCustId, todayColor.getCid(), " ");
-
+			//userColorService.insertUserSentimentSave(sessCustId," "," "," "," ");
+			
 			session.setAttribute("todayColor",
 					new TodayColor(todayColor.getMainColor_code1(), todayColor.getColor_code2(), todayColor.getTitle(),
 							todayColor.getSubTitle(), todayColor.getExplan(), todayColor.getQuestion(),
@@ -131,6 +132,7 @@ public class UserColorController {
 
 		// 가져온 일기 목록을 뷰에 전달
 		model.addAttribute("userDiaryList", userdiaryList);
+		System.out.println(userdiaryList);
 
 		// 뷰 이름을 반환 (WEB-INF/views/ 하위의 경로를 사용)
 		return "diary/diaryList";
@@ -156,13 +158,14 @@ public class UserColorController {
 	        content = content.trim();
 	        String sessCustId = (String) session.getAttribute("sessCustId");
 	        UserColor userColor = userColorService.searchUserColor(sessCustId, today.toString());
-
+	        
 	        // 중복 저장 방지를 위해 userColor가 null이 아닌 경우에만 저장
 	        if (userColor != null && !userColor.getCommitFlag()) {
-	            userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
-
-	            // 추가한 부분
-	            try {
+                // 중복 저장 방지를 위해 userColor가 null이 아닌 경우에만 저장
+                userColorService.updateUserColorCommit(userColor.getUcid(), content, commit, share);
+	            
+	        	try {
+	                // 추가한 부분
 	                String userInput = URLEncoder.encode(content, "utf-8");
 	                String apiUrl = "http://192.168.0.233:5000/chatbot/sentiment?userInput=" + userInput;
 
@@ -187,27 +190,36 @@ public class UserColorController {
 	                System.out.println(negative_score);
 
 	                // 서비스에 있는 insertSentiment 함수로 user_sentiment 테이블에 전송
+	                // 업데이트로 바꾸기 color페이지에서 빈값으로 인서트 해놨음
 	                userColorService.insertSentiment(sessCustId, sentiment, positive_score, neutral_score, negative_score);
-	            } catch (Exception e) {
-	                System.out.println("예외 발생");
+	                // 추가한 부분 끝
+		        }
+	            catch (Exception e) {
+	                e.printStackTrace();
+	                model.addAttribute("msg", "예외 발생으로 작성에 실패했어요.");
+	                return "common/alertMsg";
 	            }
-	            // 추가한 부분 끝
 
-	            model.addAttribute("msg", "작성 완료되었어요.");
-	            if (share) {
-	                // 공유 여부가 true일 때 공유 게시판으로 이동
-	                return "redirect:/diary/list/1";
-	            } else {
-	                // 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
-	                return "redirect:/diary/diarylist";
-	            }
+
+	                model.addAttribute("msg", "작성 완료되었어요.");
+	                if (share) {
+	                    // 공유 여부가 true일 때 공유 게시판으로 이동
+	                    return "redirect:/diary/list/1";
+	                } else {
+	                    // 공유하지 않는 경우에는 다른 경로로 이동하도록 수정 (원하는 경로로 변경)
+	                    return "redirect:/diary/diarylist";
+	                }
+	            
+	        } else {
+	            model.addAttribute("msg", "이미 저장된 일기이거나 조건을 만족하지 않습니다.");
+	            return "common/alertMsg";
 	        }
+	    } else {
+	        model.addAttribute("msg", "일기 내용이 충분하지 않아요.");
+	        return "common/alertMsg";
 	    }
-
-	    // 글자 수 조건을 만족하지 않을 경우 또는 이미 저장된 경우
-	    model.addAttribute("msg", "일기 내용이 충분하지 않아요.");
-	    return "diary/diaryWrite";
 	}
+
 
 //		else {
 //			String sessCustId = (String) session.getAttribute("sessCustId");
@@ -262,6 +274,7 @@ public class UserColorController {
 	    return "diary/detaildiary";
 	}
 
+
 	
 	  // 수정 페이지로 이동
     @GetMapping("/update/{ucid}")
@@ -288,7 +301,8 @@ public class UserColorController {
     
  
     @GetMapping("/like/{ucid}")
-    public String likeDiary(@PathVariable int ucid, HttpSession session) {
+    @ResponseBody
+    public ResponseEntity<String> likeDiary(@PathVariable int ucid, HttpSession session) {
         String custId = (String) session.getAttribute("sessCustId");
 
         // 게시물의 작성자 정보를 가져오는 메서드를 UserColorService에 추가한다고 가정
@@ -298,7 +312,7 @@ public class UserColorController {
         if (custId != null && custId.equals(authorCustId)) {
             // 자신이 작성한 게시물에는 공감할 수 없음
             // 원하는 처리를 수행하거나 에러 메시지를 반환할 수 있음
-            return "redirect:/error"; // 예시로 에러 페이지로 리다이렉트
+            return ResponseEntity.badRequest().body("자신이 작성한 게시물에는 공감할 수 없습니다.");
         }
 
         Set<Integer> likedPost = (Set<Integer>) session.getAttribute("likedPost");
@@ -316,8 +330,9 @@ public class UserColorController {
             session.setAttribute("likedPost", likedPost);
         }
 
-        // 상세 페이지로 이동
-        return "redirect:/diary/view/" + ucid;
+        // 성공적으로 처리된 경우의 응답
+        return ResponseEntity.ok("공감이 성공적으로 처리되었습니다.");
     }
+
 }
 
