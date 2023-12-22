@@ -8,30 +8,37 @@
 	<title>Color Selection Page</title>
 	<%@ include file="../common/head.jsp"%>
 	<style>
-	.color-button {
-		display: inline-block;
-		width: 50px;
-		height: 50px;
-		margin: 5px;
-		cursor: pointer;
-		border: 1px solid #000;
-		transition: border-color 0.3s;
-	}
-	
-	.color-button:hover {
-	    border-color: white; 
-	  }
-	
-	button[type="submit"] {
-		background-color: #c3adec; /* 배경색 설정 */
-		color: white; /* 텍스트 색상 설정 */
-		padding: 10px 20px; /* 내부 여백 설정 */
-		font-size: 16px; /* 폰트 크기 설정 */
-		border-radius: 5px; /* 둥근 테두리 설정 */
-		border: none; /* 테두리 없애기 */
-		cursor: pointer;
-	}
+		.color-button {
+	            display: inline-block;
+	            width: 50px;
+	            height: 50px;
+	            margin: 5px;
+	            cursor: pointer;
+	            border: 1px solid gray;
+	            transition: border-color 0.3s;
+	        }
 
+        .color-button:hover,
+	    .color-button.clicked {
+	        border-color: white;
+	    }
+	
+	    .color-button.clicked {
+	        border-width: 3px; 
+	        border-color: black; 
+	    }
+
+        button[type="submit"] {
+            background-color: #c3adec;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+	
+	
 
 	</style>
 </head>
@@ -49,24 +56,15 @@
 		    		신중히 선택하세요! 한 번 선택하면 오늘은 변경할 수 없어요 :)
 		    	</div> <br>
 				<div>
-					<div class="color-button" style="background-color: #c88f80;"
-						onclick="selectColor('r')"></div>
-					<div class="color-button" style="background-color: #d3a570;"
-						onclick="selectColor('o')"></div>
-					<div class="color-button" style="background-color: #dedab9;"
-						onclick="selectColor('y')"></div>
-					<div class="color-button" style="background-color: #c2d18c;"
-						onclick="selectColor('g')"></div>
-					<div class="color-button" style="background-color: #c5cfcc;"
-						onclick="selectColor('bl')"></div>
-					<div class="color-button" style="background-color: #bbb8cc;"
-						onclick="selectColor('pu')"></div>
-					<div class="color-button" style="background-color: #d0adb4;"
-						onclick="selectColor('pi')"></div>
-					<div class="color-button" style="background-color: #d2c49b;"
-						onclick="selectColor('br')"></div>
-					<div class="color-button" style="background-color: #b1b6b2;"
-						onclick="selectColor('a')"></div>
+				    <div class="color-button" id="color-r" style="background-color: #c88f80;" onclick="selectColor1('r')"></div>
+				    <div class="color-button" id="color-o" style="background-color: #d3a570;" onclick="selectColor1('o')"></div>
+				    <div class="color-button" id="color-y" style="background-color: #dedab9;" onclick="selectColor1('y')"></div>
+				    <div class="color-button" id="color-g" style="background-color: #c2d18c;" onclick="selectColor1('g')"></div>
+				    <div class="color-button" id="color-bl" style="background-color: #c5cfcc;" onclick="selectColor1('bl')"></div>
+				    <div class="color-button" id="color-pu" style="background-color: #bbb8cc;" onclick="selectColor1('pu')"></div>
+				    <div class="color-button" id="color-pi" style="background-color: #d0adb4;" onclick="selectColor1('pi')"></div>
+				    <div class="color-button" id="color-br" style="background-color: #d2c49b;" onclick="selectColor1('br')"></div>
+				    <div class="color-button" id="color-a" style="background-color: #b1b6b2;" onclick="selectColor1('a')"></div>
 				</div>
 				<br> <br> <input type="hidden" name="color" id="selectedColor" value="">
 			</div> 
@@ -82,7 +80,25 @@
 
 			
 
-		<script>
+	<script>
+		function selectColor1(color) {
+	        // Reset border for all color buttons
+	        var colorButtons = document.querySelectorAll('.color-button');
+	        colorButtons.forEach(function(button) {
+	            button.classList.remove('clicked'); // Remove the 'clicked' class from all buttons
+	        });
+	
+	        // Set border for the selected color button
+	        document.getElementById("selectedColor").value = "";
+	        var selectedColorButton = document.getElementById('color-' + color);
+	        
+	        if (selectedColorButton) {
+	            selectedColorButton.classList.add('clicked'); // Add the 'clicked' class to the selected button
+	            document.getElementById("selectedColor").value = selectedColorButton.style.backgroundColor;
+	        }
+	            selectColor(color);
+	            console.log(color);
+		}
 			
 			function selectColor(color) {
 				if (color == "r")
@@ -106,6 +122,6 @@
 
 			}
 			
-		</script>
+	</script>
 </body>
 </html>

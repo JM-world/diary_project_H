@@ -43,18 +43,35 @@ body {
 ,
 ${
 userColor
+
+
+
+
 .color_code2
+
+
+
+
 }
 ,
 ${
 userColor
+
+
+
+
 .mainColor_code1
+
+
+
+
 }
 )
+
+
+
+
 ;
-
-    
-
 }
 #todayHeader {
 	font-size: 1.7em;
@@ -124,6 +141,15 @@ userColor
 	margin-top: 20px;
 }
 
+.form-group-buttons {
+	text-align: right; /* 버튼을 오른쪽 정렬합니다. */
+	margin-top: 20px;
+}
+
+.form-group-buttons button {
+	margin-left: 10px; /* 각 버튼 사이의 간격을 조절합니다. */
+}
+
 .button-container button {
 	background-color: #007bff;
 	color: #fff;
@@ -131,13 +157,13 @@ userColor
 	padding: 8px 16px;
 	border-radius: 4px;
 	cursor: pointer;
-	margin-left: 10px;
 	transition: background-color 0.3s ease-in-out;
 }
 
 .button-container button:hover {
 	background-color: #0056b3;
 }
+F
 </style>
 <script>
 	function updateDiary() {
@@ -184,11 +210,11 @@ userColor
 						height="80" />
 				</c:when>
 				<c:when test="${userColor.sentiment eq 'negative'}">
-					<img src="/project_H/img/sad.png" alt="Sad" width="30" height="30" />
+					<img src="/project_H/img/sad.png" alt="Sad" width="80" height="80" />
 				</c:when>
 				<c:when test="${userColor.sentiment eq 'neutral'}">
-					<img src="/project_H/img/neutral.png" alt="Neutral" width="30"
-						height="30" />
+					<img src="/project_H/img/neutral.png" alt="Neutral" width="80"
+						height="80" />
 				</c:when>
 			</c:choose>
 		</div>
@@ -211,23 +237,24 @@ userColor
 		<div class="form-group-buttons">
 			<%-- 수정 버튼은 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
 			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
-				<button id="likeBtn" onclick="updateDiary()">수정</button>
+				<button id="likeBtn" class="btn btn-success" onclick="updateDiary()">수정</button>
 			</c:if>
 			<%-- 삭제 버튼도 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
 			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
-				<button id="likeBtn" onclick="deleteDiary()">삭제</button>
+				<button id="likeBtn" class="btn btn-success" onclick="deleteDiary()">삭제</button>
 			</c:if>
 			<button id="likeBtn" class="btn btn-success"
 				onclick="likeButtonClicked('${userColor.ucid}')">공감</button>
 		</div>
 		<div style="margin-top: 20px;">
-    <ul style="list-style: none; padding: 0; text-align: left;">
-        <li><a href="javascript:history.back()" style="color: black;">← 뒤로가기</a></li>
-    </ul>
-</div>
-		
-</div>
-			
+			<ul style="list-style: none; padding: 0; text-align: left;">
+				<li><a href="javascript:history.back()" style="color: black;">←
+						뒤로가기</a></li>
+			</ul>
+		</div>
+
+	</div>
+
 
 	<script>
 		function updateDiary() {
