@@ -8,6 +8,8 @@
     <title>오늘의 일기</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             font-family: 'Hi Melody', cursive; 
@@ -22,6 +24,7 @@
             margin: 0 auto; /* 변경된 부분: 오른쪽 여백 20px */
             
         }
+        
 
        	.info {
         flex: 1;
@@ -59,9 +62,10 @@
         .form-check {
             position: absolute;
             bottom: 0;
-            right: 0;
+            left: 0;
             padding: 10px;
         }
+        
     </style>
     <script>
         function checkContentAndRead() {
@@ -103,7 +107,7 @@
 </head>
 
 <body>
-    <div class="layout">
+    <div class="layout" style="margin-top:80px; height:650px;">
         <div class="info">
             <c:choose>
                 <c:when test="${not empty sessionScope.todayColor}">
@@ -119,23 +123,25 @@
                     <p>세션에 오늘의 색 정보가 없습니다.</p>
                 </c:otherwise>
             </c:choose>
-            <div class="card">
-                <div class="card-body">
+            
                     <div id="content-out"></div>
-                </div>
-            </div>
         </div>
-	        <div class="input-container">
+	        <div class="input-container" style="position: relative;">
             <form action="/project_H/diary/diaryWrite" method="post" onsubmit="return wordCheck()">
-                <textarea class="form-control" rows="40" name="content" id="content" onkeyup="checkContentAndRead()">${content}</textarea>
-                <button type="submit">제출하기</button>
-                
-	            <div class="form-check" style="position: absolute;bottom: 0; right: 0; padding: 10px;">
-	                <input type="checkbox" id="share" name="share" class="form-check-input">
+            
+	            <div class="form-check" style="position: absolute; padding: 10px; left: 0; ">
+	                <input type="checkbox" id="share" name="share" class="form-check-input" style="margin-left:5px;">
 	                <input type="hidden" name="_share" value="on" />
-	                <label>공유게시판에 포스팅하기</label>
+	                <label style="float:left; margin-left:5px;">공유게시판에 포스팅하기</label>
 	                <br>
 	            </div>
+
+                <textarea class="form-control" rows="40" name="content" id="content"  onkeyup="checkContentAndRead()"
+                	style="height:590px;"> ${content} </textarea>
+        		<button style="float:right" onclick="location.href='/project_H/home'" 
+        			class="btn btn-secondary mt-2 p-1">홈으로</button>
+                <button type="submit" style="margin-right:10px; float:right" class="btn btn-primary mt-2 p-1">제출하기</button>
+                
             </form>
         </div>
     </div>
