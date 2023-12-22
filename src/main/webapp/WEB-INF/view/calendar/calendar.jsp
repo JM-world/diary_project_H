@@ -35,11 +35,13 @@
 
         #calendar {
             border: 1px solid #ddd;
-            padding: 10px;
             width: 70%;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.8);
             z-index: 1;
+            text-align: right;
+		    margin-top: 0; /* 불필요한 상단 마진 제거 */
+		    padding-top: 0; /* 불필요한 상단 패딩 제거 */
         }
 
         #sidebar {
@@ -65,18 +67,6 @@
             transition: 0.3s;
         }
 
-        #sidebar a:hover {
-            color: #f1f1f1;
-        }
-
-        #sidebar .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-        }
-
         .navbar-nav {
             margin-left: auto;
         }
@@ -84,6 +74,8 @@
         .nav-item {
             margin-left: 15px;
         }
+        
+
     </style>
  <script>
  
@@ -97,6 +89,25 @@
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'timeGridWeek,timeGridDay,dayGridMonth'
+                },
+                views: {
+                    timeGridWeek: {
+                        buttonText: '월간 분석',
+                    },
+                    timeGridDay: {
+                        buttonText: '일간 분석', 
+                    },
+                },
+                viewDidMount: function (arg) {
+                    if (arg.view.type === 'timeGridWeek') {
+                        // 월간 분석 뷰가 로드되었을 때 수행할 동작
+                        window.location.href = '${pageContext.request.contextPath}/calendar/monthResult'; // 이동할 페이지의 경로
+                    }
+                },
 	            datesSet: function(info) {
 	            	calendar.removeAllEvents();
 	                var allDates = info.view.currentStart;
@@ -289,21 +300,7 @@
         }
      
         
-        // 변경된 부분: 일기 쓰기 모달 열기
-        function openModalForWritingDiary() {
-            $('#myModal2').modal('show');
-            $('#exampleModalLabel2').text("일기 쓰기");
-            $('#modalTitle2').text('색깔을 골라보세요!');
-            $('#modalContent6').html('<a href="${pageContext.request.contextPath}/diary/color" onclick="openDiaryPage()">일기 쓰기</a>');
-
-            // 다른 모달 내용 초기화
-            $('#modalTitle').empty();
-            $('#modalContent').empty();
-            $('#modalContent2').empty();
-            $('#modalContent3').empty();
-            $('#modalContent4').empty();
-          
-        }
+ 
 
 		function openModal(date, words, sentiments, colors) {
 			const today = new Date();
@@ -365,12 +362,26 @@
 	        $('#modalContent5').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">내가 쓴 일기 보러 가기</a>');
             
         }
+		
+	    
+	    $('#button1').on('click', function () {
+	        // 버튼1이 클릭되었을 때 수행할 동작을 추가하세요.
+	        alert('버튼1이 클릭되었습니다!');
+	    });
+
+	    $('#button2').on('click', function () {
+	        // 버튼2이 클릭되었을 때 수행할 동작을 추가하세요.
+	        alert('버튼2이 클릭되었습니다!');
+	    });
 </script>
+
 </head>
 <body>
 	<%@ include file="../common/top.jsp" %>
-    <!-- 배경 이미지를 담당하는 추가된 요소 -->
-    <div id="background"></div>
+      <!-- FullCalendar를 감싸는 추가된 요소 -->
+    <div id='calendar'>
+
+	</div>
 
     <!-- Bootstrap Modal 예제 -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -397,28 +408,6 @@
         </div>
     </div>
 
-    <!-- FullCalendar를 감싸는 추가된 요소 -->
-    <div id='calendar'></div>
 
-    <!-- Bootstrap Modal 예제 -->
-    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel2"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="modalTitle2"></p>
-                    <p id="modalContent6"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

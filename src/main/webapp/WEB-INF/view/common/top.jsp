@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.net.URLEncoder" %>
 
  <div id="content">
  <!-- Your actual content goes here -->
@@ -14,65 +16,62 @@
             	</h4>
 	           	</div>
 	        </div>
-            <ul class="navbar-nav ms-auto">
-            	<li class="nav-item me-3">
-				    <a style="font-weight: bold; font-family: 'Hi Melody', sans-serif;">
-				        <span class="weather_icon"></span>
-				    </a>
-				</li>
-                <li class="nav-item me-3">
-                    <a style="font-weight: bold; font-family: 'Hi Melody', sans-serif;">
-                        <span class="current_temp" style="font-size: 20px"></span>
-                    </a>
+           		<ul class="navbar-nav ms-auto">
+                <li class="nav-item" style="margin-right: 15px;">
+                    <div style="border: 1px solid gray; border-radius: 10px; padding: 10px; display: flex; align-items: center;">
+                        <a style="font-weight: bold; font-family: 'Hi Melody', sans-serif; margin-right: 5px;">
+                            <span class="weather_icon"></span>/
+                        </a>
+                        <a style="font-weight: bold; font-family: 'Hi Melody', sans-serif; margin-right: 5px;">
+                            <span class="current_temp" style="font-size: 20px"></span>/
+                        </a>
+                        <a style="font-weight: bold; font-family: 'Hi Melody', sans-serif; margin-right: 5px;">
+                            <span class="weather_description" style="font-size: 20px"></span>/
+                        </a>
+                        <a style="font-weight: bold; font-family: 'Hi Melody', sans-serif; margin-right: 5px;">
+                            <span class="city" style="font-size: 20px"></span>
+                        </a>
+                    </div>
                 </li>
-                <li class="nav-item me-3">
-                    <a style="font-weight: bold; font-family: 'Hi Melody', sans-serif;">
-                        <span class="weather_description" style="font-size: 20px"></span>
-                    </a>
-                </li>
-                <li class="nav-item me-3">
-                    <a style="font-weight: bold; font-family: 'Hi Melody', sans-serif;">
-                        <span class="city" style="font-size: 20px"></span>
-                    </a>
-                </li>
-                <li class="nav-item me-3">
+			    
+                <li class="nav-item me-3" style="margin-top: 10px;">
                     <a id = "diary" href="/project_H/diary/color" class="nav-link btn btn-outline-secondary" title="일기 쓰기"
                         data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
                         <i class="fas fa-edit"></i>
                     </a>
                 </li>
-                <li class="nav-item me-3">
+                <li class="nav-item me-3" style="margin-top: 10px;">
                     <a id="calendarLink" href="/project_H/calendar" class="nav-link btn btn-outline-secondary"
                         title="캘린더 보기" data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
                         <i class="fas fa-calendar"></i>
                     </a>
                 </li>
-                <li class="nav-item me-3">
+                <li class="nav-item me-3" style="margin-top: 10px;">
                     <a id="myDiaryLink" href="/project_H/diary/diarylist" class="nav-link btn btn-outline-secondary"
                         title="내가 쓴 일기" data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip"
                         data-bs-placement="bottom">
                         <i class="fas fa-book"></i>
                     </a>
                 </li>
-              <li class="nav-item me-3">
+              <li class="nav-item me-3" style="margin-top: 10px;">
 		            <a id = "boardLink" href="/project_H/board/list/1" class="nav-link btn btn-outline-secondary" title="자유게시판"
 		            	data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
 		              <i class="fas fa-list-alt"></i>
 		            </a>
          		</li>
-	          <li class="nav-item me-3">
+	          <li class="nav-item me-3" style="margin-top: 10px;">
 	            <a id = "boardLink2" href="/project_H/diary/list/1" class="nav-link btn btn-outline-secondary" title="공유게시판"
 	            	data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
 	            <i class="far fa-list-alt"></i>
 	            </a>
 	            </li>
-	           <li class="nav-item me-3">
+	           <li class="nav-item me-3" style="margin-top: 10px;">
 		         <a href="/project_H/api/local" class="nav-link btn btn-outline-secondary" title="상담센터 지도"
 		            data-bs-custom-class="tooltip-light-pink" data-bs-toggle="tooltip" data-bs-placement="bottom">
 		          <i class="fas fa-map-marker-alt"></i>
 		            </a>
          		 </li>
-				<li class="nav-item me-3">
+				<li class="nav-item me-3" style="margin-top: 10px;">
            			<c:if test="${not empty sessCustId}">
               			<div class="dropdown">
 				<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileMenu" data-bs-toggle="dropdown">
@@ -166,26 +165,28 @@
         }
     });
 
+    
     $(document).ready(function() {
+
         var weatherIcon = {
-            '01d': 'fas fa-sun',
-            '02d': 'fas fa-cloud-sun',
-            '03d': 'fas fa-cloud',
-            '04d': 'fas fa-cloud-meatball',
-            '09d': 'fas fa-cloud-sun-rain',
-            '10d': 'fas fa-cloud-showers-heavy',
-            '11d': 'fas fa-poo-storm',
-            '13d': 'far fa-snowflake',
-            '50d': 'fas fa-smog',
-        	'01n': 'fas fa-sun',
-            '02n': 'fas fa-cloud-sun',
-            '03n': 'fas fa-cloud',
-            '04n': 'fas fa-cloud-meatball',
-            '09n': 'fas fa-cloud-sun-rain',
-            '10n': 'fas fa-cloud-showers-heavy',
-            '11n': 'fas fa-poo-storm',
-            '13n': 'far fa-snowflake',
-            '50n': 'fas fa-smog'
+            '01d': 'sun.png',
+            '02d': 'cloud-sun.png',
+            '03d': 'cloud.png',
+            '04d': 'cloud-meatball.png',
+            '09d': 'cloud-sun-rain.png',
+            '10d': 'cloud-showers-heavy.png',
+            '11d': 'poo-storm.png',
+            '13d': 'snowflake.png',
+            '50d': 'smog.png',
+        	'01n': 'moon.png',
+            '02n': 'cloud-sun.png',
+            '03n': 'cloud.png',
+            '04n': 'cloud-meatball.png',
+            '09n': 'cloud-sun-rain.png',
+            '10n': 'cloud-showers-heavy.png',
+            '11n': 'poo-storm.png',
+            '13n': 'snowflake.png',
+            '50n': 'smog.png'
         	
         };
 
@@ -203,7 +204,7 @@
         
 
         // 날씨 정보를 HTML에 적용
-    	$('.weather_icon').append('<i class="' + weatherIcon[iconCode] +' fa-2x" style="height: 40px; width: 40px;"></i>');
+    	$('.weather_icon').append('<img src="/project_H/img/' + weatherIcon[iconCode] + '" style="height: 30px; width: 30px;"/>');
         $('.weather_description').prepend(description);
         $('.current_temp').prepend(temperature);
         $('.humidity').prepend('습도&nbsp;&nbsp;&nbsp;&nbsp;' + humidity + ' %');

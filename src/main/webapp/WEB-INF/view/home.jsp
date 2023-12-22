@@ -138,8 +138,8 @@
 	    
 			<div class="col-5">
 		        <!-- Bootstrap Card 2 -->
-		        <div class="card" style="width: 440px; height: 440px; margin-left: 30px;">
-					<div class="card-header" style='background-color:${sessionScope.homeColor.mainColor_code};'>
+		        <div class="card" style="width: 440px; height: 420px; margin-left: 30px; margin-bottom: 40px;">
+					<div class="card-header" style='background-color:${sessionScope.homeColor.mainColor_code}; height: 50px;'>
                         <h5 class="card-title">유저들이 가장 많이 선택한 색</h5>
                     </div>
 		            <div class="card-body2 ms-5" style="width: 80%; height: 30;">
@@ -150,8 +150,8 @@
 			</div>
 			<div class="col-5">
 				<!-- Bootstrap Card 3 -->
-		        <div class="card" style="width: 440px; height: 440px; margin-left: 90px;">
-					<div class="card-header" style='background-color:${sessionScope.homeColor.mainColor_code};'>
+		        <div class="card" style="width: 440px; height: 420px; margin-left: 90px; margin-bottom: 40px;">
+					<div class="card-header" style='background-color:${sessionScope.homeColor.mainColor_code}; height: 50px;'>
                         <h5 class="card-title">이 달의 회원 감정 비율</h5>
                     </div>
 		            <div class="card-body3 ms-5" style="width: 80%; height: 30;">

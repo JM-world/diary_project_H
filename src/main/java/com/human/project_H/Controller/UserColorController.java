@@ -108,6 +108,8 @@ public class UserColorController {
 
 		int totalusers = userColorService.getPageCount();
 		int totalPages = (int) Math.ceil((double) totalusers / userColorService.RECORDS_PER_PAGE);
+		
+		
 		List<String> pageList = new ArrayList<>();
 		for (int i = 1; i <= totalPages; i++)
 			pageList.add(String.valueOf(i));

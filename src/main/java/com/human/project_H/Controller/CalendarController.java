@@ -211,7 +211,12 @@ public class CalendarController {
         model.addAttribute("jsonString", jsonString);  // 감정 모델
 		return "calendar/calendar";				// webapp/WEB-INF/view/calendar.jsp 를 렌더링해서 보여줌
 	}
-
+	
+	
+	@GetMapping("/calendar/monthResult")
+    public String monthResult() {
+        return "calendar/monthResult";
+    }
 
 }
 

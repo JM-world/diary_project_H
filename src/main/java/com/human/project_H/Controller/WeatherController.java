@@ -42,6 +42,7 @@ public class WeatherController {
 
             // IP 주소 가져오기 (여기서는 하드코딩된 값 사용)
             String ipAddress = "58.72.151.124";
+//            String ipAddress = getIpAddress(request);
 
             // GeoIP2를 사용하여 위도(lat)와 경도(lon) 구하기
             DatabaseReader reader = new DatabaseReader.Builder(inputStream).build();

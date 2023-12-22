@@ -17,7 +17,7 @@ import com.human.project_H.entity.UserSentiment;
 @Mapper
 public interface UserColorDaoOracle {
 
-	@Select("SELECT count(custId) FROM usercolor WHERE isDeleted = 0")
+	@Select("SELECT count(custId) FROM users WHERE isDeleted = 0")
 	int getPageCount();
 
 	@Select("select commitFlag from USERCOLOR where custId = #{custId}")
