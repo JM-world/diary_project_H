@@ -7,20 +7,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시판</title>
-<script src="https://kit.fontawesome.com/fdb840a8cc.js"
-	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
-body {
-	background-image: url('/project_H/img/pa.jpg');
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	margin: 0;
-	padding: 0;
-}
 
 #container {
 	width: 70%;

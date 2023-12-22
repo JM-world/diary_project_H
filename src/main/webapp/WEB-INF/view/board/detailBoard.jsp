@@ -106,13 +106,13 @@
 		<div class="form-group-buttons">
 			<%-- 수정 버튼은 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
 			<c:if test="${board.custId eq sessionScope.sessCustId}">
-				<button id="likeBtn" onclick="updateDiary()">수정</button>
+				<button id="likeBtn" class="btn btn-primary" onclick="updateDiary()">수정</button>
 			</c:if>
 			<%-- 삭제 버튼도 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
 			<c:if test="${board.custId eq sessionScope.sessCustId}">
-				<button id="likeBtn" onclick="deleteDiary()">삭제</button>
+				<button id="likeBtn" class="btn btn-primary" onclick="deleteDiary()">삭제</button>
 			</c:if>
-			<button id="likeBtn" class="btn btn-success"
+			<button id="likeBtn" class="btn btn-primary"
 				onclick="likeButtonClicked('${board.bid}')">공감</button>
 			<div
 				style="margin-top: 20px; text-align: left; display: inline-block;">

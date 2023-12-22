@@ -92,22 +92,45 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'timeGridWeek,timeGridDay,dayGridMonth'
+                    right: 'customButton2,customButton1'
                 },
                 views: {
-                    timeGridWeek: {
+                	customButton2: {
                         buttonText: '월간 분석',
                     },
-                    timeGridDay: {
+                    customButton1: {
                         buttonText: '일간 분석', 
-                    },
+                    }
+                    
                 },
-                viewDidMount: function (arg) {
-                    if (arg.view.type === 'timeGridWeek') {
-                        // 월간 분석 뷰가 로드되었을 때 수행할 동작
-                        window.location.href = '${pageContext.request.contextPath}/calendar/monthResult'; // 이동할 페이지의 경로
+                customButtons: {
+                    customButton1: {
+                        text: '일간 분석',
+                        click: function() {
+                        	var currentDate = new Date();
+                        	var currentDate = new Date();
+                        	var currentMonth = currentDate.getMonth() + 1; // 현재 월 가져오기
+                        	//console.log(currentMonth); // 현재 월 출력
+                            var currentString = currentDate.toString();
+    					    var slicedText = currentString.slice(4, 15); // "Dec"를 포함한 문자열 추출
+    					    var stringWithoutSpaces = slicedText.replace(/\s/g, '-');
+    				        var parts = stringWithoutSpaces.split('-'); // '-'를 기준으로 문자열 분리
+    				        var formattedDate = parts[2] + '-' + currentMonth + '-' + parts[1]; // 원하는 형식으로 재구성
+                            //console.log(formattedDate);
+                            openModal(formattedDate, calendar.words, calendar.jsonString, calendar.colorString);
+                        }
+                    },
+                    customButton2: {
+                        text: '월간 분석',
+                        click: function() {
+                        	var targetPageUrl = '${pageContext.request.contextPath}/calendar/monthResult'; // 이동할 페이지 URL을 여기에 넣어주세요
+                            
+                            // 페이지 이동
+                            window.location.href = targetPageUrl;
+                        }
                     }
                 },
+                
 	            datesSet: function(info) {
 	            	calendar.removeAllEvents();
 	                var allDates = info.view.currentStart;
@@ -191,7 +214,7 @@
 						    if (eventsData.hasOwnProperty(date)) {
 						        // 각 날짜에 대한 이벤트 정보 배열
 						        var eventsForDate = eventsData[date];
-						        console.log(eventsForDate)
+						        //console.log(eventsForDate)
 						        // 해당 날짜의 모든 이벤트 정보 배열을 순회하며 FullCalendar에 이벤트 추가
 						        eventsForDate.forEach(eventInfo => {
 						        	//console.log(eventInfo.date)
@@ -210,7 +233,7 @@
 						        });
 						    }
 						}
-						console.log(colorDates)
+						//console.log(colorDates)
 		        		// colorDates 객체를 기반으로 이벤트 생성 및 배경색 지정하여 풀캘린더에 추가
 		        		for (var date in colorDates) {
 		        		    if (colorDates.hasOwnProperty(date)) {
@@ -271,6 +294,12 @@
 	            });
 
 	            calendar.render();
+	            
+	            var headerText = calendar.view.title; // FullCalendar의 기본 헤더 텍스트 가져오기
+	            var dateElement = document.getElementsByClassName('fc-toolbar-title');
+	            console.log(dateElement);
+	            
+	       
 	            
 	         // 16진수 색상 코드를 rgba 형식으로 변환하는 함수
 	            function hexToRGBA(hex, alpha) {
@@ -346,7 +375,6 @@
        		if (foundSentiment !== ''){
        			// 오늘의 기분이 있는 경우
 	        	$('#modalContent2').text('오늘의 기분: ' + foundSentiment);
-		        $('#modalContent3').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">일간 분석 데이터</a>');
         	} else if (dateObj.getTime() < currentObj.getTime()){
         		// 오늘의 기분이 없고, date가 현재 날짜보다 이전인 경우
         		$('#modalContent2').text('일기를 작성하지 않았어요!');
@@ -358,8 +386,6 @@
         	} else {
         		$('#modalContent2').text('훗날의 일기는 미리작성할수 없어요!');
         	}
-	        $('#modalContent4').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">월간 분석 데이터</a>');
-	        $('#modalContent5').html('<a href="${pageContext.request.contextPath}/home" onclick="openDiaryPage()">내가 쓴 일기 보러 가기</a>');
             
         }
 		

@@ -25,56 +25,24 @@ body {
 }
 
 .layout {
-	max-width: 700px;
-	margin: auto;
-	padding: 20px;
-	margin-top: 50px;
-	flex: 1;
-	box-sizing: border-box;
-	border: 2px solid #ddd;
-	padding: 10px;
-	border-radius: 5px;
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	background: linear-gradient(to right, ${ userColor.color_code2
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    margin-top: 50px;
+    flex: 1;
+    box-sizing: border-box;
+    border: 2px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to right, ${userColor.color_code2}, ${userColor.mainColor_code1},  rgba(255, 255, 255, 0.2));
 }
 
-,
-${
-userColor
 
-
-
-
-.color_code2
-
-
-
-
-}
-,
-${
-userColor
-
-
-
-
-.mainColor_code1
-
-
-
-
-}
-)
-
-
-
-
-;
-}
 #todayHeader {
-	font-size: 1.7em;
+	font-size: 1.8em;
 	font-weight: bold;
 	text-align: center;
 }
@@ -87,14 +55,14 @@ userColor
 }
 
 #todayColor {
-	font-size: 1.7em;
+	font-size: 2.0em;
 	font-weight: bold;
 	text-align: center;
 	margin-bottom: 20px;
 }
 
 #todayContent {
-	font-size: 1.2em;
+	font-size: 1.3em;
 	font-weight: bold;
 	text-align: left;
 	margin-bottom: 20px;
@@ -107,11 +75,6 @@ userColor
 	margin-bottom: 10px;
 }
 
-#todayContent {
-	font-size: 1.2em;
-	text-align: left;
-	margin-bottom: 20px;
-}
 
 #content:focus {
 	outline: none;
@@ -193,17 +156,16 @@ F
 	<div class="layout">
 		<!-- 일기 상세 정보 표시 -->
 		<div id="todayHeader">
-			<h2>${userColor.nickname}님의'${userColor.title}'색일기</h2>
+			<h2>${userColor.nickname}님의"${userColor.title}"색일기</h2>
 		</div>
-		<hr
-			style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
+		<hr style="border-top: 2px solid #000000; width: 100%; margin: 10px;">
 		<div id="todaytitle">
 			<p>작성자: ${userColor.nickname}</p>
 		</div>
-		<div id="todayColor">
-			<p>오늘의 색: ${userColor.title}</p>
-			<p>오늘의 감정:${userColor.sentiment}</p>
-
+		<div id="todayColor">			
+			<p>오늘의색: "${userColor.title}"</p>
+			<br>
+			<p>오늘의 감정:
 			<c:choose>
 				<c:when test="${userColor.sentiment eq 'positive'}">
 					<img src="/project_H/img/happy.png" alt="Happy" width="80"
@@ -218,10 +180,13 @@ F
 				</c:when>
 			</c:choose>
 		</div>
-		<hr
-			style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
+		<br>
+		<div id="todayColor">
+			<p><일기 내용></p>
+		</div>
+		<hr style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
 		<div id="todayContent">
-			<p>내용: ${userColor.content}</p>
+			<p>${userColor.content}</p>
 		</div>
 		<hr
 			style="border-top: 2px solid #000000; width: 100%; margin: 10px 0;">
@@ -237,14 +202,15 @@ F
 		<div class="form-group-buttons">
 			<%-- 수정 버튼은 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
 			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
-				<button id="likeBtn" class="btn btn-success" onclick="updateDiary()">수정</button>
+				<button id="likeBtn" class="btn btn-primary" onclick="updateDiary()">수정</button>
 			</c:if>
 			<%-- 삭제 버튼도 작성자와 현재 사용자 ID가 일치할 때만 보이도록 처리 --%>
 			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
-				<button id="likeBtn" class="btn btn-success" onclick="deleteDiary()">삭제</button>
+				<button id="likeBtn" class="btn btn-primary" onclick="deleteDiary()">삭제</button>
 			</c:if>
-			<button id="likeBtn" class="btn btn-success"
-				onclick="likeButtonClicked('${userColor.ucid}')">공감</button>
+			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
+				<button id="likeBtn" class="btn btn-primary" onclick="deleteDiary()">공감</button>
+			</c:if>
 		</div>
 		<div style="margin-top: 20px;">
 			<ul style="list-style: none; padding: 0; text-align: left;">
@@ -272,24 +238,15 @@ F
 				예: window.location.href = '/project_H/diary/delete/${userColor.ucid}';
 			}
 		}
-
-		function likeButtonClicked(ucid) {
-			var likeUrl = "${pageContext.request.contextPath}/diary/like/"
-					+ ucid;
-			$.ajax({
-				type : "GET",
-				url : likeUrl,
-				success : function(response) {
-					// 성공적으로 처리된 경우의 동작
-					console.log("공감이 성공적으로 처리되었습니다.");
-					// 페이지를 다시 로드하는 등의 동작을 추가할 수 있습니다.
-					location.reload();
-				},
-				error : function(error) {
-					console.error("공감 처리 중 오류가 발생하였습니다.", error);
-				}
-			});
+	
+		function deleteDiary() {
+			var confirmDelete = confirm('게시글을 공감하시겠습니까?');
+			if (confirmDelete) {
+				예: window.location.href = '/project_H/diary/like/${userColor.ucid}';
+			}
 		}
+
+
 	</script>
 
 </body>
