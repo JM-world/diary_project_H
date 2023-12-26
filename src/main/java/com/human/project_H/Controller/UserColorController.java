@@ -98,26 +98,27 @@ public class UserColorController {
 
 	@GetMapping("/list/{page}")
 	public String list(@PathVariable int page, HttpSession session, Model model) {
-		String sessCustId = (String) session.getAttribute("sessCustId");
-		System.out.println(sessCustId);
-		List<UserColor> list = userColorService.getUserColorList(page);
-		
-		Collections.sort(list, Comparator.comparing(UserColor::getModTime).reversed());
-		model.addAttribute("userColorList", list);
-		list.forEach(x -> System.out.println(x));
+	    String sessCustId = (String) session.getAttribute("sessCustId");
+	    System.out.println(sessCustId);
+	    List<UserColor> list = userColorService.getUserColorList(page);
+	    
+	    
+	    model.addAttribute("userColorList", list);
 
-		int totalusers = userColorService.getPageCount();
-		int totalPages = (int) Math.ceil((double) totalusers / userColorService.RECORDS_PER_PAGE);
-		
-		
-		List<String> pageList = new ArrayList<>();
-		for (int i = 1; i <= totalPages; i++)
-			pageList.add(String.valueOf(i));
-		model.addAttribute("pageList", pageList);
-		session.setAttribute("currentUserPage", page);
+	    list.forEach(x -> System.out.println(x));
 
-		return "diary/diaryboard";
+	    int totalusers = userColorService.getPageCount();  
+	    int totalPages = (int) Math.ceil((double) totalusers / UserColorService.RECORDS_PER_PAGE);
+	    List<String> pageList = new ArrayList<>();
+	    for (int i = 1; i <= totalPages; i++)
+	        pageList.add(String.valueOf(i));
+	    model.addAttribute("pageList", pageList);
+	    session.setAttribute("currentUserPage", page);
+	    System.out.println(pageList);
+	    return "diary/diaryboard";
 	}
+
+
 
 	// 사용자 일기 목록
 	@GetMapping("/diarylist") 

@@ -19,6 +19,12 @@
     <%@ include file="../common/head.jsp" %>
 
     <style>
+    
+    	.fc-daygrid-day-events {
+        width: 32px !important; /* 원하는 가로 크기로 조정합니다 */
+        height: 32px !important; /* 원하는 세로 크기로 조정합니다 */
+        /* 다른 스타일도 필요하다면 추가하세요 */
+    }
         body {
             margin: 0;
             padding: 0;
@@ -259,38 +265,54 @@
 		            },
 		            
 		            eventContent: function(arg) {
-		            	var eventEl = document.createElement('div');
-		            	//배경색 제거
-		            	eventEl.style.backgroundColor = 'transparent';
+		            	var parentEl = document.querySelector('.fc-daygrid-day-frame.fc-scrollgrid-sync-inner'); // 부모 요소 찾기
 		            	
-		            	// 추가적인 이벤트 속성을 확인하여 이미지를 추가하는 예시
-		                if (arg.event.extendedProps && arg.event.extendedProps.additionalInfo === '긍정' && arg.event.extendedProps.isEvent) {
-		                    var img = document.createElement('img');
-		                    img.src = '/project_H/img/happy.png';
-		                    img.alt = 'Happy';
-		                    img.width = '20';
-		                    img.height = '20';
-		                    eventEl.appendChild(img);
-		                } else if (arg.event.extendedProps && arg.event.extendedProps.additionalInfo === '부정' && arg.event.extendedProps.isEvent) {
-		                    var img = document.createElement('img');
-		                    img.src = '/project_H/img/sad.png';
-		                    img.alt = 'Sad';
-		                    img.width = '20';
-		                    img.height = '20';
-		                    eventEl.appendChild(img);
-		                } else if (arg.event.extendedProps && arg.event.extendedProps.additionalInfo === '중립' && arg.event.extendedProps.isEvent) {
-		                	var img = document.createElement('img');
-		                    img.src = '/project_H/img/neutral.png';
-		                    img.alt = 'Neutral';
-		                    img.width = '20';
-		                    img.height = '20';
-		                    eventEl.appendChild(img);
-		                }
+		            	if (parentEl) {
+			            	// 이벤트 요소 생성
+			                var eventEl = document.createElement('div');
+			                eventEl.style.backgroundColor = 'transparent';
+			                eventEl.style.position = 'absolute'; // 부모 요소를 기준으로 위치 조정
 		                
-		               return { domNodes: [eventEl] };
+			                var img = document.createElement('img');
+			                img.width = '40';
+			                img.height = '40';
+
+			                if (arg.event.extendedProps && arg.event.extendedProps.isEvent) {
+			                    var additionalInfo = arg.event.extendedProps.additionalInfo;
+			                    
+			                    switch (additionalInfo) {
+			                        case '긍정':
+			                            img.src = '/project_H/img/happy.png';
+			                            img.alt = 'Happy';
+			                            break;
+			                        case '부정':
+			                            img.src = '/project_H/img/sad.png';
+			                            img.alt = 'Sad';
+			                            break;
+			                        case '중립':
+			                            img.src = '/project_H/img/neutral.png';
+			                            img.alt = 'Neutral';
+			                            break;
+			                        default:
+			                            break;
+			                    }
+
+		                    	eventEl.appendChild(img);
+		                    
+		                    	// parentEl을 기준으로 위치 설정
+		                        var parentRect = parentEl.getBoundingClientRect();
+		                        var leftPercentage = 33; // 예시로 왼쪽으로 10% 이동
+
+		                        var parentWidth = parentRect.width;
+		                        var leftPosition = (parentWidth * leftPercentage) / 100;
+
+		                        eventEl.style.left = leftPosition + 'px'; // 왼쪽 위치 설정
+		                }
+
+		                return { domNodes: [eventEl] };
 		              }
 		            
-	                
+		            }
 	            });
 
 	            calendar.render();
@@ -372,9 +394,11 @@
         	} else {
         		$('#modalContent').text('');
         	}
+       		
        		if (foundSentiment !== ''){
        			// 오늘의 기분이 있는 경우
 	        	$('#modalContent2').text('오늘의 기분: ' + foundSentiment);
+	        	$('#modalContent3').text('');
         	} else if (dateObj.getTime() < currentObj.getTime()){
         		// 오늘의 기분이 없고, date가 현재 날짜보다 이전인 경우
         		$('#modalContent2').text('일기를 작성하지 않았어요!');
@@ -384,20 +408,39 @@
         		$('#modalContent2').text('오늘은 일기를 작성하지 않았어요!');
 		        $('#modalContent3').html('<a href="${pageContext.request.contextPath}/diary/color" onclick="openDiaryPage()">오늘 일기 쓰러 가기</a>');
         	} else {
-        		$('#modalContent2').text('훗날의 일기는 미리작성할수 없어요!');
+        		$('#modalContent2').text('훗날의 일기는 미리 작성할수 없어요!');
+        		$('#modalContent3').text('');
         	}
-            
+       		
+       		
+       		
         }
 		
-	    
-	    $('#button1').on('click', function () {
-	        // 버튼1이 클릭되었을 때 수행할 동작을 추가하세요.
-	        alert('버튼1이 클릭되었습니다!');
-	    });
+		
 
-	    $('#button2').on('click', function () {
-	        // 버튼2이 클릭되었을 때 수행할 동작을 추가하세요.
-	        alert('버튼2이 클릭되었습니다!');
+	    
+	    $(document).ready(function() {
+	        // 닫기 버튼을 눌렀을 때 모달 닫기
+	        $('.modal-header .close').on('click', function() {
+	            $('#myModal').modal('hide');
+	        });
+
+	        $('.modal-footer .btn-secondary').on('click', function() {
+	            $('#myModal').modal('hide');
+	        });
+	        
+	        // 모달이 표시되기 전에 실행될 이벤트
+	        $('#myModal').on('show.bs.modal', function() {
+	            console.log('모달이 열립니다!');
+	            // 이곳에 모달이 열리기 전에 수행할 작업을 추가할 수 있습니다.
+	        });
+
+	        // 모달이 닫히기 전에 실행될 이벤트
+	        $('#myModal').on('hide.bs.modal', function() {
+	            console.log('모달이 닫힙니다!');
+	            // 이곳에 모달이 닫히기 전에 수행할 작업을 추가할 수 있습니다.
+	        });
+	        
 	    });
 </script>
 

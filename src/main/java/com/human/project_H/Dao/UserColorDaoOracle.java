@@ -17,8 +17,18 @@ import com.human.project_H.entity.UserSentiment;
 @Mapper
 public interface UserColorDaoOracle {
 
-	@Select("SELECT count(custId) FROM users WHERE isDeleted = 0")
+	@Select("SELECT COUNT(uc.custId) " +
+	        "FROM USERCOLOR uc " +
+	        "JOIN users u ON uc.custId = u.custId " +
+	        "JOIN todaycolor tc ON uc.cid = tc.cid " +
+	        "LEFT JOIN user_sentiment us ON uc.custId = us.custId " +
+	        "WHERE uc.isDeleted = 0 " +
+	        "  AND uc.commitFlag = 1 " +
+	        "  AND uc.shareFlag = 1 " +
+	        "  AND to_char(uc.modTime, 'YYYY-MM-DD') = to_char(us.modTime, 'YYYY-MM-DD') " +
+	        "  AND uc.cid = tc.cid")
 	int getPageCount();
+
 
 	@Select("select commitFlag from USERCOLOR where custId = #{custId}")
 	public int getCommitFlag(UserColor userColor);
@@ -34,11 +44,23 @@ public interface UserColorDaoOracle {
 
 	@Update("update USERCOLOR set content = #{content}, modTime = current_timestamp, commitFlag=#{commit}, shareFlag=#{share} where UCID=#{ucid}")
 	public void updateUserColorCommit(int ucid, String content, boolean commit, boolean share);
+	
+	
+	
+	@Select("SELECT * FROM " +
+	        "(SELECT ROWNUM AS rnum, a.*, u.nickname, tc.title, us.sentiment " +
+	        "FROM (SELECT * FROM USERCOLOR WHERE shareFlag = 1 AND commitFlag = 1 ORDER BY modTime DESC) a " +
+	        "JOIN USERS u ON a.custId = u.custId " +
+	        "JOIN TODAYCOLOR tc ON a.cid = tc.cid " +
+	        "LEFT JOIN USER_SENTIMENT us ON a.custId = us.custId " +
+	        "WHERE TO_CHAR(a.modTime, 'YYYY-MM-DD') = TO_CHAR(us.modTime, 'YYYY-MM-DD') " +
+	        "AND ROWNUM <= #{offset} + #{limit}) " +
+	        "WHERE rnum > #{offset}")
+	List<UserColor> getUserColorList(@Param("offset") int offset, @Param("limit") int limit);
 
-	@Select("SELECT * FROM " + "(SELECT uc.*, u.nickname, tc.title, ROWNUM AS rnum " + "FROM USERCOLOR uc "
-			+ "JOIN USERS u ON uc.custId = u.custId " + "JOIN TODAYCOLOR tc ON uc.cid = tc.cid "
-			+ "WHERE uc.shareFlag = 1 AND ROWNUM <= #{limit}) b " + "WHERE b.rnum > #{offset}")
-	List<UserColor> getUserColorList(int offset, int limit);
+
+
+
 
 	@Select("SELECT uc.*, u.nickname, tc.title " + "FROM USERCOLOR uc " + "JOIN USERS u ON uc.custId = u.custId "
 			+ "JOIN TODAYCOLOR tc ON uc.cid = tc.cid " + "WHERE uc.shareFlag = 1")

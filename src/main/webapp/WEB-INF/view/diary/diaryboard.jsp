@@ -181,12 +181,10 @@
 			<!-- Paging 처리 -->
 			<ul class="pagination">
 				<c:if test="${pageList.size() > 1}">
-					<c:forEach var="pageNum" items="${pageList}">
-						<li
-							class="<c:if test='${pageNum eq pageMaker.currentPage}'>active</c:if>">
-							<a
-							href="/project_H/diary/list/${pageNum}${pageMaker.makeQuery(pageNum)}">${pageNum}</a>
-						</li>
+				<c:forEach var="page" items="${pageList}">
+					<li class="page-item ${(currentUserPage eq page) ? 'active' : ''}">
+						<a class="page-link" href="/project_H/diary/list/${page}">${page}</a>
+					</li>
 					</c:forEach>
 				</c:if>
 			</ul>

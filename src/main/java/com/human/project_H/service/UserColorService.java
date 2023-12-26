@@ -11,7 +11,7 @@ public interface UserColorService {
 	int CORRECT_LOGIN = 0;
 	int WRONG_PASSWORD = 1;
 	int UID_NOT_EXIST = 2;
-	int RECORDS_PER_PAGE = 10; // 한 페이지당 5개 레코드를 보여줌
+	int RECORDS_PER_PAGE = 10; // 한 페이지당 10개 레코드를 보여줌
 
 	UserColor getUserColor(int ucid);
 

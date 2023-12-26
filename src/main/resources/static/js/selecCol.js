@@ -10,7 +10,7 @@ function selecColProc (selectColVar) {
 		for (let i = 0; i < sjData.length; i++) {
 			let s = sjData[i];
 			slabelList.push(s.colorName);
-			sbackList.push(s.colorCode);
+			sbackList.push(s.colorCode + "80");
 			svalueList.push(s.selctCnt);
 		}
 

@@ -126,30 +126,8 @@ body {
 .button-container button:hover {
 	background-color: #0056b3;
 }
-F
+
 </style>
-<script>
-	function updateDiary() {
-		var confirmUpdate = confirm('게시글을 수정하시겠습니까?');
-		if (confirmUpdate) {
-			window.location.href = '/project_H/diary/update/${userColor.ucid}';
-		}
-	}
-
-	function deleteDiary() {
-		var confirmDelete = confirm('게시글을 삭제하시겠습니까?');
-		if (confirmDelete) {
-			alert('게시글이 삭제 되었습니다.');
-			// 삭제를 위한 URL로 이동 또는 필요한 동작 수행
-			window.location.href = '/project_H/diary/delete/${userColor.ucid}';
-		}
-	}
-
-	function likeButtonClicked(ucid) {
-		var likeUrl = "${pageContext.request.contextPath}/diary/like/" + ucid;
-		window.location.href = likeUrl;
-	}
-</script>
 </head>
 <body>
 	<%@ include file="../common/top.jsp"%>
@@ -209,7 +187,7 @@ F
 				<button id="likeBtn" class="btn btn-primary" onclick="deleteDiary()">삭제</button>
 			</c:if>
 			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
-				<button id="likeBtn" class="btn btn-primary" onclick="deleteDiary()">공감</button>
+				<button id="likeBtn" class="btn btn-primary" onclick="likeDiary()">공감</button>
 			</c:if>
 		</div>
 		<div style="margin-top: 20px;">
@@ -230,21 +208,21 @@ F
 			}
 		}
 
-		function deleteDiary() {
-			var confirmDelete = confirm('게시글을 삭제하시겠습니까?');
-			if (confirmDelete) {
-				alert('게시글이 삭제 되었습니다.');
-				// 삭제를 위한 URL로 이동 또는 필요한 동작 수행
-				예: window.location.href = '/project_H/diary/delete/${userColor.ucid}';
-			}
-		}
-	
-		function deleteDiary() {
-			var confirmDelete = confirm('게시글을 공감하시겠습니까?');
-			if (confirmDelete) {
-				예: window.location.href = '/project_H/diary/like/${userColor.ucid}';
-			}
-		}
+	    function deleteDiary() {
+	        var confirmDelete = confirm('게시글을 삭제하시겠습니까?');
+	        if (confirmDelete) {
+	            alert('게시글이 삭제 되었습니다.');
+	            // 삭제를 위한 URL로 이동 또는 필요한 동작 수행
+	          	window.location.href = '/project_H/diary/delete/${userColor.ucid}';
+	        }
+	    }
+
+	    function likeDiary() {
+	        var confirmLike = confirm('게시글을 공감하시겠습니까?');
+	        if (confirmLike) {
+	          window.location.href = '/project_H/diary/like/${userColor.ucid}';
+	        }
+	    }
 
 
 	</script>

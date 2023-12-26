@@ -17,10 +17,10 @@
         }
 
         #map {
-            width: 80vw;
-            height: 80vw;
-            max-width: 700px;
-            max-height: 700px;
+            width: 70vw;
+            height: 70vw;
+            max-width: 500px;
+            max-height: 500px;
             border: 2px solid white; /* 테두리를 추가하거나 스타일을 조절할 수 있습니다. */
             border-radius: 10px; /* 원형이 아닌 정사각형으로 스타일 조절 가능 */
             overflow: hidden;
@@ -47,9 +47,9 @@
 <body>
 <%@ include file="../common/top.jsp" %>
 <div>
-    <label for="keyword" style="margin-top:20px;">상담센터 키워드:</label>
+    <label for="keyword" style="font-weight: bold; font-size:2.0em; margin-top:20px; font-family: 'Hi Melody', sans-serif;"> 동 입력: </label>
     <input type="text" id="keyword" />
-    <button onclick="searchCounselingCenters()" style="padding: 5px 10px;">검색</button>
+    <button class="btn btn-primary"onclick="searchCounselingCenters()" style="padding: 10px 20px; margin-top:-4px;">검색</button>
 </div>
 <div id="map-container" style="display: flex; justify-content: center; align-items: center;">
     <div id="map" style="width: 80vw; height: 80vw; max-width: 700px; max-height: 700px; border: 2px solid white; border-radius: 10px; overflow: hidden;"></div>

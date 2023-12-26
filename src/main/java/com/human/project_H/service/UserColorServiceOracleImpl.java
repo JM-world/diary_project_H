@@ -11,6 +11,7 @@ import com.human.project_H.entity.SelectContent;
 import com.human.project_H.entity.UserColor;
 import com.human.project_H.entity.UserSentiment;
 
+
 @Service
 public class UserColorServiceOracleImpl implements UserColorService {
 
@@ -56,9 +57,9 @@ public class UserColorServiceOracleImpl implements UserColorService {
 
 	@Override
 	public List<UserColor> getUserColorList(int page) {
-		int offset = (page - 1) * RECORDS_PER_PAGE;
-		int limit = page * RECORDS_PER_PAGE;
-		return userColorDao.getUserColorList(offset, limit);
+		 int offset = (page - 1) * RECORDS_PER_PAGE;
+	     return userColorDao.getUserColorList(offset, RECORDS_PER_PAGE);
+	     
 	}
 
 	@Override

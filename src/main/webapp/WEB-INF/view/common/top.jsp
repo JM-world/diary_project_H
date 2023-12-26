@@ -199,7 +199,7 @@
 	    var cloudiness = '<%= request.getAttribute("cloudiness") %>';
 	    var temp_min = '<%= request.getAttribute("temp_min") %>';
 	    var temp_max = '<%= request.getAttribute("temp_max") %>';
-	    var cityName = '<%= request.getAttribute("name") %>'; 
+	    var cityName = '<%= request.getAttribute("cityName") %>'; 
 	    var iconClass = weatherIcon[iconCode];
         
 

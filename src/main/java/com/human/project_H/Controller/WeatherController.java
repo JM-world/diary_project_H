@@ -50,10 +50,13 @@ public class WeatherController {
             CityResponse response = reader.city(ip);
             Double lat = response.getLocation().getLatitude();
             Double lon = response.getLocation().getLongitude();
+            
+            String cityName = response.getCity().getName();
 
             // Model에 위도(lat)와 경도(lon) 추가
             model.addAttribute("lat", lat);
             model.addAttribute("lon", lon);
+            model.addAttribute("cityName", cityName);
 
             String apiUrl = "https://api.openweathermap.org/data/2.5/weather"
                     + "?lat=" + lat + "&lon=" + lon + "&units=metric"

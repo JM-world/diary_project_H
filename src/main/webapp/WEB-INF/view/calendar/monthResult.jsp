@@ -27,7 +27,6 @@
 		  margin: 50px auto;
 		  margin-left: 400px;
 		  overflow: hidden;   
-		  background-color:black;
 		  /*리스트 형식으로 이미지를 일렬로 
 		  정렬할 것이기 때문에, 500px 밖으로 튀어 나간 이미지들은
 		  hidden으로 숨겨줘야됨*/
@@ -99,38 +98,24 @@
 </head>
 <body>
 	<%@ include file="../common/top.jsp" %>
-	
-	<div class="row" style="align-items: flex-start;">
-		<div class="col-2" style="text-align:center; margin-left:50px;">
-		  <div class="card" style="margin-top: 20px; height: 600px; width: 300px;">
+		<div style="display: flex;">
+		  <div class="card" style="margin-left:50px; margin-top: 50px; height: 600px; width: 350px;">
 		    <div class="card-body">Basic card</div>
 		  </div>
-		</div>
-		<div class="col-10">
-			<div id="slideShow">
+			<div id="slideShow" style="margin-left: 80px;">
 			    <ul class="slides">
 			      <li>
-				      <div class="card" style="margin-top: 20px; height: 600px; width: 600px;">
+				      <div class="card" style="height: 600px; width: 600px;">
 					    <div class="card-body">Basic card</div>
 					  </div>
 				  </li>
 			      <li>
-				      <div class="card" style="margin-top: 20px; height: 600px; width: 600px;">
+				      <div class="card" style="height: 600px; width: 600px;">
 					    <div class="card-body">Basic card</div>
 					  </div>
 				  </li>
 			      <li>
-				      <div class="card" style="margin-top: 20px; height: 600px; width: 600px;">
-					    <div class="card-body">Basic card</div>
-					  </div>
-				  </li>
-			      <li>
-				      <div class="card" style="margin-top: 20px; height: 600px; width: 600px;">
-					    <div class="card-body">Basic card</div>
-					  </div>
-				  </li>
-			      <li>
-				      <div class="card" style="margin-top: 20px; height: 600px; width: 600px;">
+				      <div class="card" style="height: 600px; width: 600px;">
 					    <div class="card-body">Basic card</div>
 					  </div>
 				  </li>
@@ -143,8 +128,7 @@
 			      <span class="next">&rang;</span>
 			    </p>
 			  </div>
-		  </div>
-	  </div>
+		</div>
 	  <script>
 		  const slides = document.querySelector('.slides'); //전체 슬라이드 컨테이너
 		  const slideImg = document.querySelectorAll('.slides li'); //모든 슬라이드들
