@@ -173,9 +173,14 @@
 		    		<!-- Bootstrap Card 4 -->
 			        <div class="card" style="width: 280px; height: 720px; margin-bottom: 40px; margin-top: -20px;" >
 			                <h5 class="card-title"></h5>
-			            <div class="card-header">
-		            	<h5 class="card-title">날씨</h5>
-		            </div>
+		                <c:if test="${not empty sessCustId}">
+			            	<div class="card-header" style="text-align:center; color: #999;">
+			            		<strong> ${sessionScope.user.nickName}님 오늘도 환영해요 :) </strong>
+			            	</div>
+		            	</c:if>
+		                <c:if test="${empty sessCustId}">
+			            	<div class="card-header"> <h5><br> </h5> </div>
+		            	</c:if>
 				    <div class="card-body1" style='background-color:${sessionScope.homeColor.mainColor_code};'>
 				    	<br>
 				    	<h5 class="card-word" style="text-align: center; font-size: 2.0em;">

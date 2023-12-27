@@ -186,7 +186,7 @@ body {
 			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
 				<button id="likeBtn" class="btn btn-primary" onclick="deleteDiary()">삭제</button>
 			</c:if>
-			<c:if test="${userColor.custId eq sessionScope.sessCustId}">
+			<c:if test="${userColor.custId ne sessionScope.sessCustId}">
 				<button id="likeBtn" class="btn btn-primary" onclick="likeDiary()">공감</button>
 			</c:if>
 		</div>

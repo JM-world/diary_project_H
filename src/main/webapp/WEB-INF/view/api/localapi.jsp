@@ -47,7 +47,7 @@
 <body>
 <%@ include file="../common/top.jsp" %>
 <div>
-    <label for="keyword" style="font-weight: bold; font-size:2.0em; margin-top:20px; font-family: 'Hi Melody', sans-serif;"> 동 입력: </label>
+    <label for="keyword" style="font-weight: bold; font-size:2.0em; margin-top:20px; font-family: 'Hi Melody', sans-serif;"> 지역 입력: </label>
     <input type="text" id="keyword" />
     <button class="btn btn-primary"onclick="searchCounselingCenters()" style="padding: 10px 20px; margin-top:-4px;">검색</button>
 </div>
