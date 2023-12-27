@@ -76,8 +76,3 @@
     </div> <br><br>
     <div align= "center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:da7bf4,100:ef0b90&height=180&animation=twinkling&text=Thank you&section=footer&fontColor=ffffff&fontSize=50" />  </div> 
     </div>
-    
-    
-
-
-    </div>
