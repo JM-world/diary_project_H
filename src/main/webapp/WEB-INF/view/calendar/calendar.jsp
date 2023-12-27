@@ -163,16 +163,47 @@
                         text: '일간 분석',
                         click: function() {
                         	var currentDate = new Date();
-                        	var currentDate = new Date();
-                        	var currentMonth = currentDate.getMonth() + 1; // 현재 월 가져오기
-                        	//console.log(currentMonth); // 현재 월 출력
-                            var currentString = currentDate.toString();
-    					    var slicedText = currentString.slice(4, 15); // "Dec"를 포함한 문자열 추출
-    					    var stringWithoutSpaces = slicedText.replace(/\s/g, '-');
-    				        var parts = stringWithoutSpaces.split('-'); // '-'를 기준으로 문자열 분리
-    				        var formattedDate = parts[2] + '-' + currentMonth + '-' + parts[1]; // 원하는 형식으로 재구성
-                            //console.log(formattedDate);
-                            openModal(formattedDate, calendar.words, calendar.jsonString, calendar.colorString);
+                        	console.log(currentDate.toISOString());
+                            var currentString = currentDate.toISOString().substring(0,10);
+                            console.log(currentString);
+    				        var formData = new FormData();
+    	                    var custId = '<%=(String)session.getAttribute("sessCustId")%>';
+    	                    formData.append('custId', custId);
+    	                    formData.append('date', currentString);
+    	                    $.ajax({
+    	                        type:'POST',
+    	                        url: '/project_H/calendar',
+    	                        data: formData,
+    	                        processData: false,		// img 보낼시 false
+    					        contentType: false,		// img 보낼시 false
+    	                        success: function(result) {
+    	                            // toJSONString으로 받으면 JSON.stringfy 사용
+    	                            var obj = JSON.parse(result);
+									if(obj.emotionScore != null){
+	    	                            // 오늘의 감정
+	    	                            $('#myEmotionChart').remove(); // graph 초기화
+	    	                            $('#graph-container').append('<canvas id="myEmotionChart"><canvas>');  // canvas 재생성
+	    	                            var emotionScore = obj.emotionScore;
+	    	                            getUserEmodtionByDay(emotionScore);
+	
+	    	                            // 많이 쓴 단어 Top 3
+	    	                            $('#myWordChart').remove();
+	    	                            $('#graph-word').append('<canvas id="myWordChart" width="30%" height="35"><canvas>');
+	    	                            var selectWord = obj.userContent;
+	    	                            getWordByDay(selectWord);
+	
+	    	                            // 사용자들이 선택한 색상
+	    	                            $('#myColorChart').remove();
+	    	                            $('#graph-color').append('<canvas id="myColorChart"><canvas>');
+	    	                            var selectColor = obj.usersDayColor;
+	    	                            getColorByDay(selectColor);
+	    	                            
+	    	                            openModal(currentString, calendar.allVisibleDates, obj.mainColor);
+									} else {
+										alert("오늘 일기를 써주세요!!");
+									}
+    	                        }
+    	                    });
                         }
                     },
                     customButton2: {
@@ -320,26 +351,29 @@
 	                        success: function(result) {
 	                            // toJSONString으로 받으면 JSON.stringfy 사용
 	                            var obj = JSON.parse(result);
-
-	                            // 오늘의 감정
-	                            $('#myEmotionChart').remove(); // graph 초기화
-	                            $('#graph-container').append('<canvas id="myEmotionChart"><canvas>');  // canvas 재생성
-	                            var emotionScore = obj.emotionScore;
-	                            getUserEmodtionByDay(emotionScore);
-
-	                            // 많이 쓴 단어 Top 3
-	                            $('#myWordChart').remove();
-	                            $('#graph-word').append('<canvas id="myWordChart" width="30%" height="35"><canvas>');
-	                            var selectWord = obj.userContent;
-	                            getWordByDay(selectWord);
-
-	                            // 사용자들이 선택한 색상
-	                            $('#myColorChart').remove();
-	                            $('#graph-color').append('<canvas id="myColorChart"><canvas>');
-	                            var selectColor = obj.usersDayColor;
-	                            getColorByDay(selectColor);
-	                            
-	                            openModal(info.dateStr, calendar.allVisibleDates, obj.mainColor);
+	                            if(obj.emotionScore != null){
+		                            // 오늘의 감정
+		                            $('#myEmotionChart').remove(); // graph 초기화
+		                            $('#graph-container').append('<canvas id="myEmotionChart"><canvas>');  // canvas 재생성
+		                            var emotionScore = obj.emotionScore;
+		                            getUserEmodtionByDay(emotionScore);
+	
+		                            // 많이 쓴 단어 Top 3
+		                            $('#myWordChart').remove();
+		                            $('#graph-word').append('<canvas id="myWordChart" width="30%" height="35"><canvas>');
+		                            var selectWord = obj.userContent;
+		                            getWordByDay(selectWord);
+	
+		                            // 사용자들이 선택한 색상
+		                            $('#myColorChart').remove();
+		                            $('#graph-color').append('<canvas id="myColorChart"><canvas>');
+		                            var selectColor = obj.usersDayColor;
+		                            getColorByDay(selectColor);
+		                            
+		                            openModal(info.dateStr, calendar.allVisibleDates, obj.mainColor);
+	                            } else {
+	                            	alert("작성하신 일기가 없습니다.!!")
+	                            }
 	                        }
 	                    });
 		            },
