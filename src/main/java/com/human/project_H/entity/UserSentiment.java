@@ -9,8 +9,27 @@ public class UserSentiment {
 	private double neutral_score;
 	private double negative_score;
 	private LocalDateTime modTime;
+	private String poContent;
+	private String neContent;
+	private int ucid;
 	
 	public UserSentiment() { }
+	
+
+	public UserSentiment(int ucid, double positive_score, String poContent) {
+		this.ucid = ucid;
+		this.positive_score = positive_score;
+		this.poContent = poContent;
+	}
+
+
+
+	public UserSentiment(int ucid, String neContent, double negative_score) {
+		this.ucid = ucid;
+		this.negative_score = negative_score;
+		this.neContent = neContent;
+	}
+
 
 	public UserSentiment(String custId, String sentiment, double positive_score, double neutral_score,
 			double negative_score, LocalDateTime modTime) {
@@ -70,6 +89,35 @@ public class UserSentiment {
 	public void setModTime(LocalDateTime modTime) {
 		this.modTime = modTime;
 	}
+	
+
+	public String getPoContent() {
+		return poContent;
+	}
+
+	public void setPoContent(String poContent) {
+		this.poContent = poContent;
+	}
+
+	public String getNeContent() {
+		return neContent;
+	}
+
+	public void setNeContent(String neContent) {
+		this.neContent = neContent;
+	}
+	
+	
+
+	public int getUcid() {
+		return ucid;
+	}
+
+
+	public void setUcid(int ucid) {
+		this.ucid = ucid;
+	}
+
 
 	@Override
 	public String toString() {

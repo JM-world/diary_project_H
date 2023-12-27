@@ -138,11 +138,11 @@
 
                 <textarea class="form-control" rows="40" name="content" id="content"  onkeyup="checkContentAndRead()"
                 	style="height:590px;"> ${content} </textarea>
-        		<button style="float:right" onclick="location.href='/project_H/home'" 
-        			class="btn btn-secondary mt-2 p-1">홈으로</button>
-                <button type="submit" style="margin-right:10px; float:right" class="btn btn-primary mt-2 p-1">제출하기</button>
+                <button type="submit" style="margin-left:10px; margin-right:10px; float:right" class="btn btn-primary mt-2 p-1">제출하기</button>
                 
             </form>
+        		<button style="float:right" onclick="location.href='/project_H/home'" 
+        			class="btn btn-secondary mt-2 ms-2 p-1" style="margin-right: 10px;">홈으로</button>
         </div>
     </div>
 </body>

@@ -338,4 +338,3 @@ public class UserColorController {
     }
 
 }
-

@@ -13,6 +13,8 @@ public class TodayColor {
 	 private String explan;
 	 private String question;
 	 private String oneWord;
+	 private Long count;
+	 
 	 
 	 public TodayColor() {}
 	 
@@ -44,6 +46,20 @@ public class TodayColor {
 		this.question = question;
 		this.oneWord = oneWord;
 	}
+
+	
+	
+	public Long getCount() {
+		return count;
+	}
+
+
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+
 
 	public int getCid() {
 		return cid;

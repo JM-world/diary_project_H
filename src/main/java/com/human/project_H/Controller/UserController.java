@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.human.project_H.entity.User;
 import com.human.project_H.entity.UserByMonth;
 import com.human.project_H.service.UserService;
+import com.nimbusds.oauth2.sdk.Response;
 
 @Controller
 @RequestMapping("/user")
@@ -155,35 +158,40 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public String homeProc(String custId, String pwd, HttpSession session, Model model) {
-		int result = userService.login(custId, pwd);
+    public String homeProc(String custId, String pwd, HttpSession session, HttpServletResponse response, Model model) {
+        int result = userService.login(custId, pwd);
 
-		// Check if the user is deleted
-		if (result == userService.CORRECT_LOGIN && !userService.isUserDeleted(custId)) {
-			session.setAttribute("sessCustId", custId);
-			User user = userService.getUser(custId);
-			session.setAttribute("sessUname", user.getUname());
-			session.setAttribute("sessEmail", user.getEmail());
+        // Check if the user is deleted
+        if (result == userService.CORRECT_LOGIN && !userService.isUserDeleted(custId)) {
+            session.setAttribute("sessCustId", custId);
 
-			// admin2로 로그인한 경우 리스트 페이지로 이동
-			if ("admin2".equals(custId)) {
-				return "redirect:/user/list/1";
-			} else {
+            // Remember the user ID using a cookie
+            Cookie custIdCookie = new Cookie("rememberedCustId", custId);
+            custIdCookie.setMaxAge(7 * 24 * 60 * 60); // Cookie will be stored for 7 days
+            response.addCookie(custIdCookie);
 
-				// 환영 메세지
-				model.addAttribute("msg", user.getUname() + "님 환영합니다.");
-				model.addAttribute("url", "/project_H/home");
-			}
-		} else if (result == userService.WRONG_PASSWORD) {
-			model.addAttribute("msg", "패스워드 입력이 잘못되었습니다.");
-			model.addAttribute("url", "/project_H/user/login");
-		} else if (result == userService.CUSTID_NOT_EXIST) {
-			model.addAttribute("msg", "ID 입력이 잘못되었습니다.");
-			model.addAttribute("url", "/project_H/user/login");
-		}
-		return "common/alertMsg";
+            User user = userService.getUser(custId);
+            session.setAttribute("sessUname", user.getUname());
+            session.setAttribute("sessEmail", user.getEmail());
 
-	}
+            // admin2로 로그인한 경우 리스트 페이지로 이동
+            if ("admin2".equals(custId)) {
+                return "redirect:/user/list/1";
+            } else {
+                // 환영 메세지
+                model.addAttribute("msg", user.getUname() + "님 환영합니다.");
+                model.addAttribute("url", "/project_H/home");
+                return "common/alertMsg";
+            }
+        } else if (result == userService.WRONG_PASSWORD) {
+            model.addAttribute("msg", "패스워드 입력이 잘못되었습니다.");
+            model.addAttribute("url", "/project_H/user/login");
+        } else if (result == userService.CUSTID_NOT_EXIST) {
+            model.addAttribute("msg", "ID 입력이 잘못되었습니다.");
+            model.addAttribute("url", "/project_H/user/login");
+        }
+        return "common/alertMsg";
+    }
 
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {

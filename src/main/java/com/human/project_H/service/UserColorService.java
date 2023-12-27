@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.human.project_H.entity.SelectCalendarTodayColor;
 import com.human.project_H.entity.SelectContent;
+import com.human.project_H.entity.SentimentCount;
 import com.human.project_H.entity.UserColor;
+import com.human.project_H.entity.UserCount;
 import com.human.project_H.entity.UserSentiment;
 
 public interface UserColorService {
@@ -49,6 +51,16 @@ public interface UserColorService {
 	void updateUserColorContent(int ucid, String content);
 
 	int commitCount();
+	
+	int commitCo(String sessCustId, String modTime);
+	
+	int shareCo(String sessCustId, String modTime);
+	
+	UserColor hitContent(String sessCustId, String modTime);
+	
+	UserSentiment poContent(String sessCustId, String modTime);
+	
+	UserSentiment neContent(String sessCustId, String modTime);
 
 	int increaseHitCount(int ucid);
 
@@ -61,6 +73,10 @@ public interface UserColorService {
 	
 	List<UserColor> getHitRank();
 	
+	List<UserCount> getColorCount(String sessCustId);
 	
 	List<SelectCalendarTodayColor> searchCalcolor(String sessCustId);
+	
+	
+	 List<SentimentCount> getUserColorWithSentimentByUserId(String custId, String modTime);
 }

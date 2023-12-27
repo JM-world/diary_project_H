@@ -340,8 +340,6 @@
 	                            getColorByDay(selectColor);
 	                            
 	                            openModal(info.dateStr, calendar.allVisibleDates, obj.mainColor);
-	                        }
-	                    });
 		            },
 		            
 		            eventContent: function(arg) {
@@ -412,6 +410,17 @@
 	              return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
 	            }
 
+            $('#sidebarCollapse').on('click', function () {
+                if ($('#sidebar').width() === 0) {
+                    $('#sidebar').width(250);
+                } else {
+                    $('#sidebar').width(0);
+                }
+            });
+
+            $('#sidebar .closebtn').on('click', function () {
+                $('#sidebar').width(0);
+            });
         });
         
         // <종문 추가> 일기 쓰기 중복 확인
@@ -423,7 +432,7 @@
  
 
 		function openModal(date, allVisibleDates, mainColor) {
-            var day = new Date(date).getDate();
+			var day = new Date(date).getDate();
             var colorCode = mainColor.MAINCOLOR_CODE1;
             var colorName = mainColor.MAINCOLOR_NAME;
             $('#myModal').modal('show');
@@ -495,7 +504,7 @@
 	</div>
 
     <!-- Bootstrap Modal 예제 -->
- <div class="modal modal-center fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal modal-center fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-80size modal-center" role="document">
         <div class="modal-content modal-80size">
             <div class="modal-header">
@@ -544,8 +553,6 @@
         </div>
     </div>
 </div>
-</div>
-
 
 
 </body>

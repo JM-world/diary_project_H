@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.human.project_H.Dao.UserColorDaoOracle;
 import com.human.project_H.entity.SelectCalendarTodayColor;
 import com.human.project_H.entity.SelectContent;
+import com.human.project_H.entity.SentimentCount;
 import com.human.project_H.entity.UserColor;
+import com.human.project_H.entity.UserCount;
 import com.human.project_H.entity.UserSentiment;
 
 
@@ -157,5 +159,39 @@ public class UserColorServiceOracleImpl implements UserColorService {
 		return userColorDao.getHitRank();
 	}
 	
+	@Override
+	public int commitCo(String sessCustId, String modTime) {
+		return userColorDao.commitCo(sessCustId, modTime);
+	}
+
+	@Override
+	public int shareCo(String sessCustId, String modTime) {
+		return userColorDao.shareCo(sessCustId, modTime);
+	}
+
+	@Override
+	public UserColor hitContent(String sessCustId, String modTime) {
+		return userColorDao.hitContent(sessCustId, modTime);
+	}
+
+	@Override
+	public UserSentiment poContent(String sessCustId, String modTime) {
+		return userColorDao.poContent(sessCustId, modTime);
+	}
+
+	@Override
+	public UserSentiment neContent(String sessCustId, String modTime) {
+		return userColorDao.neContent(sessCustId, modTime);
+	}
+	
+    @Override
+    public List<UserCount> getColorCount(String sessCustId) {
+        return userColorDao.getColorCount(sessCustId);
+    }
+    
+    @Override
+    public List<SentimentCount> getUserColorWithSentimentByUserId(String custId, String modTime) {
+        return userColorDao.getUserColorWithSentimentByUserId(custId, modTime);
+    }
 	
 }

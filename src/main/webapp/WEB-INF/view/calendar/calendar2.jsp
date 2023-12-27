@@ -23,38 +23,6 @@
     <%@ include file="../common/head.jsp" %>
 
     <style>
-    /* modal size, 위치 조정 */
-        .modal-dialog.modal-80size {
-            width: 100%;
-            height: 80%;
-            margin: 0;
-            padding: 0;
-        }
-
-        .modal-content.modal-80size {
-            height: auto;
-            min-height: 80%;
-        }
-
-        .modal.modal-center {
-            text-align: center;
-        }
-
-        @media screen and (min-width: 768px) {
-        .modal.modal-center:before {
-            display: inline-block;
-            vertical-align: middle;
-            content: " ";
-            height: 100%;
-        }
-        }
-
-        .modal-dialog.modal-center {
-            display: inline-block;
-            text-align: left;
-            vertical-align: middle;
-        }
-        /*--------------------*/
     
     	.fc-daygrid-day-events {
         width: 32px !important; /* 원하는 가로 크기로 조정합니다 */
@@ -119,9 +87,6 @@
         
 
     </style>
-    <script src="/project_H/chart/userEmotionByDay.js"></script>
-    <script src="/project_H/chart/userColorByDay.js"></script>
-    <script src="/project_H/chart/userWordByDay.js"></script>
  <script>
  
         // 내가 쓴 일기 페이지로 이동하는 함수
@@ -305,43 +270,12 @@
 		            
 		            dateClick: function (info) {
 						
-		            	console.log('Clicked on: ' + info.dateStr);
-	                    var formData = new FormData();
-	                    var custId = '<%=(String)session.getAttribute("sessCustId")%>';
-	                    formData.append('custId', custId);
-	                    var date = info.dateStr;
-	                    formData.append('date', date);
-	                    $.ajax({
-	                        type:'POST',
-	                        url: '/project_H/calendar',
-	                        data: formData,
-	                        processData: false,		// img 보낼시 false
-					        contentType: false,		// img 보낼시 false
-	                        success: function(result) {
-	                            // toJSONString으로 받으면 JSON.stringfy 사용
-	                            var obj = JSON.parse(result);
+		                console.log('Clicked on: ' + info.dateStr);
 
-	                            // 오늘의 감정
-	                            $('#myEmotionChart').remove(); // graph 초기화
-	                            $('#graph-container').append('<canvas id="myEmotionChart"><canvas>');  // canvas 재생성
-	                            var emotionScore = obj.emotionScore;
-	                            getUserEmodtionByDay(emotionScore);
-
-	                            // 많이 쓴 단어 Top 3
-	                            $('#myWordChart').remove();
-	                            $('#graph-word').append('<canvas id="myWordChart" width="30%" height="35"><canvas>');
-	                            var selectWord = obj.userContent;
-	                            getWordByDay(selectWord);
-
-	                            // 사용자들이 선택한 색상
-	                            $('#myColorChart').remove();
-	                            $('#graph-color').append('<canvas id="myColorChart"><canvas>');
-	                            var selectColor = obj.usersDayColor;
-	                            getColorByDay(selectColor);
-	                            
-	                            openModal(info.dateStr, calendar.allVisibleDates, obj.mainColor);
-	                        }
-	                    });
+		                
+						
+		                
+		                openModal(info.dateStr, calendar.words, calendar.jsonString, calendar.colorString);
 		            },
 		            
 		            eventContent: function(arg) {
@@ -412,6 +346,17 @@
 	              return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
 	            }
 
+            $('#sidebarCollapse').on('click', function () {
+                if ($('#sidebar').width() === 0) {
+                    $('#sidebar').width(250);
+                } else {
+                    $('#sidebar').width(0);
+                }
+            });
+
+            $('#sidebar .closebtn').on('click', function () {
+                $('#sidebar').width(0);
+            });
         });
         
         // <종문 추가> 일기 쓰기 중복 확인
@@ -422,40 +367,67 @@
         
  
 
-		function openModal(date, allVisibleDates, mainColor) {
-            var day = new Date(date).getDate();
-            var colorCode = mainColor.MAINCOLOR_CODE1;
-            var colorName = mainColor.MAINCOLOR_NAME;
-            $('#myModal').modal('show');
-            $('.modal-title').text(date);
-            $('#strong-header').remove();
-            $('#color-card-header').append('<strong id="strong-header">오늘의 컬러 : '+ colorName + '</strong>');
+		function openModal(date, words, sentiments, colors) {
+			const today = new Date();
+			const currentDate = today.toISOString().split('T')[0]; // YYYY-MM-DD 형식의 현재 날짜
 
-            var data = [];
-            for (var i = 0; i < allVisibleDates.length; i++) {
-                var currentString = allVisibleDates[i].toString();
-                var slicedText = currentString.slice(0, 7);
+			const dateParts = date.split('-'); // date를 년, 월, 일로 분리
+			const currentParts = currentDate.split('-'); // currentDate를 년, 월, 일로 분리
 
-                if (slicedText.includes("Dec")) {
-                    currentString = currentString.replace("Dec", "12");
-                    currentString = currentString.slice(4, 14);
-                    var stringWithoutSpaces = currentString.replace(/\s/g, '-');
-                    var parts = stringWithoutSpaces.split('-');
-                    var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
-                    data.push(formattedDate);
-                } else if (slicedText.includes("Jan")) {
-                    currentString = currentString.replace("Jan", "1");
-                    currentString = currentString.slice(4, 14);
-                    var stringWithoutSpaces = currentString.replace(/\s/g, '-');
-                    var parts = stringWithoutSpaces.split('-');
-                    var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
-                    data.push(formattedDate);
-                }
-            }
-            console.log(data[day - 1]);
-            $('#color-body').remove();
-            $('#todayColor').attr('style', 'background-color: white;height: 230px')
-            .append('<div class="card" style="background-color: ' + colorCode + ';height: 200px" id="color-body"></div>');
+			const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // date의 년, 월, 일로 Date 객체 생성
+			const currentObj = new Date(currentParts[0], currentParts[1] - 1, currentParts[2]); // currentDate의 년, 월, 일로 Date 객체 생성
+			
+			let foundcolor = '';
+			colors.forEach(color => {
+				if (color['modtime'] === date) {
+					foundcolor = color['maincolor_name']
+				}
+			})
+			let foundWord = '';
+			words.forEach(word => {
+			    if (word['날짜'] === date) {
+			    	foundWord = word['단어'];
+			    }
+			});
+			let foundSentiment = '';
+			sentiments.forEach(sentiment => {
+				if (sentiment['날짜'] === date) {
+					foundSentiment = sentiment['감정']
+				}
+			})
+			$('#myModal').modal('show');
+        	$('#exampleModalLabel.modal-title').text(date);
+        	
+        	if (foundcolor !== ''){
+       			$('#modalTitle').text('오늘의 컬러: ' + foundcolor);
+        	} else {
+        		$('#modalTitle').text('');
+        	}
+       		if (foundWord !== ''){
+	        	$('#modalContent').text('오늘 가장 많이 쓴 단어: ' + foundWord);
+        	} else {
+        		$('#modalContent').text('');
+        	}
+       		
+       		if (foundSentiment !== ''){
+       			// 오늘의 기분이 있는 경우
+	        	$('#modalContent2').text('오늘의 기분: ' + foundSentiment);
+	        	$('#modalContent3').text('');
+        	} else if (dateObj.getTime() < currentObj.getTime()){
+        		// 오늘의 기분이 없고, date가 현재 날짜보다 이전인 경우
+        		$('#modalContent2').text('일기를 작성하지 않았어요!');
+		        $('#modalContent3').text('바쁜 하루를 보내셨군요!');
+        	} else if (dateObj.getTime() === currentObj.getTime()){
+        		// 오늘의 기분이 없고, date가 오늘인경우
+        		$('#modalContent2').text('오늘은 일기를 작성하지 않았어요!');
+		        $('#modalContent3').html('<a href="${pageContext.request.contextPath}/diary/color" onclick="openDiaryPage()">오늘 일기 쓰러 가기</a>');
+        	} else {
+        		$('#modalContent2').text('훗날의 일기는 미리 작성할수 없어요!');
+        		$('#modalContent3').text('');
+        	}
+       		
+       		
+       		
         }
 		
 		
@@ -495,57 +467,29 @@
 	</div>
 
     <!-- Bootstrap Modal 예제 -->
- <div class="modal modal-center fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-80size modal-center" role="document">
-        <div class="modal-content modal-80size">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xl-6 col-md-6">
-                        <div class="card bg-primary text-black mb-4">
-                            <div class="card-header" id="color-card-header"></div>
-                            <div class="card-body" id="todayColor" style=> <!-- 오늘의 컬러 -->
-                            </div>
-                            <div class="card-footer d-flex align-items-center justify-content-end"></div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-md-6">
-                        <div class="card bg-warning text-black mb-4">
-                            <div class="card-header"><strong>오늘의 감정</strong></div>
-                            <div class="card-body" style="background-color: white; height: 230px;" id="graph-container"></div>
-                            <div class="card-footer d-flex align-items-center justify-content-end"></div>
-                        </div>
-                    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="row">
-                    <div class="col-xl-6 col-md-6">
-                        <div class="card bg-success text-black mb-4">
-                            <div class="card-header"><strong>많이쓴 단어</strong></div>
-                            <div class="card-body" style="background-color: white; height: 230px;" id="graph-word"></div>
-                            <div class="card-footer d-flex align-items-center justify-content-end"></div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-md-6">
-                        <div class="card bg-info text-black mb-4">
-                            <div class="card-header"><strong>사용자들이 선택한 색상</strong></div>
-                            <div class="card-body" style="background-color: white; height: 230px;" id="graph-color"></div>
-                            <div class="card-footer d-flex align-items-center justify-content-end"></div>
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <div class="modal-body">
+                    <p id="modalTitle"></p>
+                    <p id="modalContent"></p>
+                    <p id="modalContent2"></p>
+                    <p id="modalContent3"></p>
+                    <p id="modalContent4"></p>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-
 
 
 </body>

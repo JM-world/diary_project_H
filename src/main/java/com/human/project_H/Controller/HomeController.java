@@ -19,10 +19,12 @@ import com.human.project_H.entity.HomeColor;
 import com.human.project_H.entity.SelcColor;
 import com.human.project_H.entity.Sentiment;
 import com.human.project_H.entity.TodayColor;
+import com.human.project_H.entity.User;
 import com.human.project_H.entity.UserColor;
 import com.human.project_H.service.ChartService;
 import com.human.project_H.service.TodayColorService;
 import com.human.project_H.service.UserColorService;
+import com.human.project_H.service.UserService;
 
 @Controller
 public class HomeController {
@@ -33,6 +35,8 @@ public class HomeController {
 	private TodayColorService todayColorService;
 	@Autowired
 	private UserColorService userColorService;
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private ChartService chartService;
@@ -40,6 +44,11 @@ public class HomeController {
 	@GetMapping("/home")	// routing 정보, localhost:8090/project_H/home
 	public String home(HttpSession session, Model model) {
 		
+		String sessCustId = (String) session.getAttribute("sessCustId");
+		if (sessCustId != null) {
+			User user = userService.getUser(sessCustId);
+			session.setAttribute("user", user);
+		}
 		HomeColor homeColor = todayColorService.homeColor(today.toString());
 		int count = userColorService.commitCount(); 
 		if (homeColor == null) {
