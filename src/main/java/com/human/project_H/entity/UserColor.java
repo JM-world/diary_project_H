@@ -1,24 +1,83 @@
 package com.human.project_H.entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 
 public class UserColor {
 	private int ucid;
 	private String custId;
 	private int cid;
 	private String content;
-	private LocalDateTime modTime;
+	private Timestamp modTime;
 	private int hitCount;
 	private int viewCount;
 	private int emotion;
 	private boolean commitFlag;
 	private boolean shareFlag;
+	private int commitCo;
+	private int shareCo;
+	private String hitContent;
 	
+	private String title;
+	private String nickname;
+    private User user;  // User 테이블과 연결되는 필드
+    private TodayColor todayColor;  // TodayColor 테이블과 연결되는 필드
+    private String todayColorTitle;
+    private String sentiment;
+	private String mainColor_code1;
+	private String color_code2;
+	private String mainColor_name;
+	private int color_count;
+	
+	
+	
+    
+
+	public UserColor(String mainColor_code1, String mainColor_name, int color_count) {
+		this.mainColor_code1 = mainColor_code1;
+		this.mainColor_name = mainColor_name;
+		this.color_count = color_count;
+	}
+
+
+
+	public int getColor_count() {
+		return color_count;
+	}
+
+
+
+	public void setColor_count(int color_count) {
+		this.color_count = color_count;
+	}
+
+
+
+	public String getMainColor_name() {
+		return mainColor_name;
+	}
+
+
+
+	public void setMainColor_name(String mainColor_name) {
+		this.mainColor_name = mainColor_name;
+	}
+
+
+
 	public UserColor() { } 
 	
 	
 	
-	public UserColor(String custId, LocalDateTime modTime) {
+	public UserColor(int ucid, int hitCount, String hitContent) {
+		this.ucid = ucid;
+		this.hitCount = hitCount;
+		this.hitContent = hitContent;
+	}
+
+
+
+	public UserColor(String custId, Timestamp modTime) {
 		this.custId = custId;
 		this.modTime = modTime;
 	}
@@ -31,9 +90,13 @@ public class UserColor {
 		this.shareFlag = shareFlag;
 	}
 
-	public UserColor(int ucid, String custId, int cid, String content, LocalDateTime modTime, int hitCount, int viewCount,
-			int emotion, boolean commitFlag, boolean shareFlag) {
-		super();
+
+
+	public UserColor(int ucid, String custId, int cid, String content, Timestamp modTime, int hitCount, int viewCount,
+			int emotion, boolean commitFlag, boolean shareFlag, String title, String nickname, User user,
+			TodayColor todayColor, String todayColorTitle, String sentiment, String mainColor_code1,
+			String color_code2) {
+
 		this.ucid = ucid;
 		this.custId = custId;
 		this.cid = cid;
@@ -44,7 +107,17 @@ public class UserColor {
 		this.emotion = emotion;
 		this.commitFlag = commitFlag;
 		this.shareFlag = shareFlag;
+		this.title = title;
+		this.nickname = nickname;
+		this.user = user;
+		this.todayColor = todayColor;
+		this.todayColorTitle = todayColorTitle;
+		this.sentiment = sentiment;
+		this.mainColor_code1 = mainColor_code1;
+		this.color_code2 = color_code2;
 	}
+
+
 
 	public int getUcid() {
 		return ucid;
@@ -78,11 +151,11 @@ public class UserColor {
 		this.content = content;
 	}
 
-	public LocalDateTime getModTime() {
+	public Timestamp getModTime() {
 		return modTime;
 	}
 
-	public void setModTime(LocalDateTime modTime) {
+	public void setModTime(Timestamp modTime) {
 		this.modTime = modTime;
 	}
 
@@ -125,6 +198,138 @@ public class UserColor {
 	public void setShareFlag(boolean shareFlag) {
 		this.shareFlag = shareFlag;
 	}
+
+	
+	public User getUser() {
+		return user;
+	}
+
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+
+	public TodayColor getTodayColor() {
+		return todayColor;
+	}
+
+
+
+	public void setTodayColor(TodayColor todayColor) {
+		this.todayColor = todayColor;
+	}
+
+
+
+	public String getTitle() {
+		return title;
+	}
+
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	
+
+	public String getNickname() {
+		return nickname;
+	}
+
+
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	
+
+
+	public String getCustId() {
+		return custId;
+	}
+
+
+
+	public void setCustId(String custId) {
+		this.custId = custId;
+	}
+
+	
+	public String getMainColor_code1() {
+		return mainColor_code1;
+	}
+
+
+
+	public void setMainColor_code1(String mainColor_code1) {
+		this.mainColor_code1 = mainColor_code1;
+	}
+
+
+
+	public String getColor_code2() {
+		return color_code2;
+	}
+
+
+
+	public void setColor_code2(String color_code2) {
+		this.color_code2 = color_code2;
+	}
+
+
+
+	public String getSentiment() {
+		return sentiment;
+	}
+
+
+
+	public void setSentiment(String sentiment) {
+		this.sentiment = sentiment;
+	}
+	
+
+	public int getCommitCo() {
+		return commitCo;
+	}
+
+
+
+	public void setCommitCo(int commitCo) {
+		this.commitCo = commitCo;
+	}
+
+
+
+	public int getShareCo() {
+		return shareCo;
+	}
+
+
+
+	public void setShareCo(int shareCo) {
+		this.shareCo = shareCo;
+	}
+
+
+
+	public String getHitContent() {
+		return hitContent;
+	}
+
+
+
+	public void setHitContent(String hitContent) {
+		this.hitContent = hitContent;
+	}
+
+
 
 	@Override
 	public String toString() {
