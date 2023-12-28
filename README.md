@@ -4,6 +4,9 @@
     <div align= "center"> 
     <h1 style="border-bottom: 1px solid #21262d; color: #c9d1d9;"> 휴먼교육센터 최종 프로젝트 / 2023.11.15 ~ 2023.12.28 </h1>
 
+🔔 갤러리 및 시연 영상<br>
+<a href="https://github.com/JM-world/diary_project_H/tree/master/src/main/resources/static/Gallery">(Click) 깃허브 링크입니다. </a>
+
 ## 팀원 구성
 | **정종문** | **박진우** | **윤금성** |
 | :---------: |  :------: | :------: |
