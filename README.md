@@ -4,8 +4,11 @@
     <div align= "center"> 
     <h1 style="border-bottom: 1px solid #21262d; color: #c9d1d9;"> 휴먼교육센터 최종 프로젝트 / 2023.11.15 ~ 2023.12.28 </h1>
 
-🔔 갤러리 및 시연 영상<br>
-<a href="https://github.com/JM-world/diary_project_H/tree/master/src/main/resources/static/Gallery">(Click) 깃허브 링크입니다. </a>
+🔔 갤러리 보기<br>
+<a href="https://github.com/JM-world/diary_project_H/tree/master/src/main/resources/static/Gallery">(Click) 깃허브 링크 </a>
+<br>
+🔔 갤러리 보기<br>
+<a href="https://github.com/JM-world/diary_project_H/blob/master/src/main/resources/static/Gallery/02.%EC%8B%9C%EC%97%B0%20%EC%98%81%EC%83%81.mp4">(Click) 깃허브 링크 </a>
 
 ## 팀원 구성
 | **정종문** | **박진우** | **윤금성** |
@@ -40,6 +43,11 @@
 
 
 # 📙 웹 소개
+<br>
+<h3>🔔 갤러리 및 시연 영상 🔔</h3>
+<a href="https://github.com/JM-world/diary_project_H/tree/master/src/main/resources/static/Gallery">(Click) 깃허브 링크 </a>
+<br><br>
+
 <div style="font-weight: 700; font-size: 20px; text-align: center; color: #c9d1d9;">
 <br>
 <li>메인화면<br><br>
@@ -75,6 +83,7 @@
           <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
           <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
           <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
+          <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white">
           </div>
     </div> <br><br>
     <div align= "center">
