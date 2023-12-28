@@ -74,5 +74,9 @@
           <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
           </div>
     </div> <br><br>
-    <div align= "center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:da7bf4,100:ef0b90&height=180&animation=twinkling&text=Thank you&section=footer&fontColor=ffffff&fontSize=50" />  </div> 
+    <div align= "center">
+    
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:da7bf4,100:ef0b90&height=180&section=footer" />
+      </div> 
     </div>
